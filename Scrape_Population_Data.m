@@ -1,5 +1,6 @@
 % Constructs a table for what area each point lies in
 clear;
+
 T=readtable('ukr_pd_2020_1km_ASCII_XYZ.csv'); % obtains the population density based on long and lat
 longitude=table2array(T(:,1));
 latitude=table2array(T(:,2));
@@ -27,6 +28,6 @@ for jj=1:length(oblast)
       raion(jj)={S2(f).NAME_2};
    end
 end
-Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion);
+Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion,per_male,per_Poland,per_Belarus,per_Slovakia,per_Hungary,per_Romania,per_Moldva,per_Other);
 
 save('Ukraine_Population_Regions.mat','Ukraine_Pop');

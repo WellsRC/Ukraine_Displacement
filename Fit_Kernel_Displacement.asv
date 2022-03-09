@@ -14,15 +14,7 @@ Date_Displacement=Date_Displacement(Date_Displacement<=datenum('March 4, 2022'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 T=readtable('2019-03-05-2022-03-09-Ukraine.csv');
 
-ET=T.event_type;
 
-tf=~strcmp(ET,'Protests');
-
-T=T(tf,:);
-
-DT=datenum(T.event_date);
-
-T=T(DT>=datenum('February 24, 2022'),:);
 
 vLat_C=cell(length(Date_Displacement),1);
 vLon_C=cell(length(Date_Displacement),1);
@@ -51,13 +43,13 @@ Pop=Ukraine_Pop.population_size;
 % Run Fitting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-x0 = [-3,-1];
-lb=[-6 -4];
-ub=[0 0];
+x0 = [0.02,0.02];
+lb=[0 0];
+ub=[0.1 0.1];
 options = optimoptions(@lsqnonlin,'FunctionTolerance',10^(-16),'MaxFunctionEvaluations',500,'MaxIterations',1000);
 [par,fval] = lsqnonlin(@(x)ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop,Number_Displacement),x0,lb,ub,options);
 
-Parameter.Scale=10.^par(1);
-Parameter.Breadth=10.^par(2);
+Parameter.Scale=par(1);
+Parameter.Breadth=par(2);
 
 save('Kernel_Paremeter.mat','Parameter');

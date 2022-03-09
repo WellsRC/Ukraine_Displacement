@@ -1,6 +1,6 @@
 function L = ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop,Number_Displacement)
-    Parameter.Scale=x(1);
-    Parameter.Breadth=x(2);
+    Parameter.Scale=10.^x(1);
+    Parameter.Breadth=10.^x(2);
     nDays=length(vLat_C);
     Pop_Displace_Day=zeros(nDays,1);
     for jj=1:nDays
