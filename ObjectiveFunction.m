@@ -1,15 +1,12 @@
 function L = ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop,Number_Displacement)
     Parameter.Scale=10.^x(1);
     Parameter.Breadth=10.^x(2);
-    nDays=length(vLat_C);
-    Pop_Displace_Day=zeros(nDays,1);
-    for jj=1:nDays
-        P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,Parameter);
-        [Pop,Pop_Displace] = Population_Adjustment_Displacement(Pop,P,false); %false implies only the average is being returned
-        Pop_Displace_Day(jj)=sum(Pop_Displace);
-    end
+    Parameter.w=x(3);
     
-    L=Number_Displacement-Pop_Displace_Day; %using lsqnonlin to estimate the parameters for the kernel function
+    [Pop_Displace_Day,~]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Lat_P,Lon_P,Pop);
+    
+    
+    L=log10(Number_Displacement)-log10(Pop_Displace_Day); %using lsqnonlin to estimate the parameters for the kernel function
         
 end
 
