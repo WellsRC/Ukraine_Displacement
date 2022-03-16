@@ -1,0 +1,607 @@
+,NAME_2,HASC_2,District name,NAME_1,Raion name
+0,Cherkas'ka,UA.CK.CM,Cherkasy,Cherkasy,Cherkasy
+1,Cherkas'kyi,UA.CK.CR,Cherkassy district,Cherkasy,Cherkasy
+2,Chornobaivs'kyi,UA.CK.CB,Chornobaevsky district,Cherkasy,Cherkasy
+3,Chyhyryns'kyi,UA.CK.CY,Chigirinsky disrtict,Cherkasy,Cherkasy
+4,Drabivs'kyi,UA.CK.DR,Drabivsky district,Cherkasy,Cherkasy
+5,Horodyshchens'kyi,UA.CK.HO,Gorodyshensky district,Cherkasy,Cherkasy
+6,Kamians'kyi,UA.CK.KN,Kamynets district,Cherkasy,Cherkasy
+7,Kanivs'ka,UA.CK.KM,Kani,Cherkasy,Cherkasy
+8,Kanivs'kyi,UA.CK.KR,Kanivsky district,Cherkasy,Cherkasy
+9,Katerynopil's'kyi,UA.CK.KT,Katerinopil district,Cherkasy,Cherkasy
+10,Khrystynivs'kyi,UA.CK.KH,Khristynivsky district,Cherkasy,Cherkasy
+11,Korsun'-Shevchenkivs'kyi,UA.CK.KO,Korsun-Shevchenkivsky district,Cherkasy,Cherkasy
+12,Lysians'kyi,UA.CK.LY,Lisinsky district,Cherkasy,Cherkasy
+13,Man'kivs'kyi,UA.CK.MA,Mankivsky district,Cherkasy,Cherkasy
+14,Monastyryshchens'kyi,UA.CK.MO,Monastyryshchensky district,Cherkasy,Cherkasy
+15,Shpolians'kyi,UA.CK.SH,Shpolyansky district,Cherkasy,Cherkasy
+16,Smilians'kyi,UA.CK.SR,Smithian district,Cherkasy,Cherkasy
+17,Tal'nivs'kyi,UA.CK.TA,Talnevsky district,Cherkasy,Cherkasy
+18,Umans'ka,UA.CK.UM,Uman,Cherkasy,Cherkasy
+19,Umans'kyi,UA.CK.UR,Uman district,Cherkasy,Cherkasy
+20,Zhashkivs'kyi,UA.CK.ZH,Zhashkivsky district,Cherkasy,Cherkasy
+21,Zolotonis'kyi,UA.CK.ZR,Zolotonovsky district,Cherkasy,Cherkasy
+22,Zvenyhorods'kyi,UA.CK.ZV,Zvenigorodsky district,Cherkasy,Cherkasy
+23,Bakhmats'kyi,UA.CH.BA,Bakhmatsky district,Chernihiv,Chernigovsky
+24,Bobrovyts'kyi,UA.CH.BB,Bobrovitsky district,Chernihiv,Chernigovsky
+25,Borznians'kyi,UA.CH.BZ,Bornsky district,Chernihiv,Chernigovsky
+26,Chernihivs'ka,UA.CH.CM,Chernigov,Chernihiv,Chernigovsky
+27,Chernihivs'kyi,UA.CH.CR,Chernihiv district,Chernihiv,Chernigovsky
+28,Horodnians'kyi,UA.CH.HO,Gorodnyansky district,Chernihiv,Chernigovsky
+29,Ichnians'kyi,UA.CH.IC,Ichnyansky district,Chernihiv,Chernigovsky
+30,Koriukivs'kyi,UA.CH.KK,Koryukivsky district,Chernihiv,Chernigovsky
+31,Korops'kyi,UA.CH.KP,Korop district,Chernihiv,Chernigovsky
+32,Kozelets'kyi,UA.CH.KZ,Kozeletsky district,Chernihiv,Chernigovsky
+33,Kulykivs'kyi,UA.CH.KU,Kulikovsky district,Chernihiv,Chernigovsky
+34,Mens'kyi,UA.CH.ME,Men's district,Chernihiv,Chernigovsky
+35,Nizhyns'ka,UA.CH.NM,Nizhyn.,Chernihiv,Chernigovsky
+36,Nizhyns'kyi,UA.CH.NR,Nizhyn district,Chernihiv,Chernigovsky
+37,Nosivs'kyi,UA.CH.NO,Nosky district,Chernihiv,Chernigovsky
+38,Novhorod-Sivers'kyi,UA.CH.NS,Novgorod-Siversky district,Chernihiv,Chernigovsky
+39,Pryluts'ka,UA.CH.PM,Priluki,Chernihiv,Chernigovsky
+40,Pryluts'kyi,UA.CH.PR,Pryluk district,Chernihiv,Chernigovsky
+41,Ripkyns'kyi,UA.CH.RI,Ripkinsky district,Chernihiv,Chernigovsky
+42,Semenivs'kyi,UA.CH.SE,Semenivsky district,Chernihiv,Chernigovsky
+43,Shchors'kyi,UA.CH.SH,Snovsky district,Chernihiv,Chernigovsky
+44,Sosnyts'kyi,UA.CH.SO,Pine district,Chernihiv,Chernigovsky
+45,Sribnians'kyi,UA.CH.SR,Silnnyansky district,Chernihiv,Chernigovsky
+46,Talala‹vs'kyi,UA.CH.TA,Talalavsky district,Chernihiv,Chernigovsky
+47,Varvyns'kyi,UA.CH.VA,Varvinsky district,Chernihiv,Chernigovsky
+48,Chernivets'ka,UA.CV.CH,Chernivtsi,Chernivtsi,Chernivtsi
+49,Hlybots'kyi,UA.CV.HL,Dutch district,Chernivtsi,Chernivtsi
+50,Kel'menets'kyi,UA.CV.KE,Kelmetsky district,Chernivtsi,Chernivtsi
+51,Khotyns'kyi,UA.CV.KH,Khotinsky district,Chernivtsi,Chernivtsi
+52,Kitsmans'kyi,UA.CV.KI,Kitsman district,Chernivtsi,Chernivtsi
+53,Novoselits'kyi,UA.CV.NS,Novoselitsky district,Chernivtsi,Chernivtsi
+54,Putyl's'kyi,UA.CV.PU,Putilsky district,Chernivtsi,Chernivtsi
+55,Sokyrians'kyi,UA.CV.SO,Sokyryansky district,Chernivtsi,Chernivtsi
+56,Storozhynets'kyi,UA.CV.ST,Storozhinets district,Chernivtsi,Chernivtsi
+57,Vyzhnyts'kyi,UA.CV.VY,Vyzhnitsky district,Chernivtsi,Chernivtsi
+58,Zastavnets'kyi,UA.CV.ZA,Plevkovsky district,Chernivtsi,Chernivtsi
+82,Apostolivs'kyi,UA.DP.AP,Apostolovsky district,Dnipropetrovs'k,Dnipropetrovsk
+83,Dniprodzerzhyns'ka,UA.DP.DD,Kamyanske,Dnipropetrovs'k,Dnipropetrovsk
+84,Dnipropetrovs'ka,UA.DP.DM,Dnipro,Dnipropetrovs'k,Dnipropetrovsk
+85,Dnipropetrovs'kyi,UA.DP.DR,Dniprovsky district,Dnipropetrovs'k,Dnipropetrovsk
+86,Iurïvs'kyi,UA.DP.IU,Yurievsky district,Dnipropetrovs'k,Dnipropetrovsk
+87,Krynychans'kyi,UA.DP.KC,Krinichansky district,Dnipropetrovs'k,Dnipropetrovsk
+88,Kryvoriz'kyi,UA.DP.KR,Krivoysky district,Dnipropetrovs'k,Dnipropetrovsk
+89,KryvyiRig,UA.DP.KM,Krivoy Rog,Dnipropetrovs'k,Dnipropetrovsk
+90,Mahdalynivs'kyi,UA.DP.MD,Magdalinovsky district,Dnipropetrovs'k,Dnipropetrovsk
+91,Marhanets'ka,UA.DP.MR,Manganese,Dnipropetrovs'k,Dnipropetrovsk
+92,Mezhivs'kyi,UA.DP.ME,Mezhivsky district,Dnipropetrovs'k,Dnipropetrovsk
+93,Nikopol's'ka,UA.DP.NP,Nikopol,Dnipropetrovs'k,Dnipropetrovsk
+94,Nikopol's'kyi,UA.DP.NK,Nikopol district,Dnipropetrovs'k,Dnipropetrovsk
+95,Novomoskovs'ka,UA.DP.NM,Novomoskovsk,Dnipropetrovs'k,Dnipropetrovsk
+96,Novomoskovs'kyi,UA.DP.NV,Novomoskovsky district,Dnipropetrovs'k,Dnipropetrovsk
+97,Ordzhonikidzevs'ka,UA.DP.OR,Cover,Dnipropetrovs'k,Dnipropetrovsk
+98,Pavlograd,UA.DP.PM,Pavlograd,Dnipropetrovs'k,Dnipropetrovsk
+99,Pavlohrads'kyi,UA.DP.PR,Pavlogradsky district,Dnipropetrovs'k,Dnipropetrovsk
+100,Petropavlivs'kyi,UA.DP.PP,Petropavlovsky district,Dnipropetrovs'k,Dnipropetrovsk
+101,Petrykivs'kyi,UA.DP.PK,Petrikovsky district,Dnipropetrovs'k,Dnipropetrovsk
+102,Piatykhats'kyi,UA.DP.PI,Penthathian district,Dnipropetrovs'k,Dnipropetrovsk
+103,Pokrovs'kyi,UA.DP.PO,Pokrovsky district,Dnipropetrovs'k,Dnipropetrovsk
+104,Shyrokivs'kyi,UA.DP.SH,Shirokovsky district,Dnipropetrovs'k,Dnipropetrovsk
+105,Sofi‹vs'kyi,UA.DP.SF,Sofievsky district,Dnipropetrovs'k,Dnipropetrovsk
+106,Solonians'kyi,UA.DP.SL,Solonian district,Dnipropetrovs'k,Dnipropetrovsk
+107,Synel'nykivs'ka,UA.DP.SM,Sinelnikova.,Dnipropetrovs'k,Dnipropetrovsk
+108,Synel'nykivs'kyi,UA.DP.SR,Sinelnikovsky district,Dnipropetrovs'k,Dnipropetrovsk
+109,Tomakivs'kyi,UA.DP.TO,Tomakivsky district,Dnipropetrovs'k,Dnipropetrovsk
+110,Tsarychans'kyi,UA.DP.TS,Tsaricansky district,Dnipropetrovs'k,Dnipropetrovsk
+111,Vasyl'kivs'kyi,UA.DP.VA,Vasilkivsky district,Dnipropetrovs'k,Dnipropetrovsk
+112,Verkhn'odniprovs'kyi,UA.DP.VE,Verkhnedneprovsky district,Dnipropetrovs'k,Dnipropetrovsk
+113,Zhovtovods'ka,UA.DP.ZH,Yellow Waters,Dnipropetrovs'k,Dnipropetrovsk
+114,Amvrosi‹vs'kyi,UA.DT.AS,,Donets'k,Donetsk
+115,Artemivs'ka,UA.DT.AM,Bakhmut.,Donets'k,Donetsk
+116,Artemivs'kyi,UA.DT.AR,Bakhmutsky district,Donets'k,Donetsk
+117,Dobropil's'ka,UA.DT.DM,Dobropillia,Donets'k,Donetsk
+118,Dobropil's'kyi,UA.DT.DR,Dobropil district,Donets'k,Donetsk
+119,Donets'ka,UA.DT.DN,,Donets'k,Donetsk
+120,Dzerzhyns'ka,UA.DT.DZ,Torez'ka,Donets'k,Donetsk
+121,Horlivs'ka,UA.DT.HO,,Donets'k,Donetsk
+122,Iasynuvats'ka,UA.DT.IM,,Donets'k,Donetsk
+123,Iasynuvats'kyi,UA.DT.IR,Yasinuvant district,Donets'k,Donetsk
+124,Ienakiievs'ka,UA.DT.IE,,Donets'k,Donetsk
+125,Khartsyz'ka,UA.DT.KH,,Donets'k,Donetsk
+126,Kirovs'ka,UA.DT.KI,,Donets'k,Donetsk
+127,Kostiantynivs'ka,UA.DT.KT,Konstantinovka,Donets'k,Donetsk
+128,Kostiantynivs'kyi,UA.DT.KS,Konstantinovsky district,Donets'k,Donetsk
+129,Kramators'ka,UA.DT.KM,Kramatorsk,Donets'k,Donetsk
+130,Krasnoarmiis'ka,UA.DT.KA,,Donets'k,Donetsk
+131,Krasnoarmiis'kyi,UA.DT.KR,Pokrovsk,Donets'k,Donetsk
+132,Krasnolymans'ka,UA.DT.KY,Pokrovsky district,Donets'k,Donetsk
+133,Krasnolymans'kyi,UA.DT.KL,Estuary,Donets'k,Donetsk
+134,Maki‹vs'ka,UA.DT.MK,,Donets'k,Donetsk
+135,Mar‹ns'kyi,UA.DT.MN,Marian district,Donets'k,Donetsk
+136,Mariupol's'ka,UA.DT.MP,Mariupol,Donets'k,Donetsk
+137,n.a. ( 181),,,Donets'k,Donetsk
+138,n.a. ( 319),,,Donets'k,Donetsk
+139,n.a. ( 384),,,Donets'k,Donetsk
+140,n.a. ( 394),,,Donets'k,Donetsk
+141,n.a. ( 488),,,Donets'k,Donetsk
+142,n.a. ( 493),,,Donets'k,Donetsk
+143,n.a. ( 511),,,Donets'k,Donetsk
+144,Novoazovs'kyi,UA.DT.NA,,Donets'k,Donetsk
+145,Novohrodivs'ka,UA.DT.NH,Novogrodovka,Donets'k,Donetsk
+146,Oleksandrivs'kyi,UA.DT.OL,Aleksandrovsky district,Donets'k,Donetsk
+147,Pershotravnevyi,UA.DT.PE,Mangush district,Donets'k,Donetsk
+148,Selydovs'ka,UA.DT.SE,Gel,Donets'k,Donetsk
+149,Shakhtars'ka,UA.DT.SK,,Donets'k,Donetsk
+150,Shakhtars'kyi,UA.DT.SH,,Donets'k,Donetsk
+151,Slovians'ka,UA.DT.SV,Slavyansk,Donets'k,Donetsk
+152,Slovians'kyi,UA.DT.SL,Slavic district,Donets'k,Donetsk
+153,Snizhnens'ka,UA.DT.SN,,Donets'k,Donetsk
+154,Starobeshivs'kyi,UA.DT.ST,,Donets'k,Donetsk
+155,Tel'manivs'kyi,UA.DT.TE,,Donets'k,Donetsk
+156,Torez'ka,UA.DT.TO,,Donets'k,Donetsk
+157,Velykonovosilkivs'kyi,UA.DT.VE,Velvenovosilkivsky district,Donets'k,Donetsk
+158,Volnovas'kyi,UA.DT.VV,Volnovsky district,Donets'k,Donetsk
+159,Volodars'kyi,UA.DT.VD,,Donets'k,Donetsk
+160,Vuhledars'ka,UA.DT.VU,Carbonate,Donets'k,Donetsk
+161,Zhdanivs'ka,UA.DT.ZH,Zhdanivka,Donets'k,Donetsk
+162,Bohorodchans'kyi,UA.IF.BH,Bogorodchansky district,Ivano-Frankivs'k,Ivano-Frankivsk
+163,Dolyns'kyi,UA.IF.DO,Dolinsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+164,Halyts'kyi,UA.IF.HA,Galitsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+165,Horodenkivs'kyi,UA.IF.HO,Gorodenkivsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+166,Iaremchans'ka,UA.IF.IA,Yaremche,Ivano-Frankivs'k,Ivano-Frankivsk
+167,Ivano-Frankivs'ka,UA.IF.IV,Ivano-Frankivsk,Ivano-Frankivs'k,Ivano-Frankivsk
+168,Kalus'kyi,UA.IF.KL,Kalush district,Ivano-Frankivs'k,Ivano-Frankivsk
+169,Kolomyis'kyi,UA.IF.KR,Kolomyia district,Ivano-Frankivs'k,Ivano-Frankivsk
+170,Kosivs'kyi,UA.IF.KO,Kosivsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+171,Nadvirnians'kyi,UA.IF.NA,Nadvirna district,Ivano-Frankivs'k,Ivano-Frankivsk
+172,Rohatyns'kyi,UA.IF.RH,Rogatinsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+173,Rozhniativs'kyi,UA.IF.RZ,Rozhnyativ district,Ivano-Frankivs'k,Ivano-Frankivsk
+174,Sniatyns'kyi,UA.IF.SN,Snyatinsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+175,Tlumats'kyi,UA.IF.TL,Tlumatsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+176,Tysmenyts'kyi,UA.IF.TY,Tysmenitsky district,Ivano-Frankivs'k,Ivano-Frankivsk
+177,Verkhovyns'kyi,UA.IF.VE,Verkhovyna district,Ivano-Frankivs'k,Ivano-Frankivsk
+178,Balakliis'kyi,UA.KK.BL,Balakliy district,Kharkiv,Kharkiv
+179,Barvinkivs'kyi,UA.KK.BR,Barvinksky district,Kharkiv,Kharkiv
+180,Blyzniukivs'kyi,UA.KK.BZ,Bliznyuksky district,Kharkiv,Kharkiv
+181,Bohodukhivs'kyi,UA.KK.BH,Bogodukhiv district,Kharkiv,Kharkiv
+182,Borivs'kyi,UA.KK.BO,Borivsky district,Kharkiv,Kharkiv
+183,Chuhu‹vs'ka,UA.KK.CM,Chuguev,Kharkiv,Kharkiv
+184,Chuhu‹vs'kyi,UA.KK.CR,Chuguevsky district,Kharkiv,Kharkiv
+185,Derhachivs'kyi,UA.KK.DE,Dergachiv district,Kharkiv,Kharkiv
+186,Dvorichans'kyi,UA.KK.DV,Two-edged district,Kharkiv,Kharkiv
+187,Iziums'ka,UA.KK.IM,Raisins,Kharkiv,Kharkiv
+188,Iziums'kyi,UA.KK.IR,Izyum district,Kharkiv,Kharkiv
+189,Kehychivs'kyi,UA.KK.KE,Kegichivsky district,Kharkiv,Kharkiv
+190,Kharkivs'ka,UA.KK.KM,Kharkiv,Kharkiv,Kharkiv
+191,Kharkivs'kyi,UA.KK.KR,Kharkiv district,Kharkiv,Kharkiv
+192,Krasnohrads'kyi,UA.KK.KH,Krasnogradsky district,Kharkiv,Kharkiv
+193,Krasnokuts'kyi,UA.KK.KK,Krasnokutsky district,Kharkiv,Kharkiv
+194,Kupians'ka,UA.KK.KP,Kupyansk.,Kharkiv,Kharkiv
+195,Kupians'kyi,UA.KK.KU,Kupyansky district,Kharkiv,Kharkiv
+196,Lozivs'ka,UA.KK.LM,Lozova,Kharkiv,Kharkiv
+197,Lozivs'kyi,UA.KK.LR,Lozovsky district,Kharkiv,Kharkiv
+198,n.a. ( 180),,,Kharkiv,Kharkiv
+199,Novovodolaz'kyi,UA.KK.NO,Novovodolazh district,Kharkiv,Kharkiv
+200,Pecheniz'kyi,UA.KK.PC,Pechenzy district,Kharkiv,Kharkiv
+201,Pervomais'kyi,UA.KK.PR,Pervomaysk district,Kharkiv,Kharkiv
+202,Sakhnovshchyns'kyi,UA.KK.SA,Sakhnovshchyns'kyi,Kharkiv,Kharkiv
+203,Shevchenkivs'kyi,UA.KK.SH,Shevchenkivs'kyi,Kharkiv,Kharkiv
+204,Valkivs'kyi,UA.KK.VA,Valkovsky district,Kharkiv,Kharkiv
+205,Velykoburluts'kyi,UA.KK.VE,Veliburg district,Kharkiv,Kharkiv
+206,Vovchans'kyi,UA.KK.VO,Vovchansky district,Kharkiv,Kharkiv
+207,Zachepylivs'kyi,UA.KK.ZA,Zachepilovsky district,Kharkiv,Kharkiv
+208,Zmiïvs'kyi,UA.KK.ZM,Zmiyivsky district,Kharkiv,Kharkiv
+209,Zolochivs'kyi,UA.KK.ZO,Zolochiv district,Kharkiv,Kharkiv
+210,Beryslavs'kyi,UA.KS.BE,Berislavsky district,Kherson,Kherson
+211,Bilozers'kyi,UA.KS.BI,Belozersky district,Kherson,Kherson
+212,Chaplyns'kyi,UA.KS.CH,Chaplinsky district,Kherson,Kherson
+213,Heniches'kyi,UA.KS.HE,Genichesky district,Kherson,Kherson
+214,Holoprystans'kyi,UA.KS.HL,Golopristansky district,Kherson,Kherson
+215,Hornosta‹vs'kyi,UA.KS.HR,Gornostayevsky district,Kherson,Kherson
+216,Ivanivs'kyi,UA.KS.IV,Ivanovsky district,Kherson,Kherson
+217,Kakhovs'kyi,UA.KS.KR,Kakhovsky district,Kherson,Kherson
+218,Kalanchats'kyi,UA.KS.KC,Kalanchatsky district,Kherson,Kherson
+219,Khersons'ka,UA.KS.KH,Kherson,Kherson,Kherson
+220,Novokahovs'ka,UA.KS.NK,Nova Kakhovka,Kherson,Kherson
+221,Novotro‹ts'kyi,UA.KS.NT,Novotroice district,Kherson,Kherson
+222,Novovorontsovs'kyi,UA.KS.NV,Novovorontsovsky district,Kherson,Kherson
+223,Nyzhn'osirohoz'kyi,UA.KS.NY,Lower Siege district,Kherson,Kherson
+224,Skadovs'kyi,UA.KS.SK,Skadovsky district,Kherson,Kherson
+225,Tsiurupyns'kyi,UA.KS.TS,Oleshkovsky district,Kherson,Kherson
+226,Velykolepetys'kyi,UA.KS.VL,Velikelepethinsky district,Kherson,Kherson
+227,Velykooleksandrivs'kyi,UA.KS.VO,Great Oolexandrovsky district,Kherson,Kherson
+228,Verkhn'orohachyts'kyi,UA.KS.VR,Verhnohorogachitsky district,Kherson,Kherson
+229,Vysokopil's'kyi,UA.KS.VY,Hyspolsky district,Kherson,Kherson
+230,Bilohirs'kyi,UA.KM.BI,Bilogorsky district,Khmel'nyts'kyy,Khmelnytsky
+231,Chemerovets'kyi,UA.KM.CH,Chemerovetsky district,Khmel'nyts'kyy,Khmelnytsky
+232,Derazhnians'kyi,UA.KM.DE,Derazhnyansky district,Khmel'nyts'kyy,Khmelnytsky
+233,Dunaievets'kyi,UA.KM.DU,Dunaevetsky district,Khmel'nyts'kyy,Khmelnytsky
+234,Horodots'kyi,UA.KM.HO,Gorodotsky district,Khmel'nyts'kyy,Khmelnytsky
+235,Iarmolynets'kyi,UA.KM.IA,Yarmolinetsky district,Khmel'nyts'kyy,Khmelnytsky
+236,Iziaslavs'kyi,UA.KM.IZ,Izyaslavsky district,Khmel'nyts'kyy,Khmelnytsky
+237,Kamianets'-Podil's'ka,UA.KM.KA,Kamyanets-Podilsky,Khmel'nyts'kyy,Khmelnytsky
+238,Kamianets'-Podil's'kyi,UA.KM.KP,Kamyanets-Podilsky district,Khmel'nyts'kyy,Khmelnytsky
+239,Khmel'nyts'ka,UA.KM.KM,Khmelnytskyi,Khmel'nyts'kyy,Khmelnytsky
+240,Khmel'nyts'kyi,UA.KM.KR,Khmelnitsky district,Khmel'nyts'kyy,Khmelnytsky
+241,Krasylivs'kyi,UA.KM.KL,Krasilivsky district,Khmel'nyts'kyy,Khmelnytsky
+242,Letychivs'kyi,UA.KM.LE,Letychiv district,Khmel'nyts'kyy,Khmelnytsky
+243,Novoushyts'kyi,UA.KM.NO,Novowashitsky district,Khmel'nyts'kyy,Khmelnytsky
+244,Polons'kyi,UA.KM.PO,Polon district,Khmel'nyts'kyy,Khmelnytsky
+245,Shepetivs'ka,UA.KM.SP,Shepetovka,Khmel'nyts'kyy,Khmelnytsky
+246,Shepetivs'kyi,UA.KM.SH,Shepetovsky district,Khmel'nyts'kyy,Khmelnytsky
+247,Slavuts'kyi,UA.KM.SL,Slavutsky district,Khmel'nyts'kyy,Khmelnytsky
+248,Starokostiantynivs'kyi,UA.KM.SK,Starokonstantinovsky district,Khmel'nyts'kyy,Khmelnytsky
+249,Starosyniavs'kyi,UA.KM.SS,Starosinyavsky district,Khmel'nyts'kyy,Khmelnytsky
+250,Teofipol's'kyi,UA.KM.TE,Theophepol district,Khmel'nyts'kyy,Khmelnytsky
+251,Vin'kovets'kyi,UA.KM.VI,Vignovetsky district,Khmel'nyts'kyy,Khmelnytsky
+252,Volochys'kyi,UA.KM.VO,Volochysky district,Khmel'nyts'kyy,Khmelnytsky
+253,Darnyts'kyi,UA.KC.DA,Kyiv,Kiev City,m. Kyiv
+254,Desnians'kyi,UA.KC.DE,Kyiv,Kiev City,m. Kyiv
+255,Dniprovs'kyi,UA.KC.DN,Kyiv,Kiev City,m. Kyiv
+256,Holosiïvs'kyi,UA.KC.HO,Kyiv,Kiev City,m. Kyiv
+257,Obolons'kyi,UA.KC.OB,Kyiv,Kiev City,m. Kyiv
+258,Pechers'kyi,UA.KC.PE,Kyiv,Kiev City,m. Kyiv
+259,Podil's'kyi,UA.KC.PO,Kyiv,Kiev City,m. Kyiv
+260,Shevchenkivs'kyi,UA.KC.SH,Kyiv,Kiev City,m. Kyiv
+261,Solomians'kyi,UA.KC.SO,Kyiv,Kiev City,m. Kyiv
+262,Sviatoshyns'kyi,UA.KC.SV,Kyiv,Kiev City,m. Kyiv
+263,Baryshivs'kyi,UA.KV.BA,Baryshevsky district,Kiev,Kievskaya
+264,Bilotserkivs'ka,UA.KV.BT,White Church,Kiev,Kievskaya
+265,Bilotserkivs'kyi,UA.KV.BI,Bila Tserkva district,Kiev,Kievskaya
+266,Bohuslavs'kyi,UA.KV.BH,Boguslavsky district,Kiev,Kievskaya
+267,Borodians'kyi,UA.KV.BD,Borodyansky district,Kiev,Kievskaya
+268,Boryspil's'ka,UA.KV.BS,Boryspil,Kiev,Kievskaya
+269,Brovars'ka,UA.KV.BO,Brovary,Kiev,Kievskaya
+270,Brovars'kyi,UA.KV.BV,Brovarsky district,Kiev,Kievskaya
+271,Fastivs'ka,UA.KV.FM,Fasture,Kiev,Kievskaya
+272,Fastivs'kyi,UA.KV.FR,Fastiv district,Kiev,Kievskaya
+273,Iahotyns'kyi,UA.KV.IA,Yagotinsky district,Kiev,Kievskaya
+274,Irpins'ka,UA.KV.IR,Irpin.,Kiev,Kievskaya
+275,Ivankivs'kyi,UA.KV.IV,Ivankivsky district,Kiev,Kievskaya
+276,Kaharlyts'kyi,UA.KV.KA,Kagarlytsky district,Kiev,Kievskaya
+277,Kyievo-Sviatoshyns'kyi,UA.KV.KY,Kyiv-Svyatoshinsky district,Kiev,Kievskaya
+278,Makarivs'kyi,UA.KV.MA,Makariv district,Kiev,Kievskaya
+279,Myronivs'kyi,UA.KV.MY,Mironovsky district,Kiev,Kievskaya
+280,Obukhivs'kyi,UA.KV.OB,Obukhiv district,Kiev,Kievskaya
+281,Pereiaslav-Khmel'nyts'ka,UA.KV.PM,Pereyaslav-Khmelnitsky.,Kiev,Kievskaya
+282,Pereiaslav-Khmel'nyts'kyi,UA.KV.PR,Pereyaslav-Khmelnitsky district,Kiev,Kievskaya
+283,Polis'kyi,UA.KV.PO,Polissya district,Kiev,Kievskaya
+284,Rokytnians'kyi,UA.KV.RO,Rokitnyansky district,Kiev,Kievskaya
+285,Skvyrs'kyi,UA.KV.SK,Skvirsky district,Kiev,Kievskaya
+286,Stavyshchens'kyi,UA.KV.ST,Stavyshensky district,Kiev,Kievskaya
+287,Tarashchans'kyi,UA.KV.TA,Taraschaky district,Kiev,Kievskaya
+288,Tetiïvs'kyi,UA.KV.TE,Tetievsky district,Kiev,Kievskaya
+289,Vasyl'kivs'kyi,UA.KV.VR,Vasilkivsky district,Kiev,Kievskaya
+290,Volodars'kyi,UA.KV.VO,Volodarsky district,Kiev,Kievskaya
+291,Vyshhorods'kyi,UA.KV.VY,Vyshgorod district,Kiev,Kievskaya
+292,Zgurivs'kyi,UA.KV.ZG,Zgurivsky district,Kiev,Kievskaya
+293,Bobrynets'kyi,UA.KH.BO,Bobrinetsky district,Kirovohrad,Kirovogradskaya
+294,Dobrovelychkivs'kyi,UA.KH.DB,Dobrovelichkivsky district,Kirovohrad,Kirovogradskaya
+295,Dolyns'kyi,UA.KH.DL,Dolinsky district,Kirovohrad,Kirovogradskaya
+296,Haivorons'kyi,UA.KH.HA,Gayoron district,Kirovohrad,Kirovogradskaya
+297,Holovanivs'kyi,UA.KH.HO,Golovna district,Kirovohrad,Kirovogradskaya
+298,Kirovohrads'kyi,UA.KH.KR,Kropivnitsky district,Kirovohrad,Kirovogradskaya
+299,Kompani‹vs'kyi,UA.KH.KO,Company's district,Kirovohrad,Kirovogradskaya
+300,Malovyskivs'kyi,UA.KH.MA,Maloviskivsky district,Kirovohrad,Kirovogradskaya
+301,Novhorodkivs'kyi,UA.KH.NH,Novgorodkovsky district,Kirovohrad,Kirovogradskaya
+302,Novoarkhanhel's'kyi,UA.KH.NA,Novoarthangelsky district,Kirovohrad,Kirovogradskaya
+303,Novomyrhorods'kyi,UA.KH.NM,Novomirgorod district,Kirovohrad,Kirovogradskaya
+304,Novoukra‹ns'kyi,UA.KH.NU,Novoukraine district,Kirovohrad,Kirovogradskaya
+305,Oleksandriis'kyi,UA.KH.OR,Alexandria district,Kirovohrad,Kirovogradskaya
+306,Oleksandrivs'kyi,UA.KH.OV,Aleksandrovsky district,Kirovohrad,Kirovogradskaya
+307,Onufri‹vs'kyi,UA.KH.ON,Onufriyivsky district,Kirovohrad,Kirovogradskaya
+308,Petrivs'kyi,UA.KH.PE,Petrovsky district,Kirovohrad,Kirovogradskaya
+309,Svitlovods'kyi,UA.KH.SR,Svetlovodsky district,Kirovohrad,Kirovogradskaya
+310,Ul'ianovs'kyi,UA.KH.UL,Annunciation District,Kirovohrad,Kirovogradskaya
+311,Ustynivs'kyi,UA.KH.US,Ustinivsky district,Kirovohrad,Kirovogradskaya
+312,Vil'shans'kyi,UA.KH.VI,Vilshansky district,Kirovohrad,Kirovogradskaya
+313,Znamians'kyi,UA.KH.ZR,Znamensky district,Kirovohrad,Kirovogradskaya
+314,Brodivs'kyi,UA.LV.BR,Brody district,L'viv,Lviv
+315,Bus'kyi,UA.LV.BU,Bussy district,L'viv,Lviv
+316,Chervonohrads'ka,UA.LV.CH,Chervonograd,L'viv,Lviv
+317,Drohobyts'ka,UA.LV.DM,Drohobych,L'viv,Lviv
+318,Drohobyts'kyi,UA.LV.DR,Drogobych district,L'viv,Lviv
+319,Horodots'kyi,UA.LV.HO,Gorodotsky district,L'viv,Lviv
+320,Iavorivs'kyi,UA.LV.IA,Yavorivsky district,L'viv,Lviv
+321,Kamianka-Buz'kyi,UA.LV.KA,Kamyanka-Bug district,L'viv,Lviv
+322,L'vivs'ka,UA.LV.LV,Lviv,L'viv,Lviv
+323,Mostys'kyi,UA.LV.MS,Mostysky district,L'viv,Lviv
+324,Mykola‹vs'kyi,UA.LV.MY,Mykolaiv district,L'viv,Lviv
+325,Peremyshlians'kyi,UA.LV.PE,Peremyshlyansky district,L'viv,Lviv
+326,Pustomytivs'kyi,UA.LV.PU,Pustomyty district,L'viv,Lviv
+327,Radekhivs'kyi,UA.LV.RA,Radekhiv district,L'viv,Lviv
+328,Sambirs'ka,UA.LV.SM,Sambir,L'viv,Lviv
+329,Sambirs'kyi,UA.LV.SR,Sambir district,L'viv,Lviv
+330,Skolivs'kyi,UA.LV.SK,Skole district,L'viv,Lviv
+331,Sokal's'kyi,UA.LV.SO,Sokalsky district,L'viv,Lviv
+332,Starosambirs'kyi,UA.LV.SS,Starosamirsky district,L'viv,Lviv
+333,Stryis'ka,UA.LV.SY,Stryi,L'viv,Lviv
+334,Stryis'kyi,UA.LV.ST,Stryi district,L'viv,Lviv
+335,Turkivs'kyi,UA.LV.TU,Turkivsky district,L'viv,Lviv
+336,Zhovkivs'kyi,UA.LV.ZV,Zhovkovsky district,L'viv,Lviv
+337,Zhydachivs'kyi,UA.LV.ZD,Zhydachiv district,L'viv,Lviv
+338,Zolochivs'kyi,UA.LV.ZO,Zolochiv district,L'viv,Lviv
+339,Alchevs'ka,UA.LH.AL,,Luhans'k,Luganskaya
+340,Antratsitivs'ka,UA.LH.AM,,Luhans'k,Luganskaya
+341,Antratsytivs'kyi,UA.LH.AR,,Luhans'k,Luganskaya
+342,Bilokurakyns'kyi,UA.LH.BK,Belokurakinsky district,Luhans'k,Luganskaya
+343,Bilovods'kyi,UA.LH.BV,Bilovodsky district,Luhans'k,Luganskaya
+344,Briankivs'ka,UA.LH.BR,,Luhans'k,Luganskaya
+345,Kirovs'ka,UA.LH.KI,,Luhans'k,Luganskaya
+346,Krasnodons'ka,UA.LH.KM,,Luhans'k,Luganskaya
+347,Krasnodons'kyi,UA.LH.KR,,Luhans'k,Luganskaya
+348,Krasnoluts'ka,UA.LH.KL,,Luhans'k,Luganskaya
+349,Kremins'kyi,UA.LH.KN,Kreminsky district,Luhans'k,Luganskaya
+350,Luhans'ka,UA.LH.LH,,Luhans'k,Luganskaya
+351,Lutuhyns'kyi,UA.LH.LT,,Luhans'k,Luganskaya
+352,Lysychans'ka,UA.LH.LY,Lisichansk,Luhans'k,Luganskaya
+353,Markivs'kyi,UA.LH.MA,Markiv district,Luhans'k,Luganskaya
+354,Milovs'kyi,UA.LH.MI,Milovsky district,Luhans'k,Luganskaya
+355,n.a. ( 182),,,Luhans'k,Luganskaya
+356,Novoaidars'kyi,UA.LH.NA,Novoaydarsky district,Luhans'k,Luganskaya
+357,Novopskovs'kyi,UA.LH.NP,Novopskovsky district,Luhans'k,Luganskaya
+358,Pereval's'kyi,UA.LH.PL,,Luhans'k,Luganskaya
+359,Popasnians'kyi,UA.LH.PO,Popasiansky district,Luhans'k,Luganskaya
+360,Roven'kivs'ka,UA.LH.RO,,Luhans'k,Luganskaya
+361,Rubezhans'ka,UA.LH.RU,Rubizhna.,Luhans'k,Luganskaya
+362,Sieverodonets'ka,UA.LH.SI,Severodonetsk.,Luhans'k,Luganskaya
+363,Slovianoserbs'kyi,UA.LH.SS,,Luhans'k,Luganskaya
+364,Stakhanivs'ka,UA.LH.SK,,Luhans'k,Luganskaya
+365,Stanychno-Luhans'kyi,UA.LH.SL,Stanny-Lugansk district,Luhans'k,Luganskaya
+366,Starobil's'kyi,UA.LH.SB,Starobsky district,Luhans'k,Luganskaya
+367,Svativs'kyi,UA.LH.SV,Svativsky district,Luhans'k,Luganskaya
+368,Sverdlovs'ka,UA.LH.SM,,Luhans'k,Luganskaya
+369,Sverdlovs'kyi,UA.LH.SR,,Luhans'k,Luganskaya
+370,Tro‹ts'kyi,UA.LH.TR,Trinity District,Luhans'k,Luganskaya
+371,Arbuzyns'kyi,UA.MY.AR,Arbuzinsky district,Mykolayiv,Nikolaevskaya
+372,Bashtans'kyi,UA.MY.BA,Bashtany district,Mykolayiv,Nikolaevskaya
+373,Berezans'kyi,UA.MY.BE,Berezansky district,Mykolayiv,Nikolaevskaya
+374,Bereznehuvats'kyi,UA.MY.BH,Berezneguvatsky district,Mykolayiv,Nikolaevskaya
+375,Brats'kyi,UA.MY.BR,Bratka district,Mykolayiv,Nikolaevskaya
+376,Domanivs'kyi,UA.MY.DO,Dominovsky district,Mykolayiv,Nikolaevskaya
+377,Ielanets'kyi,UA.MY.IE,Yelanets district,Mykolayiv,Nikolaevskaya
+378,Kazanetskyi,UA.MY.KA,Kazankovsky district,Mykolayiv,Nikolaevskaya
+379,Kryvoozers'kyi,UA.MY.KR,Krivoozersky district,Mykolayiv,Nikolaevskaya
+380,Mykola‹vs'ka,UA.MY.MM,Mykolaiv,Mykolayiv,Nikolaevskaya
+381,Mykola‹vs'kyi,UA.MY.MR,Mykolaiv district,Mykolayiv,Nikolaevskaya
+382,Novobuz'kyi,UA.MY.NB,Novobuss district,Mykolayiv,Nikolaevskaya
+383,Novoodes'kyi,UA.MY.NO,Novoodesky district,Mykolayiv,Nikolaevskaya
+384,Ochakivs'kyi,UA.MY.OR,Ochakivsky district,Mykolayiv,Nikolaevskaya
+385,Pervomais'ka,UA.MY.PM,Pervomaysk,Mykolayiv,Nikolaevskaya
+386,Pervomais'kyi,UA.MY.PR,Pervomaysk district,Mykolayiv,Nikolaevskaya
+387,Snihurivs'kyi,UA.MY.SN,Snigurivsky district,Mykolayiv,Nikolaevskaya
+388,Veselynivs'kyi,UA.MY.VE,Veselinovsky district,Mykolayiv,Nikolaevskaya
+389,Voznesens'ka,UA.MY.VM,Voznesensk.,Mykolayiv,Nikolaevskaya
+390,Voznesens'kyi,UA.MY.VR,Voznesensky district,Mykolayiv,Nikolaevskaya
+391,Vradi‹vs'kyi,UA.MY.VD,Vradievsky district,Mykolayiv,Nikolaevskaya
+392,Zhovtnevyi,UA.MY.ZH,Vitovsky district,Mykolayiv,Nikolaevskaya
+393,Anan'‹vs'kyi,UA.OD.AN,Ananievsky district,Odessa,Odessa
+394,Artsyz'kyi,UA.OD.AR,Artsian district,Odessa,Odessa
+395,Balts'kyi,UA.OD.BA,Baltic district,Odessa,Odessa
+396,Berezivs'kyi,UA.OD.BE,Berezivsky district,Odessa,Odessa
+397,Bilhorod-Dnistrovs'ka,UA.OD.BM,Belgorod-Dnistrovsky,Odessa,Odessa
+398,Bilhorod-Dnistrovs'kyi,UA.OD.BR,Belgorod-Dnistrovsky district,Odessa,Odessa
+399,Bilia‹vs'kyi,UA.OD.BL,Bilyevsky district,Odessa,Odessa
+400,Bolhrads'kyi,UA.OD.BO,Bolgrad district,Odessa,Odessa
+401,Frunzivs'kyi,UA.OD.FR,Zakharivsky district,Odessa,Odessa
+402,Ivanivs'kyi,UA.OD.IV,Ivanovsky district,Odessa,Odessa
+403,Izma‹l's'ka,UA.OD.IM,Izmail,Odessa,Odessa
+404,Kiliis'kyi,UA.OD.KL,Kilia district,Odessa,Odessa
+405,Kodyms'kyi,UA.OD.KD,Kodimsky district,Odessa,Odessa
+406,Kominternivs'kyi,UA.OD.KI,Liman district,Odessa,Odessa
+407,Kotovs'ka,UA.OD.KM,Podolsk,Odessa,Odessa
+408,Kotovs'kyi,UA.OD.KR,Podilsky district,Odessa,Odessa
+409,Krasnooknians'kyi,UA.OD.KO,Oknyansky district,Odessa,Odessa
+410,Liubashivs'kyi,UA.OD.LI,Lyubashivsky district,Odessa,Odessa
+411,Mykola‹vs'kyi,UA.OD.MY,Mykolaiv district,Odessa,Odessa
+412,Odes'ka,UA.OD.OD,Odessa,Odessa,Odessa
+413,Ovidiopol's'kyi,UA.OD.OV,Ovidiopolsky district,Odessa,Odessa
+414,Reniis'kyi,UA.OD.RE,Rena district,Odessa,Odessa
+415,Rozdil'nias'kyi,UA.OD.RO,Separation district,Odessa,Odessa
+416,Sarats'kyi,UA.OD.SR,Saratsky district,Odessa,Odessa
+417,Savrans'kyi,UA.OD.SV,Savransky district,Odessa,Odessa
+418,Shyria‹vs'kyi,UA.OD.SH,Shiryaevsky district,Odessa,Odessa
+419,Tarutyns'kyi,UA.OD.TR,Tarutinsky district,Odessa,Odessa
+420,Tatarbunars'kyi,UA.OD.TT,Tatarbunarsky district,Odessa,Odessa
+421,Velykomykhailivs'kyi,UA.OD.VE,Velikielivsky district,Odessa,Odessa
+422,Chornukhyns'kyi,UA.PL.CR,Chornukhinsky district,Poltava,Poltava
+423,Chutivs'kyi,UA.PL.CT,Chuntly district,Poltava,Poltava
+424,Dykans'kyi,UA.PL.DY,Dikansky district,Poltava,Poltava
+425,Hadiats'kyi,UA.PL.HA,Gadyatsky district,Poltava,Poltava
+426,Hlobyns'kyi,UA.PL.HL,Globinsky district,Poltava,Poltava
+427,Hrebinkivs'kyi,UA.PL.HR,Grebank district,Poltava,Poltava
+428,Karlivs'kyi,UA.PL.KA,Karliv district,Poltava,Poltava
+429,Khorol's'kyi,UA.PL.KH,Khorolsky district,Poltava,Poltava
+430,Kobeliats'kyi,UA.PL.KB,Kobelyatsky district,Poltava,Poltava
+431,Komsomol's'ka,UA.PL.KS,The burning burns,Poltava,Poltava
+432,Kotelevs'kyi,UA.PL.KT,Kotelevsky district,Poltava,Poltava
+433,Kozel'shchyns'kyi,UA.PL.KZ,Kozelskinsky district,Poltava,Poltava
+434,Kremenchuts'ka,UA.PL.KM,Kremenchuk.,Poltava,Poltava
+435,Kremenchuts'kyi,UA.PL.KR,Kremenchug district,Poltava,Poltava
+436,Lokhvyts'kyi,UA.PL.LO,Lokhvitsky district,Poltava,Poltava
+437,Lubens'ka,UA.PL.LM,Lubny,Poltava,Poltava
+438,Lubens'kyi,UA.PL.LR,Lubny district,Poltava,Poltava
+439,Mashivs'kyi,UA.PL.MA,Mashivsky district,Poltava,Poltava
+440,Myrhorods'kyi,UA.PL.MR,Mirgorod district,Poltava,Poltava
+441,Novosanzhars'kyi,UA.PL.NO,Novosanzharsky district,Poltava,Poltava
+442,Orzhyts'kyi,UA.PL.OR,Orzhitsky district,Poltava,Poltava
+443,Poltavs'ka,UA.PL.PM,Poltava.,Poltava,Poltava
+444,Poltavs'kyi,UA.PL.PR,Poltava district,Poltava,Poltava
+445,Pyriatyns'kyi,UA.PL.PY,Pyatensky district,Poltava,Poltava
+446,Reshetylivs'kyi,UA.PL.RE,Reshetylivsky district,Poltava,Poltava
+447,Semenivs'kyi,UA.PL.SE,Semenivsky district,Poltava,Poltava
+448,Shyshats'kyi,UA.PL.SH,Shishatsky district,Poltava,Poltava
+449,Velykobahachans'kyi,UA.PL.VE,Great Bagacha district,Poltava,Poltava
+450,Zin'kivs'kyi,UA.PL.ZI,Zinkivsky district,Poltava,Poltava
+451,Bereznivs'kyi,UA.RV.BE,Bereznivsky district,Rivne,Rivne
+452,Demydiv's'kyi,UA.RV.DE,Demidov district,Rivne,Rivne
+453,Dubens'kyi,UA.RV.DB,Dubensky district,Rivne,Rivne
+454,Dubnivs'ka,UA.RV.DU,Dub,Rivne,Rivne
+455,Dubrovyts'kyi,UA.RV.DR,Dubrovitsky district,Rivne,Rivne
+456,Hoshchans'kyi,UA.RV.HO,Gozhansky district,Rivne,Rivne
+457,Korets'kyi,UA.RV.KR,Koretsky district,Rivne,Rivne
+458,Kostopil's'kyi,UA.RV.KP,Kostopol district,Rivne,Rivne
+459,Mlynivs'kyi,UA.RV.ML,Mlynivsky district,Rivne,Rivne
+460,Ostroz'kyi,UA.RV.OR,Ostrog district,Rivne,Rivne
+461,Radyvylivs'kyi,UA.RV.RA,Radvilivsky district,Rivne,Rivne
+462,Rivnens'ka,UA.RV.RM,Rivne,Rivne,Rivne
+463,Rivnens'kyi,UA.RV.RR,Rivne district,Rivne,Rivne
+464,Rokytnivs'kyi,UA.RV.RO,Rokitnivsky district,Rivne,Rivne
+465,Sarnens'kyi,UA.RV.SA,Sarnensky district,Rivne,Rivne
+466,Volodymyrets'kyi,UA.RV.VO,Vladimiretsky district,Rivne,Rivne
+467,Zarichnens'kyi,UA.RV.ZA,Zarichny district,Rivne,Rivne
+468,Zdolbunivs'kyi,UA.RV.ZD,Zdolbunivsky district,Rivne,Rivne
+469,Balaklavs'kyi,UA.SC.BA,,Sevastopol',
+470,Haharins'kyi,UA.SC.HA,,Sevastopol',
+471,Lenins'kyi,UA.SC.LE,,Sevastopol',
+472,Nakhimovs'kyi,UA.SC.NA,,Sevastopol',
+473,Bilopils'kyi,UA.SM.BI,Belopilsky district,Sumy,Sumy
+474,Buryns'kyi,UA.SM.BU,Burinsky district,Sumy,Sumy
+475,Hlukhivs'kyi,UA.SM.HR,Glukhiv district,Sumy,Sumy
+476,Iampil's'kyi,UA.SM.IA,Yampilsky district,Sumy,Sumy
+477,Konotops'ka,UA.SM.KM,Konotop,Sumy,Sumy
+478,Konotops'kyi,UA.SM.KR,Konotop district,Sumy,Sumy
+479,Krasnopil's'kyi,UA.SM.KP,Krasnopil district,Sumy,Sumy
+480,Krolevets'kyi,UA.SM.KV,Krolevets district,Sumy,Sumy
+481,Lebedyns'kyi,UA.SM.LR,Lebedinsky district,Sumy,Sumy
+482,Lypovodolyns'kyi,UA.SM.LY,Lipovodolinsky district,Sumy,Sumy
+483,Nedryhailivs'kyi,UA.SM.NE,Nedrigaylsky district,Sumy,Sumy
+484,Okhtyrs'ka,UA.SM.OM,Okhtirka,Sumy,Sumy
+485,Okhtyrs'kyi,UA.SM.OR,Okhtyrsky district,Sumy,Sumy
+486,Putyvl's'kyi,UA.SM.PU,Putivl district,Sumy,Sumy
+487,Romens'ka,UA.SM.RM,Romney,Sumy,Sumy
+488,Romens'kyi,UA.SM.RR,Romensky district,Sumy,Sumy
+489,Seredyno-Buds'kyi,UA.SM.SE,Midney-Budsky district,Sumy,Sumy
+490,Shostkins'ka,UA.SM.SK,Shost,Sumy,Sumy
+491,Shostkins'kyi,UA.SM.SH,Shostkinsky district,Sumy,Sumy
+492,Sums'ka,UA.SM.SM,Sumy,Sumy,Sumy
+493,Sums'kyi,UA.SM.SR,Sumy district,Sumy,Sumy
+494,Trostianets'kyi,UA.SM.TR,Trostyanets district,Sumy,Sumy
+495,Velykopysarivs'kyi,UA.SM.VE,Great Labor region,Sumy,Sumy
+496,Berezhans'kyi,UA.TP.BE,Berezhansky district,Ternopil',Ternopilskaya
+497,Borshchivs'kyi,UA.TP.BO,Borschivsky district,Ternopil',Ternopilskaya
+498,Buchats'kyi,UA.TP.BU,Buchasky district,Ternopil',Ternopilskaya
+499,Chortkivs'kyi,UA.TP.CH,Chortkiv district,Ternopil',Ternopilskaya
+500,Husiatyns'kyi,UA.TP.HU,Gusyatinsky district,Ternopil',Ternopilskaya
+501,Kozivs'kyi,UA.TP.KO,Kozsky district,Ternopil',Ternopilskaya
+502,Kremenets'kyi,UA.TP.KR,Kremenets district,Ternopil',Ternopilskaya
+503,Lanovets'kyi,UA.TP.LA,Lanovetsky district,Ternopil',Ternopilskaya
+504,Monastyrys'kyi,UA.TP.MO,Monastyrsky district,Ternopil',Ternopilskaya
+505,Pidhaiets'kyi,UA.TP.PH,Majoraya district,Ternopil',Ternopilskaya
+506,Pidvolochys'kyi,UA.TP.PV,Pidvolochiv district,Ternopil',Ternopilskaya
+507,Shums'kyi,UA.TP.SH,Shumsky district,Ternopil',Ternopilskaya
+508,Terebovlians'kyi,UA.TP.TB,Terebovlansky district,Ternopil',Ternopilskaya
+509,Ternopil's'ka,UA.TP.TM,Ternopil,Ternopil',Ternopilskaya
+510,Ternopil's'kyi,UA.TP.TR,Ternopil district,Ternopil',Ternopilskaya
+511,Zalishchyts'kyi,UA.TP.ZA,Zalishchivsky district,Ternopil',Ternopilskaya
+512,Zbaraz'kyi,UA.TP.ZZ,Zbarazh district,Ternopil',Ternopilskaya
+513,Zborivs'kyi,UA.TP.ZV,Patovsky district,Ternopil',Ternopilskaya
+514,Berehivs'kyi,UA.ZK.BR,Beregovsky district,Transcarpathia,Transcarpathian
+515,Irshavs'kyi,UA.ZK.IR,Irshavsky district,Transcarpathia,Transcarpathian
+516,Khusts'kyi,UA.ZK.KR,Khust district,Transcarpathia,Transcarpathian
+517,Mizhhirs'kyi,UA.ZK.MI,Mizhirsky district,Transcarpathia,Transcarpathian
+518,Mukachivs'ka,UA.ZK.MM,Mukachevo,Transcarpathia,Transcarpathian
+519,Mukachivs'kyi,UA.ZK.MR,Mukachevsky district,Transcarpathia,Transcarpathian
+520,Perechyns'kyi,UA.ZK.PE,Perezinsky district,Transcarpathia,Transcarpathian
+521,Rakhivs'kyi,UA.ZK.RA,Rakhiv district,Transcarpathia,Transcarpathian
+522,Svaliavs'kyi,UA.ZK.SV,Svalyavsky district,Transcarpathia,Transcarpathian
+523,Tiachivs'kyi,UA.ZK.TI,Tyachiv district,Transcarpathia,Transcarpathian
+524,Uzhhorods'ka,UA.ZK.UM,Uzhhorod,Transcarpathia,Transcarpathian
+525,Uzhhorods'kyi,UA.ZK.UR,Uzhgorod district,Transcarpathia,Transcarpathian
+526,Velykobereznians'kyi,UA.ZK.VE,Great Berezny district,Transcarpathia,Transcarpathian
+527,Volovets'kyi,UA.ZK.VO,Volovets district,Transcarpathia,Transcarpathian
+528,Vynohradivs'kyi,UA.ZK.VY,Vinogradiv district,Transcarpathia,Transcarpathian
+529,Bars'kyi,UA.VI.BA,Barsky district,Vinnytsya,Vinnitsa
+530,Bershads'kyi,UA.VI.BE,Bershad district,Vinnytsya,Vinnitsa
+531,Chechel'nyts'kyi,UA.VI.CC,Chechelnytsky district,Vinnytsya,Vinnitsa
+532,Iampil's'kyi,UA.VI.IA,Yampilsky district,Vinnytsya,Vinnitsa
+533,Illinets'kyi,UA.VI.IL,Illinetsky district,Vinnytsya,Vinnitsa
+534,Kalynivs'kyi,UA.VI.KA,Kalinovsky district,Vinnytsya,Vinnitsa
+535,Khmil'nyts'kyi,UA.VI.KH,Khmelnytsky district,Vinnytsya,Vinnitsa
+536,Koziatyns'kyi,UA.VI.KR,Kozyatinsky district,Vinnytsya,Vinnitsa
+537,Kryzhopil's'kyi,UA.VI.KZ,Kryzhopol district,Vinnytsya,Vinnitsa
+538,Ladyzhyns'ka,UA.VI.LA,Ladyzhin,Vinnytsya,Vinnitsa
+539,Lityns'kyi,UA.VI.LI,Litinsky district,Vinnytsya,Vinnitsa
+540,Lypovets'kyi,UA.VI.LY,Lipovetsky district,Vinnytsya,Vinnitsa
+541,Mohyliv-Podil's'ka,UA.VI.MM,Mohyliv-Podilsky,Vinnytsya,Vinnitsa
+542,Mohyliv-Podil's'kyi,UA.VI.MR,Mohyliv-Podilsky district,Vinnytsya,Vinnitsa
+543,Murovano-Kurylovets'kyi,UA.VI.MU,MurovoKurilovsky district,Vinnytsya,Vinnitsa
+544,Nemyrivs'kyi,UA.VI.NE,Nemirivsky district,Vinnytsya,Vinnitsa
+545,Orativs'kyi,UA.VI.OR,Orativsky district,Vinnytsya,Vinnitsa
+546,Pishchans'kyi,UA.VI.PI,Peschany district,Vinnytsya,Vinnitsa
+547,Pohrebyshchens'kyi,UA.VI.PO,Pogrebyshchensky district,Vinnytsya,Vinnitsa
+548,Sharhorods'kyi,UA.VI.SH,Shargorodsky district,Vinnytsya,Vinnitsa
+549,Teplyts'kyi,UA.VI.TE,Teplitsky district,Vinnytsya,Vinnitsa
+550,Tomashpil's'kyi,UA.VI.TO,Tomaspilsky district,Vinnytsya,Vinnitsa
+551,Trostianets'kyi,UA.VI.TR,Trostyanets district,Vinnytsya,Vinnitsa
+552,Tul'chyns'kyi,UA.VI.TU,Tulchinsky district,Vinnytsya,Vinnitsa
+553,Tyvrivs'kyi,UA.VI.TY,Tyrivsky district,Vinnytsya,Vinnitsa
+554,Vinnyts'ka,UA.VI.VM,Vinnitsa,Vinnytsya,Vinnitsa
+555,Vinnyts'kyi,UA.VI.VR,Vinnitsa district,Vinnytsya,Vinnitsa
+556,Zhmeryns'ka,UA.VI.ZM,Zhmerinka,Vinnytsya,Vinnitsa
+557,Zhmeryns'kyi,UA.VI.ZR,Zhmerinsky district,Vinnytsya,Vinnitsa
+558,Horokhivs'kyi,UA.VO.HO,Gorokhovsky district,Volyn,Volynsky
+559,Ivanychivs'kyi,UA.VO.IV,Ivanichivsky district,Volyn,Volynsky
+560,Kamin'-Kashyrs'kyi,UA.VO.KA,Stone-kashirsky district,Volyn,Volynsky
+561,Kivertsivs'kyi,UA.VO.KI,Kivertsky district,Volyn,Volynsky
+562,Kovel's'ka,UA.VO.KM,Kovel,Volyn,Volynsky
+563,Kovel's'kyi,UA.VO.KR,Kovelsky district,Volyn,Volynsky
+564,Liubeshivs'kyi,UA.VO.LS,Lubeshivsky district,Volyn,Volynsky
+565,Liuboml's'ky,UA.VO.LL,Lyubomsky district,Volyn,Volynsky
+566,Lokachyns'kyi,UA.VO.LO,Lokachinsky district,Volyn,Volynsky
+567,Luts'ka,UA.VO.LM,Lutsk,Volyn,Volynsky
+568,Luts'kyi,UA.VO.LR,Lutsky district,Volyn,Volynsky
+569,Manevyts'kyi,UA.VO.MA,Manevitsky district,Volyn,Volynsky
+570,Novovolyns'ka,UA.VO.NO,Novovolynsk,Volyn,Volynsky
+571,Ratnivs'kyi,UA.VO.RA,Ratnovsky district,Volyn,Volynsky
+572,Rozhyshchens'kyi,UA.VO.RO,Rozhyshchesky district,Volyn,Volynsky
+573,Shats'kyi,UA.VO.SH,Shatsky district,Volyn,Volynsky
+574,Starovyzhivs'kyi,UA.VO.ST,Starovyzhsky district,Volyn,Volynsky
+575,Turiis'kyi,UA.VO.TU,Tory district,Volyn,Volynsky
+576,Volodymyr-Volyns'kyi,UA.VO.VR,Vladimir-Volyn district,Volyn,Volynsky
+577,Berdians'ka,UA.ZP.BM,Berdyansk,Zaporizhzhya,Zaporozhye
+578,Berdians'kyi,UA.ZP.BR,Berdyansk district,Zaporizhzhya,Zaporozhye
+579,Chernihivs'kyi,UA.ZP.CH,Chernihiv district,Zaporizhzhya,Zaporozhye
+580,Enerhodars'ka,UA.ZP.EN,Energar.,Zaporizhzhya,Zaporozhye
+581,Huliaipil's'kyi,UA.ZP.HU,Gulyapilsky district,Zaporizhzhya,Zaporozhye
+582,Iakymivs'kyi,UA.ZP.IA,Yakimiv district,Zaporizhzhya,Zaporozhye
+583,Kamians'ko-Dniprovs'kyi,UA.ZP.KA,Kamyan-Dniprovsky district,Zaporizhzhya,Zaporozhye
+584,Kuibyshevs'kyi,UA.ZP.KU,Bilmatsky district,Zaporizhzhya,Zaporozhye
+585,Melitopol's'ka,UA.ZP.MM,Melitopol,Zaporizhzhya,Zaporozhye
+586,Melitopol's'kyi,UA.ZP.MR,Melitopol district,Zaporizhzhya,Zaporozhye
+587,Mykhailivs'kyi,UA.ZP.MY,Mikhailovsky district,Zaporizhzhya,Zaporozhye
+588,Novomykola‹vs'kyi,UA.ZP.NO,Novomykolaivsky district,Zaporizhzhya,Zaporozhye
+589,Orikhivs'kyi,UA.ZP.OR,Oorizhsky district,Zaporizhzhya,Zaporozhye
+590,Polohivs'kyi,UA.ZP.PO,Pogologovsky district,Zaporizhzhya,Zaporozhye
+591,Pryazovs'kyi,UA.ZP.PZ,Priazovsky district,Zaporizhzhya,Zaporozhye
+592,Prymors'kyi,UA.ZP.PM,Primorsky district,Zaporizhzhya,Zaporozhye
+593,Rozivs'kyi,UA.ZP.RO,Running district,Zaporizhzhya,Zaporozhye
+594,Tokmats'ka,UA.ZP.TM,Tokmak,Zaporizhzhya,Zaporozhye
+595,Tokmats'kyi,UA.ZP.TR,Tokmatsky district,Zaporizhzhya,Zaporozhye
+596,Vasylivs'kyi,UA.ZP.VA,Vasilivsky district,Zaporizhzhya,Zaporozhye
+597,Velykobilozers'kyi,UA.ZP.VB,Great Bilzersky district,Zaporizhzhya,Zaporozhye
+598,Veselivs'kyi,UA.ZP.VS,Veselivsky district,Zaporizhzhya,Zaporozhye
+599,Vil'nians'kyi,UA.ZP.VI,Vilnyansky district,Zaporizhzhya,Zaporozhye
+600,Zaporiz'ka,UA.ZP.ZM,Zaporizhzhia,Zaporizhzhya,Zaporozhye
+601,Zaporiz'kyi,UA.ZP.ZR,Zaporizhzhya district,Zaporizhzhya,Zaporozhye
+602,Andrushivs'kyi,UA.ZT.AN,Andrushivsky district,Zhytomyr,Zhytomyrskaya
+603,Baranivs'kyi,UA.ZT.BA,Baranivsky district,Zhytomyr,Zhytomyrskaya
+604,Berdychivs'ka,UA.ZT.BM,Berdychiv,Zhytomyr,Zhytomyrskaya
+605,Berdychivs'kyi,UA.ZT.BR,Berdychivsky district,Zhytomyr,Zhytomyrskaya
+606,Brusylivs'kyi,UA.ZT.BS,Brusilovsky district,Zhytomyr,Zhytomyrskaya
+607,Cherniakhivs'kyi,UA.ZT.CK,Chernyakhivsky district,Zhytomyr,Zhytomyrskaya
+608,Chervonoarmiis'kyi,UA.ZT.CA,Pulinsky district,Zhytomyr,Zhytomyrskaya
+609,Chudnivs'kyi,UA.ZT.CD,Chudnovsky district,Zhytomyr,Zhytomyrskaya
+610,Iemil'chyns'kyi,UA.ZT.IE,Yemilchinsky district,Zhytomyr,Zhytomyrskaya
+611,Korostens'ka,UA.ZT.KM,Korosten,Zhytomyr,Zhytomyrskaya
+612,Korostens'kyi,UA.ZT.KR,Korostensky district,Zhytomyr,Zhytomyrskaya
+613,Korostyshivs'kyi,UA.ZT.KS,Korostyshivsky district,Zhytomyr,Zhytomyrskaya
+614,Liubars'kyi,UA.ZT.LI,Lubark district,Zhytomyr,Zhytomyrskaya
+615,Luhyns'kyi,UA.ZT.LU,Luginsky district,Zhytomyr,Zhytomyrskaya
+616,Malyns'kyi,UA.ZT.MA,Malinsky district,Zhytomyr,Zhytomyrskaya
+617,Narodyts'kyi,UA.ZT.NA,Poloditsky district,Zhytomyr,Zhytomyrskaya
+618,Novohrad-Volyns'ka,UA.ZT.NM,Novograd-Volynskyi,Zhytomyr,Zhytomyrskaya
+619,Novohrad-Volyns'kyi,UA.ZT.NR,Novograd-Volyn district,Zhytomyr,Zhytomyrskaya
+620,Olevs'kyi,UA.ZT.OL,Olevsky district,Zhytomyr,Zhytomyrskaya
+621,Ovruts'kyi,UA.ZT.OV,Ovrutsky district,Zhytomyr,Zhytomyrskaya
+622,Popil'nians'kyi,UA.ZT.PO,Popilnyansky district,Zhytomyr,Zhytomyrskaya
+623,Radomyshl's'kyi,UA.ZT.RA,Radomyshl district,Zhytomyr,Zhytomyrskaya
+624,Romanivs'kyi,UA.ZT.RO,Romanian district,Zhytomyr,Zhytomyrskaya
+625,Ruzhyns'kyi,UA.ZT.RU,Ruzyn district,Zhytomyr,Zhytomyrskaya
+626,Volodars'ko-Volyns'kyi,UA.ZT.VO,Khoroshivsky district,Zhytomyr,Zhytomyrskaya
+627,Zhytomyrs'ka,UA.ZT.ZM,Zhytomyr,Zhytomyr,Zhytomyrskaya
+628,Zhytomyrs'kyi,UA.ZT.ZR,Zhytomyr district,Zhytomyr,Zhytomyrskaya

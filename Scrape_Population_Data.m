@@ -1,8 +1,17 @@
 % Constructs a table for what area each point lies in
 clear;
 
+Mapped_Names=readtable('mapped_data.csv');
+
+
 BC=readtable('ukraine-border-crossings-080322.xlsx','Sheet','Border Crossings');
 load('FB_SCI_Lookup.mat');
+
+load('FB_UKR_UKR.mat','M_FB_UKR');
+
+for ii=1:27
+    M_FB_UKR(ii,:)=M_FB_UKR(ii,:)./sum(M_FB_UKR(ii,:));
+end
 
 Male_Fight=readtable('ukr_admpop_2020_v02.xlsx','Sheet','ukr_admpop_adm1_2020');
 
@@ -15,12 +24,13 @@ S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
 
 oblast=cell(length(longitude),1);
 raion=cell(length(longitude),1);
-hasc_raion=cell(length(longitude),1);
+map_raion=cell(length(longitude),1);
 
 % For determining the location where individuals go
 per_Country_Desplace=zeros(length(longitude),6);
 per_male_fight=zeros(length(longitude),1);
 
+w_IDP=zeros(length(longitude),27);
 distance_bc=zeros(length(longitude),5);
 
 
@@ -29,7 +39,12 @@ for ii=1:length(S2)
     [tp_in,tp_on]=inpolygon(longitude,latitude,S2(ii).Lon,S2(ii).Lat);
     oblast(tp_in | tp_on)={S2(ii).NAME_1};
     raion(tp_in | tp_on)={S2(ii).NAME_2};
-    hasc_raion(tp_in | tp_on)={S2(ii).HASC_2};
+    
+    tfmn=strcmp(S2(ii).HASC_2,Mapped_Names.HASC_2) & strcmp(S2(ii).NAME_2,Mapped_Names.NAME_2);
+    if(sum(tfmn)>0)
+        NN=Mapped_Names.DistrictName{tfmn};
+        map_raion(tp_in | tp_on)={NN};
+    end
     
     w=zeros(1,6);
     for cc=1:6
@@ -50,12 +65,14 @@ for ii=1:length(S2)
     for cc=1:5
        lat_BC=BC.Lat(strcmp(Country{cc},BC.Country)); 
        lon_BC=BC.Long(strcmp(Country{cc},BC.Country));
-       d_temp=distance('gc',lat_BC(1),lon_BC(1),latitude(tp_in | tp_on),longitude(tp_in | tp_on));
+       d_temp=deg2km(distance('gc',lat_BC(1),lon_BC(1),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
        for kk=2:length(lon_BC)
-           d_temp=min(d_temp,distance('gc',lat_BC(kk),lon_BC(kk),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
+           d_temp=min(d_temp,deg2km(distance('gc',lat_BC(kk),lon_BC(kk),latitude(tp_in | tp_on),longitude(tp_in | tp_on))));
        end
        distance_bc(tp_in | tp_on,cc)=d_temp;
     end
+    
+    w_IDP(tp_in | tp_on,:)=repmat(M_FB_UKR(S2(ii).ID_1,:),sum(tp_in | tp_on),1);
     
     tpmf=S2(ii).ID_1==Male_Fight.Shapefile_ID1;
     per_male_fight(tp_in | tp_on)=Male_Fight.Per_Fight(tpmf);
@@ -65,12 +82,17 @@ parfor jj=1:length(oblast)
    if(isempty(oblast{jj}))
       d=zeros(length(S2),1);
       for ii=1:length(S2)
-        d(ii)=min(distance('gc',latitude(jj),longitude(jj),S2(ii).Lat,S2(ii).Lon));
+        d(ii)=min(deg2km(distance('gc',latitude(jj),longitude(jj),S2(ii).Lat,S2(ii).Lon)));
       end
       f=find(d==min(d),1);
       oblast(jj)={S2(f).NAME_1};
       raion(jj)={S2(f).NAME_2};   
-      hasc_raion(jj)={S2(f).HASC_2};
+      
+      tfmn=strcmp(S2(f).HASC_2,Mapped_Names.HASC_2) & strcmp(S2(f).NAME_2,Mapped_Names.NAME_2);
+      if(sum(tfmn)>0)
+        NN=Mapped_Names.DistrictName{tfmn};
+        map_raion(jj)={NN};
+     end
    
         w=zeros(1,6);
         for cc=1:6
@@ -92,8 +114,10 @@ parfor jj=1:length(oblast)
         for cc=1:5
            lat_BC=BC.Lat(strcmp(Country{cc},BC.Country)); 
            lon_BC=BC.Long(strcmp(Country{cc},BC.Country));
-           distance_bc(jj,cc)=min(distance('gc',lat_BC,lon_BC,latitude(jj),longitude(jj)));         
+           distance_bc(jj,cc)=min(deg2km(distance('gc',lat_BC,lon_BC,latitude(jj),longitude(jj))));         
         end
+        
+         w_IDP(jj,:)=M_FB_UKR(S2(f).ID_1,:);
     
         tpmf=S2(f).ID_1==Male_Fight.Shapefile_ID1;
         per_male_fight(jj)=Male_Fight.Per_Fight(tpmf);
@@ -117,6 +141,12 @@ db_Romania=distance_bc(:,4);
 db_Moldva=distance_bc(:,5);
 
 
-Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion,hasc_raion,per_male_fight,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Moldva,per_Other,db_Poland,db_Slovakia,db_Hungary,db_Romania,db_Moldva);
+for mm=1:length(map_raion)
+    if(isempty(map_raion{mm}))
+        map_raion{mm}='N/A';
+    end
+end
+
+Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion,map_raion,per_male_fight,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Moldva,per_Other,db_Poland,db_Slovakia,db_Hungary,db_Romania,db_Moldva,w_IDP);
 
 save('Ukraine_Population_Regions.mat','Ukraine_Pop');

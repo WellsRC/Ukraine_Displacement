@@ -46,4 +46,5 @@ load('Ukraine_Population_Regions.mat','Ukraine_Pop');
 Lat_P=Ukraine_Pop.latitude;
 Lon_P=Ukraine_Pop.longitude;
 Pop=Ukraine_Pop.population_size.*(1-Ukraine_Pop.per_male_fight); % considering only those who can leave under martial law
-Pop_ML=Ukraine_Pop.population_size.*(Ukraine_Pop.per_male_fight);
+Pop_Male=Ukraine_Pop.population_size.*Ukraine_Pop.per_male_fight;
+

@@ -9,7 +9,6 @@ LoadData;
 
 load('Kernel_Paremeter.mat','Parameter');
 
-
 [Pop_Displace_Day,Pop_Displace]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Lat_P,Lon_P,Pop);
 figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
 subplot('Position',[0.087147887323944,0.224383916990921,0.900528169014085,0.765239948119325]);
