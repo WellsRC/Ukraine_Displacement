@@ -4,14 +4,13 @@ clear;
 Mapped_Names=readtable('mapped_data.csv');
 
 
-BC=readtable('ukraine-border-crossings-080322.xlsx','Sheet','Border Crossings');
+BC=readtable('ukr_border_crossings_170322.xlsx','Sheet','Border Crossings');
+
+Border_Crossing_Country=BC.Country;
 load('FB_SCI_Lookup.mat');
 
 load('FB_UKR_UKR.mat','M_FB_UKR');
 
-for ii=1:27
-    M_FB_UKR(ii,:)=M_FB_UKR(ii,:)./sum(M_FB_UKR(ii,:));
-end
 
 Male_Fight=readtable('ukr_admpop_2020_v02.xlsx','Sheet','ukr_admpop_adm1_2020');
 
@@ -27,11 +26,11 @@ raion=cell(length(longitude),1);
 map_raion=cell(length(longitude),1);
 
 % For determining the location where individuals go
-per_Country_Desplace=zeros(length(longitude),6);
+per_Country_Desplace=zeros(length(longitude),7);
 per_male_fight=zeros(length(longitude),1);
 
 w_IDP=zeros(length(longitude),27);
-distance_bc=zeros(length(longitude),5);
+distance_bc=zeros(length(longitude),height(BC));
 
 
 
@@ -46,8 +45,8 @@ for ii=1:length(S2)
         map_raion(tp_in | tp_on)={NN};
     end
     
-    w=zeros(1,6);
-    for cc=1:6
+    w=zeros(1,7);
+    for cc=1:7
         test=Country_ID{cc};
         tob=strcmp(FB_SCI.user_loc,{['UKR' num2str(S2(ii).ID_1)]});
         for ff=1:length(test)
@@ -62,14 +61,8 @@ for ii=1:length(S2)
     w=w./sum(w);
     per_Country_Desplace(tp_in | tp_on,:)=repmat(w,sum(tp_in | tp_on),1);
     
-    for cc=1:5
-       lat_BC=BC.Lat(strcmp(Country{cc},BC.Country)); 
-       lon_BC=BC.Long(strcmp(Country{cc},BC.Country));
-       d_temp=deg2km(distance('gc',lat_BC(1),lon_BC(1),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
-       for kk=2:length(lon_BC)
-           d_temp=min(d_temp,deg2km(distance('gc',lat_BC(kk),lon_BC(kk),latitude(tp_in | tp_on),longitude(tp_in | tp_on))));
-       end
-       distance_bc(tp_in | tp_on,cc)=d_temp;
+    for cc=1:height(BC)
+       distance_bc(tp_in | tp_on,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Lat(cc),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
     end
     
     w_IDP(tp_in | tp_on,:)=repmat(M_FB_UKR(S2(ii).ID_1,:),sum(tp_in | tp_on),1);
@@ -77,7 +70,7 @@ for ii=1:length(S2)
     tpmf=S2(ii).ID_1==Male_Fight.Shapefile_ID1;
     per_male_fight(tp_in | tp_on)=Male_Fight.Per_Fight(tpmf);
 end
-
+NBC=height(BC);
 parfor jj=1:length(oblast)
    if(isempty(oblast{jj}))
       d=zeros(length(S2),1);
@@ -94,8 +87,8 @@ parfor jj=1:length(oblast)
         map_raion(jj)={NN};
      end
    
-        w=zeros(1,6);
-        for cc=1:6
+        w=zeros(1,7);
+        for cc=1:7
             test=Country_ID{cc};
             tob=strcmp(FB_SCI.user_loc,{['UKR' num2str(S2(f).ID_1)]});
             for ff=1:length(test)
@@ -111,10 +104,8 @@ parfor jj=1:length(oblast)
         w=w./sum(w);
         per_Country_Desplace(jj,:)=w;    
         
-        for cc=1:5
-           lat_BC=BC.Lat(strcmp(Country{cc},BC.Country)); 
-           lon_BC=BC.Long(strcmp(Country{cc},BC.Country));
-           distance_bc(jj,cc)=min(deg2km(distance('gc',lat_BC,lon_BC,latitude(jj),longitude(jj))));         
+        for cc=1:NBC
+            distance_bc(jj,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Lat(cc),latitude(jj),longitude(jj)));
         end
         
          w_IDP(jj,:)=M_FB_UKR(S2(f).ID_1,:);
@@ -124,21 +115,17 @@ parfor jj=1:length(oblast)
    end
 end
 
-for ii=1:6
+for ii=1:7
     per_Country_Desplace(isnan(per_Country_Desplace(:,ii)),ii)=mean(per_Country_Desplace(~isnan(per_Country_Desplace(:,ii)),ii));
 end
 per_Poland=per_Country_Desplace(:,1);
-per_Slovakia=per_Country_Desplace(:,2);
-per_Hungary=per_Country_Desplace(:,3);
-per_Romania=per_Country_Desplace(:,4);
-per_Moldva=per_Country_Desplace(:,5);
-per_Other=per_Country_Desplace(:,6);
+per_Belarus=per_Country_Desplace(:,2);
+per_Slovakia=per_Country_Desplace(:,3);
+per_Hungary=per_Country_Desplace(:,4);
+per_Romania=per_Country_Desplace(:,5);
+per_Moldova=per_Country_Desplace(:,6);
+per_Other=per_Country_Desplace(:,7);
 
-db_Poland=distance_bc(:,1);
-db_Slovakia=distance_bc(:,2);
-db_Hungary=distance_bc(:,3);
-db_Romania=distance_bc(:,4);
-db_Moldva=distance_bc(:,5);
 
 
 for mm=1:length(map_raion)
@@ -147,6 +134,6 @@ for mm=1:length(map_raion)
     end
 end
 
-Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion,map_raion,per_male_fight,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Moldva,per_Other,db_Poland,db_Slovakia,db_Hungary,db_Romania,db_Moldva,w_IDP);
+Ukraine_Pop=table(longitude,latitude,population_size,oblast,raion,map_raion,per_male_fight,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Belarus,per_Moldova,per_Other,distance_bc,w_IDP);
 
-save('Ukraine_Population_Regions.mat','Ukraine_Pop');
+save('Ukraine_Population_Regions.mat','Ukraine_Pop','Border_Crossing_Country');

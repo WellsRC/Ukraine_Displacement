@@ -30,7 +30,7 @@ nDays=length(Number_Displacement);
 
 Conflict=ones(length(Lon_P),nDays);
 for jj=1:nDays
-    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,Parameter);
+    P = Parameter.w.*Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,Parameter);
     
     if(jj==1)
         Conflict(:,jj)=(1-P);
@@ -42,7 +42,7 @@ end
 
 Conflict=1-Conflict;
 
-SCF=0.052312566421567;
+SCF=10.^6./(sum(Conflict(:,6).*(Pop-Pop_Displace(:,6))));
 
 S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
 Oblast_ID=zeros(size(Pop));

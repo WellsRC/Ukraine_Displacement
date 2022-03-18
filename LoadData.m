@@ -5,15 +5,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 T=readtable('UNHCR_UKR_Date.csv');
 Date_Displacement=datenum(T.data_date);
-Number_Displacement=T.individuals;
+Number_Displacement=T.daily_individuals;
 
-Number_Displacement=Number_Displacement(Date_Displacement<=datenum('March 4, 2022'));
-Date_Displacement=Date_Displacement(Date_Displacement<=datenum('March 4, 2022'));
+Number_Displacement=Number_Displacement(Date_Displacement<=datenum('March 11, 2022'));
+Date_Displacement=Date_Displacement(Date_Displacement<=datenum('March 11, 2022'));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Conflict data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-T=readtable('2019-03-05-2022-03-09-Ukraine.csv');
+T=readtable('2022-01-01-2022-03-17-Ukraine.csv');
 
 ET=T.event_type;
 
@@ -42,7 +42,7 @@ end
 % Population Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load('Ukraine_Population_Regions.mat','Ukraine_Pop');
+load('Ukraine_Population_Regions.mat','Ukraine_Pop','Border_Crossing_Country');
 Lat_P=Ukraine_Pop.latitude;
 Lon_P=Ukraine_Pop.longitude;
 Pop=Ukraine_Pop.population_size.*(1-Ukraine_Pop.per_male_fight); % considering only those who can leave under martial law

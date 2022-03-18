@@ -14,6 +14,6 @@ load('Kernel_Paremeter.mat','Parameter');
 Displace_Pop=sum(Pop_Displace,2);
 Pop_Remain=Pop-Displace_Pop;
 
-[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Ukraine_Pop);
+[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Ukraine_Pop,sc_sci,lambda_bc,sc_bc,sc_nbc,ws,wo,Border_Crossing_Country);
 
 save('UKR_output.mat','Total_Burden_Refugee','Total_Burden_UKR');

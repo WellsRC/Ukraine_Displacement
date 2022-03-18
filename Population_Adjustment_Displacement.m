@@ -4,7 +4,8 @@ function [Pop_Adjust,Pop_Displace] = Population_Adjustment_Displacement(Pop,P,Ra
     if(~Random_Sample)
         Pop_Displace=Pop.*P;
     else
-        Pop_Displace=binornd(round(Pop),P);
+        Pop_Displace=zeros(size(Pop));
+        Pop_Displace(P>0 & Pop>0)=binornd(Pop(P>0 & Pop>0),P(P>0 & Pop>0));
     end
 
     Pop_Adjust=Pop-Pop_Displace;

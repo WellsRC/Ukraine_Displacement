@@ -14,13 +14,13 @@ figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
 subplot('Position',[0.087147887323944,0.224383916990921,0.900528169014085,0.765239948119325]);
 bar(Pop_Displace_Day./10000,'k');
 hold on
-scatter([1:9],Number_Displacement./10000,60,'r','filled');
+scatter([1:length(Number_Displacement)],Number_Displacement./10000,60,'r','filled');
 box off;
 XTL=datestr(Date_Displacement');
-set(gca,'LineWidth',2,'tickdir','out','Xticklabel',XTL,'Fontsize',18)
+set(gca,'LineWidth',2,'tickdir','out','Xticklabel',XTL,'Fontsize',18,'XTick',[1:length(Number_Displacement)])
 xtickangle(45);
-xlim([0.5 9.5]);
-ylim([0 19]);
+xlim([0.5 length(Number_Displacement)+0.5]);
+ylim([0 22]);
 
 ylabel('Daily number Ukrainian refugees (10,000)','Fontsize',22);
 xlabel('Date','Fontsize',22);
