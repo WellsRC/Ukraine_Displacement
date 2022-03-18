@@ -27,27 +27,18 @@ P_Total=1-prod(1-PC,2);
 
 Pop_Leave=Pop.*P_Total;
 
+x0=[2.49377949755863,0.8,2.56067086258808,0.143207402528654,0.0213288306672176,2.60485727006010];
+LB=[1 0 1 0 0 1];
+UB=[4 0.99 4 1 0.1 4];
+opts= optimset('UseParallel',true,'MaxIter',2500,'MaxFunEvals',1000,'TolFun',10^(-9),'TolX',10^(-9));
 
-cLat=cell2mat(vLat_C);
-cLon=cell2mat(vLon_C);
+[par,fval]=lsqnonlin(@(x)ObjectiveFunction_Refugee_Dist(x,Ukraine_Pop,Border_Crossing_Country,Pop_Leave,Ref_Num),x0,LB,UB,opts);
 
-BC=readtable('ukr_border_crossings_170322.xlsx','Sheet','Border Crossings');
-rLat=BC.Lat;
-rLon=BC.Long;
-
-x0=[0.5 log10(500) 0.2 0.2 0.8];
-LB=[0 1 0 0 0];
-UB=[1 4 1 1 1];
-% opts= optimset('UseParallel',true,'MaxIter',2500,'MaxFunEvals',1000,'TolFun',10^(-3),'TolX',10^(-9));
-
-% par=fmincon(@(x)ObjectiveFunction_Refugee_Dist(x,Ukraine_Pop,Border_Crossing_Country,Pop_Remain,Ref_Num),x0,[],[],[],[],LB,UB,[],opts);
-
-opts=optimoptions('surrogateopt','PlotFcn','surrogateoptplot','MaxFunctionEvaluations',1250,'UseParallel',true);
-par=surrogateopt(@(x)ObjectiveFunction_Refugee_Dist(x,Ukraine_Pop,Border_Crossing_Country,Pop_Leave,Ref_Num),LB,UB,opts);
-sc_sci=par(1);
-lambda_bc=10.^par(2);
-sc_bc=par(3);
-sc_nbc=par(4);
+lambda_sci=10^par(1);
+sc_GDP=par(2);
+lambda_bc=10.^par(3);
+sc_bc=par(4);
 s_nato=par(5);
+lambda_GDP=10^par(6);
 
-save('Refugee_Country_Distribution_Parameters.mat','sc_sci','lambda_bc','sc_bc','sc_nbc','ws','wo');
+save('Refugee_Country_Distribution_Parameters.mat','lambda_sci','sc_GDP','lambda_bc','sc_bc','s_nato','lambda_GDP');

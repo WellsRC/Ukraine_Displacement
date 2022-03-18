@@ -1,9 +1,17 @@
-function [Num_IDP_Location]=Estimate_IDP_Displacement(Parameter_IDP,vLat_C,vLon_C,Lat_P,Lon_P,Pop_Remain,Lat_R,Lon_R)
+function [Num_IDP_Location]=Estimate_IDP_Displacement(Parameter_IDP,ParameterC,vLat_C,vLon_C,Lat_P,Lon_P,Pop_Remain,Lat_IDP,Lon_IDP,SCI_IDP,Site_Oblast)
 
 nDays=length(vLat_C);
-nSite=length(Lat_R);
+nSite=length(Lat_IDP);
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% SCI 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+Psci=zeros(length(Lat_IDP),length(Lon_P));
+Parameter.Scale=1;
+Parameter.Breadth=Parameter_IDP.BreadthDistance;
+parfor jj=1:nSite
+    Psci(jj,:)=Kernel_Function( SCI_IDP(:,Site_Oblast(jj)),Parameter);
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Location of sites relative to conflict
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,7 +20,7 @@ Ps=ones(size(LatR));
 Parameter.Scale=Parameter_IDP.ScaleSite;
 Parameter.Breadth=Parameter_IDP.BreadthSite;
 for jj=1:nDays
-    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_R,Lon_R,Parameter);
+    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_IDP,Lon_IDP,Parameter);
     Ps=Ps.*(1-P);
 end
 
@@ -28,24 +36,27 @@ Pd=zeros(length(Lat_IDP),length(Lon_P));
 Parameter.Scale=Parameter_IDP.ScaleDistance;
 Parameter.Breadth=Parameter_IDP.BreadthDistance;
 parfor jj=1:nSite
-    Pd(jj,:)=Kernel_Displacement(Lat_R(jj),Lon_R(jj),Lat_P,Lon_P,Parameter);
+    Pd(jj,:)=Kernel_Displacement(Lat_IDP(jj),Lon_IDP(jj),Lat_P,Lon_P,Parameter);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Conflict in the specified location
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Pc=ones(1,length(Lon_P));
-Parameter.Scale=Parameter_IDP.ScaleConflict;
-Parameter.Breadth=Parameter_IDP.BreadthConflict;
+PC=ones(1,length(Lon_P));
 
-for jj=1:nDays
-    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,Parameter);
-    Pc=Pc.*(1-P);
+PC_IDP=ones(1,length(Lon_P));
+
+
+for jj=1:nDays    
+    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,ParameterC);
+    PC=PC.*(1-P);
+    Ptemp=Parameter_IDP.ScaleConflict.*(Parameter.w.*P+(1-Parameter.w).*Parameter.ScaleC.*(1-PC));
+    PC_IDP=PC_IDP.*(1-Ptemp);
 end
 
-Pc=1-Pc;
+PC_IDP=1-PC_IDP;
 
-P_Tot=repmat(Ps,1,length(Lon_P)).*Pd.*repmat(Pc,length(Lat_IDP),1);
+P_Tot=repmat(Ps,1,length(Lon_P)).*Pd.*repmat(PC_IDP,length(Lat_IDP),1);
 Num_IDP_Location=P_Tot*(Pop_Remain');
 end

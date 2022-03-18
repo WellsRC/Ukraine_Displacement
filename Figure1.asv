@@ -173,10 +173,9 @@ Ref_Num=[105897 1575703 938 185673 235576 84671 104929 304156];
 bb=barh(T);
 bb(8).FaceColor='k';
 ylim([0.5 length(Country_Name)+0.5]);
-set(gca,'Tickdir','out','linewidth',2,'YTick',[1:length(Country_Name)],'YTicklabel',Country_Name,'Fontsize',18,'XSCale','log','XTick',10.^[0:7]);
-
-hold on;
-scatter(Ref_Num(srt_indx),[1:length(Country_Name)]+0.365,40,'r','filled');
+set(gca,'Tickdir','out','linewidth',2,'YTick',[1:length(Country_Name)],'YTicklabel',Country_Name,'Fontsize',18,'XSCale','log');
+xlim([0.5 10^7]);
+scatter([
 % xtickformat('percentage');
 
 legend(flip(bb),flip(Disese),'Location','SouthEast');
@@ -203,6 +202,6 @@ box off;
 % xlabel('Number of refugees','Fontsize',22,'Color',[0.5 0.5 0.5]);
 ylabel('Country','Fontsize',22,'Position',[0.007661920010631,4.909022709122278]);
 xlabel('Number of Refugees','Fontsize',22);
-xlim([0.5 10^7.5]);
+
 
 print(gcf,['Refugee_Disease_Distribution.png'],'-dpng','-r300');

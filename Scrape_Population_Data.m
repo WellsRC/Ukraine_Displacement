@@ -58,7 +58,6 @@ for ii=1:length(S2)
         end
         w(cc)=w(cc)./length(test);
     end
-    w=w./sum(w);
     per_Country_Desplace(tp_in | tp_on,:)=repmat(w,sum(tp_in | tp_on),1);
     
     for cc=1:height(BC)
@@ -101,7 +100,6 @@ parfor jj=1:length(oblast)
             w(cc)=w(cc)./length(test);
         end
 
-        w=w./sum(w);
         per_Country_Desplace(jj,:)=w;    
         
         for cc=1:NBC
@@ -116,7 +114,7 @@ parfor jj=1:length(oblast)
 end
 
 for ii=1:7
-    per_Country_Desplace(isnan(per_Country_Desplace(:,ii)),ii)=mean(per_Country_Desplace(~isnan(per_Country_Desplace(:,ii)),ii));
+    per_Country_Desplace(per_Country_Desplace(:,ii)==0,ii)=mean(per_Country_Desplace(per_Country_Desplace(:,ii)>0,ii));
 end
 per_Poland=per_Country_Desplace(:,1);
 per_Belarus=per_Country_Desplace(:,2);
