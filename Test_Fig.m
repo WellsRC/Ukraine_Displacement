@@ -1,45 +1,126 @@
-close all;
+% clear;
+% clc;
+% 
+% load('IDP_Fit_Inputs.mat','Pop_Raion','Raion_IDP');
+% 
+% T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+% 
+% 
+% 
+% Lat_IDP=T.YLatitude;
+% Lon_IDP=T.XLongitude;
+% Zone=T.IDPLocationCluster;
+% 
+% clear T Ukraine_Pop;
+% 
+% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
+% 
+% Raion_Zone_R=zeros(length(S2),1);
+% for ii=1:length(S2)
+%     [p_in]=inpolygon(Lon_IDP,Lat_IDP,S2(ii).Lon,S2(ii).Lat);
+%     if(sum(p_in)>0)
+%         Raion_Zone_R(ii)=median(Zone(p_in));
+%     end
+%     if((Raion_IDP(ii)>0) && (Raion_Zone_R(ii)==0))
+%        d=zeros(length( Lon_IDP));
+%        parfor jj=1:length(d)
+%            d(jj)=min(deg2km(distance('gc',Lon_IDP(jj),Lat_IDP(jj),S2(ii).Lon,S2(ii).Lat)));
+%        end
+%        Raion_Zone_R(ii)=median(Zone(d==min(d)));
+%     end
+% end
+% 
+% DiseaseBudren=[0.15 0.03 5.*10^(-3) 3.*10^(-3) 10^(-3) 6.*10^(-4) 10^(-4)];
+% 
+% 
+% Pop_Raion=Pop_Raion(Raion_IDP>0);
+% Raion_IDP=Raion_IDP(Raion_IDP>0);
+% Raion_Zone_R=Raion_Zone_R(Raion_IDP>0);
+% 
+% Non_IDP=zeros(length(Pop_Raion),length(DiseaseBudren));
+% IDP=zeros(length(Pop_Raion),length(DiseaseBudren));
+% for ii=1:length(DiseaseBudren)
+%     Non_IDP(:,ii)=binornd(round(Pop_Raion),DiseaseBudren(ii));
+%     IDP(:,ii)=binornd(round(Raion_IDP),DiseaseBudren(ii));
+% end
+% 
+% Zone_Non_IDP=zeros(3,length(DiseaseBudren));
+% Zone_IDP=zeros(3,length(DiseaseBudren));
+% for ii=1:length(DiseaseBudren)
+%     for jj=1:3
+%         Zone_IDP(jj,ii)=sum(IDP(Raion_Zone_R==jj,ii));
+%         Zone_Non_IDP(jj,ii)=sum(Non_IDP(Raion_Zone_R==jj,ii));
+%     end
+% end
+    
 
 figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
-subplot('Position',[0.215669014084507,0.121919584954604,0.748239436619718,0.757457846952011]);
+subplot('Position',[0.119718309859155,0.121919584954604,0.84419014084507,0.862516212710766]);
+Country_Namev={'Zone 1','Zone 2','Zone 3'};
+Disesev={'CVD';'Diabetes';'Cancer';'HIV';'HIV Treatment';'TB';'Drug-resistant TB'};
+Zone=Zone_IDP+Zone_Non_IDP;
 
-Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'};
-Disese={'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
-T=[31.2655384013155,20.6024502991574,19.3275828759546,22.2295507246408,0.571187226949940,1.07595394965552,4.92773652232627;16.6420245134146,23.6479851173360,20.1896631026445,17.4323525712421,2.88710010073673,14.6843080620405,4.51656653258559;14.5420060426371,13.1668595009593,18.4308135015296,22.2263614779723,21.5266626183766,9.04301883387218,1.06427802465288;20.2219521585835,11.8922395344880,14.5325512979894,24.3612419797008,12.0106136524006,1.22841411471709,15.7529872621206;20.3833203960749,18.5823283415145,5.72148958013417,17.8328990682867,19.5912303699243,11.3525643832419,6.53616786082354;29.0418217789816,6.69116817396377,19.5709512349963,17.0756061515745,6.14969531236571,5.65354124891377,15.8172160992044;0.0181320479452568,17.2892335925917,2.89775227472633,32.2224559989506,19.1704546384067,4.27233096300313,24.1296404843763;20.0945388252910,20.9168108455588,14.5341025195996,13.4690647007845,14.6252042236377,4.77135020156872,11.5889286835597];
 
-for ii=1:length(Country_Name)
-    T(ii,:)= 100.*T(ii,:)./sum(T(ii,:));
+Country_Name=Country_Namev(srt_indx);
+Disese=Disesev(srt_dindx);
+
+[Ts,srt_indx]=sortrows(Zone,1);
+[Tsc,srt_dindx]=sortrows(Ts',1);
+Zone_Non_IDP_T=Zone_Non_IDP(srt_indx,:)';
+Zone_Non_IDP_T2=Zone_Non_IDP_T(srt_dindx,:)';
+
+T=Tsc';
+bb=barh(T,'LineWidth',2);
+hold on;
+hh=barh(Zone_Non_IDP_T2,'LineStyle','none');
+
+for ii=1:length(bb)
+    bb(ii).FaceAlpha=0;
+    bb(ii).EdgeColor=bb(ii).FaceColor;
+    hh(ii).FaceAlpha=1;
 end
 
-barh(T);
-ylim([0.5 length(Country_Name)+0.5]);
-set(gca,'Tickdir','out','linewidth',2,'YTick',[1:length(Country_Name)],'YTicklabel',Country_Name,'Fontsize',18,'XTick',[0:5:55]);
-xlim([0 55]);
-xtickformat('percentage');
-
-legend(Disese,'Position',[0.801349769718071,0.6142974565058,0.194542249061272,0.254215297493335]);
-legend boxoff;
 box off;
 
-xlabel('Percetage of disease burden','Fontsize',22);
-hold on;
-ax1 = gca; % current axes
-ax1.XColor = 'k';
-ax1.YColor = 'k';
-ax1_pos = ax1.Position; % position of first axes
-
-ax2 = axes('Position',ax1_pos,...
-    'XAxisLocation','top',...
-    'YAxisLocation','left',...
-    'Color','none');
-
-Ref_Num=[105897 1575703 938 185673 235576 84671 104929 304156];
-
-
-line(Ref_Num,[1:length(Country_Name)],'Parent',ax2,'Color',[0.5 0.5 0.5],'LineWidth',2)
 ylim([0.5 length(Country_Name)+0.5]);
-xlim([1 10^7]);
-set(ax2,'LineWidth',2,'tickdir','out','XScale','log','YTick',[1:length(Country_Name)],'YTickLabel',{},'Fontsize',18);
-ax2.XColor=[0.5 0.5 0.5];
-xlabel('Number of refugees','Fontsize',22,'Color',[0.5 0.5 0.5]);
-ylabel('Country','Fontsize',22,'Position',[0.023425359784182,mean([1 length(Country_Name)]),-1]);
+xlim([1 10^6]);
+set(gca,'Tickdir','out','linewidth',2,'YTick',[1:length(Country_Name)],'YTicklabel',Country_Name,'Fontsize',18,'XSCale','log','XTick',10.^[-1:6]);
+xlabel('Number of people','Fontsize',22);
+ylabel('IDP Cluster','Fontsize',22);
+% close all;
+% 
+% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
+% T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+% 
+% date_IDP=datenum('March 8, 2022');
+% 
+% Lat_IDP=T.YLatitude;
+% Lon_IDP=T.XLongitude;
+% IDP_Num=T.IDPEstimation;
+% 
+% Map_IDP=zeros(length(S2),1);
+% 
+% for ii=1:length(Map_IDP)
+%     [p_in,p_on]=inpolygon(Lon_IDP,Lat_IDP,S2(ii).Lon,S2(ii).Lat);
+%     Map_IDP(ii)=sum(IDP_Num(p_in|p_on));
+%     IDP_Num(p_in|p_on)=0;
+% end
+% 
+% for ii=1:length(IDP_Num)
+%     if(IDP_Num(ii)>0)
+%         d=zeros(length(S2),1);
+%         for jj=1:length(S2)
+%             d(jj)=min(deg2km(distance('gc',Lat_IDP(ii),Lon_IDP(ii),S2(jj).Lat,S2(jj).Lon))); 
+%         end
+%         Map_IDP(d==min(d))=IDP_Num(ii)./sum(d==min(d));
+%         IDP_Num(ii)=0;
+%     end 
+% end
+% 
+% figure('units','normalized','outerposition',[0. 0. 1 1]);
+% Map_IDPt=log10(Map_IDP);
+% Map_IDPt(Map_IDP==0)=-1;
+% Map_IDPt=(Map_IDPt-min(Map_IDPt))./(max(Map_IDPt)-min(Map_IDPt));
+% for ii=1:length(S2)
+%    geoshow(S2(ii),'FaceColor',hex2rgb('07575B'),'FaceAlpha',Map_IDPt(ii),'LineWidth',2); hold on
+% end

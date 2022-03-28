@@ -1,93 +1,103 @@
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-% % Plot hospital
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
+close all;
 
-load('Grid_points_UKR.mat');
+T=readtable('UNHCR_UKR_Date.csv');
+Date_Displacement=datenum(T.data_date);
+Date_Displacement=Date_Displacement(Date_Displacement<=datenum('March 11, 2022'));
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% Conflict data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+T=readtable('2022-01-01-2022-03-17-Ukraine.csv');
+
+ET=T.event_type;
+
+tf=~strcmp(ET,'Protests');
+
+T=T(tf,:);
+
+DT=datenum(T.event_date);
+
+T=T(DT>=datenum('February 24, 2022'),:);
+
+vLat_C=cell(length(Date_Displacement),1);
+vLon_C=cell(length(Date_Displacement),1);
+
+Date_Conflict=zeros(height(T),1);
+for ii=1:length(Date_Conflict)
+    Date_Conflict(ii)=datenum(T.event_date(ii));
+end
+
+for ii=1:length(Date_Displacement)
+   f=find(Date_Conflict==Date_Displacement(ii));
+   vLat_C{ii}=T.latitude(f);
+   vLon_C{ii}=T.longitude(f);
+end
+
 load('Kernel_Paremeter.mat','Parameter');
-
-load('Conflict_Colourmap.mat','conflict_map');
-
+load('Grid_points_UKR_Fewer.mat')
 [longitude_v,latitude_v]=meshgrid(longitude,latitude);
 
-H_near_Conflict=[47.1298	37.571
-50.2649	28.6767
-49.2088	37.2485
-50.5218	30.2506
-50.4496	30.5224
-48.9054	38.4353
-48.6333	38.378
-50.4267	30.4538
-48.9054	38.4353
-47.1298	37.571
-49.9808	36.2527
-49.9808	36.2527
-50.2649	28.6767
-49.4606	36.8527
-50.4646	30.4655
-51.5055	31.2849
-46.8489	35.3653
-47.7789	37.2481];
-
-date_HC=datenum([{'March 9, 2022';'March 9, 2022';'March 8, 2022';'March 8, 2022';'March 6, 2022';'March 5, 2022';'March 5, 2022';'March 5, 2022';'March 3, 2022';'March 2, 2022';'March 2, 2022';'March 1, 2022';'March 1, 2022';'February 28, 2022';'February 26, 2022';'February 25, 2022';'February 25, 2022';'February 24, 2022'}]);
-
-
-HC_Lat=H_near_Conflict(:,1);
-HC_Lon=H_near_Conflict(:,2);
-
-date_HCu=unique(date_HC);
-HC_Latv=cell(size(date_HCu));
-HC_Lonv=cell(size(date_HCu));
-
-for ii=1:length(date_HCu)
-    HC_Latv{ii}=HC_Lat(date_HCu(ii)==date_HC);
-    HC_Lonv{ii}=HC_Lon(date_HCu(ii)==date_HC);
+nDays=length(vLat_C);
+% PC=ones(length(latitude_v(:)),1);
+% PC_Day=ones(length(latitude_v(:)),nDays);
+PS_MinDay=zeros(length(latitude_v(:)),nDays);
+PS_MeanDay=zeros(size(PS_MinDay));
+PS_MedianDay=zeros(size(PS_MinDay));
+for jj=1:nDays    
+    [PS_MinDay(:,jj),PS_MeanDay(:,jj),PS_MedianDay(:,jj)]=Min_Distance_Conflict(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:));
+    
 end
 
-PCt=ones(length(latitude_v(:)),1);
-PC=zeros(length(latitude_v(:)),length(HC_Lonv));
-for jj=1:length(HC_Latv)
-    P= Kernel_Displacement(HC_Latv{jj},HC_Lonv{jj},latitude_v(:),longitude_v(:),Parameter);
-    PCt=PCt.*(1-P);    
-    Pt=Parameter.w.*P+(1-Parameter.w).*Parameter.ScaleC.*(1-PCt);
-    PC(:,jj)=Pt;
+PS_GeoDay=zeros(size(PS_MinDay));
+for ii=1:16
+    PS_GeoDay(:,ii)=geomean(PS_MinDay(:,1:ii),2);
 end
+T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+close all;
+Lat_IDP=T.YLatitude;
+Lon_IDP=T.XLongitude;
+load('safety_colormap.mat','safety_map');
 figure('units','normalized','outerposition',[0. 0. 1 1]);
-
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-
-Ps=reshape(1-prod(1-PC,2),length(latitude),length(longitude));
-Ps(~tp_UKR)=0;
-contourf(longitude,latitude,log10(Ps),'LineStyle','none');
-hold on
-geoshow(S2,'FaceColor','none','LineWidth',1.5);
-colormap(conflict_map);
-
-H=shaperead('Health/hotosm_ukr_health_facilities_points.shp','UseGeoCoords',true);
-
-N={H.amenity};
-tfh=strcmp(N,'hospital')|strcmp(N,'cancer');
-H=H(tfh);
-
-
-marker = imread('H_icon.png');
-
-markersize = 0.95.*[0.2,0.16]; %//The size of marker is expressed in axis units, NOT in pixels
-x_low = [H.Lon] - markersize(1)/2; %//Left edge of marker
-x_high = [H.Lon] + markersize(1)/2;%//Right edge of marker
-y_low = [H.Lat] - markersize(2)/2; %//Bottom edge of marker
-y_high = [H.Lat] + markersize(2)/2;%//Top edge of marker
-
-text([H.Lon],[H.Lat],' ','color','w','Fontsize',18,'FontWeight','bold','Horizontalalignment','center');
-hold on;
-geoshow(S2,'FaceColor','none','LineWidth',1.5);
-
-
-for k = 1:length([H.Lon])
-    imagesc([x_low(k) x_high(k)], [y_low(k) y_high(k)], marker)
-    hold on
-end
-
-box off;
+dp=[5 9 13 16];
+for dayplot=1:4
+    switch dayplot
+        case 1
+            subplot('Position',[0.01 0.51 0.45 0.45])
+        case 2
+            subplot('Position',[0.46 0.51 0.45 0.45])
+        case 3
+            subplot('Position',[0.01 0.02 0.45 0.45])
+        case 4
+            subplot('Position',[0.46 0.02 0.45 0.45])
+    end
+    
+    Safe_Day=PS_GeoDay(:,dp(dayplot));
+    if(dayplot==3)
+    scatter(Lon_IDP,Lat_IDP,5,'r','filled'); hold on;
+    end
+    Ps=reshape(Safe_Day,length(longitude),length(latitude));
+    Ps(~tp_UKR)=NaN;
+    contourf(unique(longitude_v),unique(latitude_v),(Ps),'LineStyle','none');
+    
+    if(dayplot==3)
+        scatter(Lon_IDP,Lat_IDP,10,'r','filled'); hold on;
+    end
+    if dayplot==1
+        cxl=caxis;
+    else
+        caxis(cxl);
+    end
+    
+    if(dayplot==4)
+        h=colorbar;
+        h.Position=[0.892419467669721,0.041540020263425,0.011204481792717,0.931104356636274];
+        h.Ticks=[h.Limits];
+        h.TickLabels={'Least safe','Most safe'};
+        h.FontSize=20;
+    end
+    text(29.38,max(latitude),datestr([datenum('February 23, 2022')+dp(dayplot)],'mmmm dd, yyyy'),'Fontsize',28);
+    box off;
 set(gca, 'visible', 'off');
-
-print(gcf,['UKR_Hospital.png'],'-dpng','-r300');
+colormap(safety_map);
+end
+print(gcf,['Estimated_Safety_Region.png'],'-dpng','-r300');

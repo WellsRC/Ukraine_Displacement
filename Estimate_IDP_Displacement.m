@@ -1,62 +1,58 @@
-function [Num_IDP_Location]=Estimate_IDP_Displacement(Parameter_IDP,ParameterC,vLat_C,vLon_C,Lat_P,Lon_P,Pop_Remain,Lat_IDP,Lon_IDP,SCI_IDP,Site_Oblast)
+function [w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion,SCI_IDP,Raion_IDPSites,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist)
 
-nDays=length(vLat_C);
-nSite=length(Lat_IDP);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% SCI 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-Psci=zeros(length(Lat_IDP),length(Lon_P));
-Parameter.Scale=1;
-Parameter.Breadth=Parameter_IDP.BreadthDistance;
-parfor jj=1:nSite
-    Psci(jj,:)=Kernel_Function( SCI_IDP(:,Site_Oblast(jj)),Parameter);
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% Location of sites relative to conflict
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Population_Border_Number
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Ps=ones(size(LatR));
-
-Parameter.Scale=Parameter_IDP.ScaleSite;
-Parameter.Breadth=Parameter_IDP.BreadthSite;
-for jj=1:nDays
-    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_IDP,Lon_IDP,Parameter);
-    Ps=Ps.*(1-P);
-end
-
-Ps=1-Ps;
-
+    Parameter.Scale=Parameter_IDP.Scale_Border_Distance;
+    Parameter.Breadth=Parameter_IDP.Breadth_Border_Distance;
+%     
+    w_Location=1-prod(1-Kernel_Function(Raion_Dist_BC,Parameter),2);
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Border_Number
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Parameter.Scale=Parameter_IDP.Scale_Border_Number;
+    Parameter.Breadth=Parameter_IDP.Breadth_Border_Number;
+ w_Location=w_Location.*(Pop_Raion.*(1+Parameter.Scale.*Num_BC)).^Parameter.Breadth;
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Population_Sites
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameter.Scale=Parameter_IDP.Scale_Population_Sites;
+    Parameter.Breadth=Parameter_IDP.Breadth_Population_Sites;
+    w_Location=w_Location.*((Pop_Raion.*(1+Parameter.Scale.*Raion_IDPSites)).^Parameter.Breadth);
+    
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Distance Conflict
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+Parameter.Scale=Parameter_IDP.Scale_Distance_Conflict;
+Parameter.Breadth=Parameter_IDP.Breadth_Distance_Conflict;
+w_Location=w_Location.*(1-Raion_Conflict.*Kernel_Function(median(DistC,2),Parameter));
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Level Conflict
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+Parameter.Scale=Parameter_IDP.Scale_Level_Conflict;
+Parameter.Breadth=Parameter_IDP.Breadth_Level_Conflict;
+w_Location=w_Location.*(1-Parameter.Scale.*Raion_Conflict.^Parameter.Breadth);
+    
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% % SCI 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+Parameter.Scale=1;
+Parameter.Breadth=Parameter_IDP.Breadth_SCI;
+w_Location=Kernel_Function(SCI_IDP,Parameter).*repmat(w_Location,1,length(SCI_IDP(1,:)));
+% 
+% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Location of sites relative to pixels
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Pd=zeros(length(Lat_IDP),length(Lon_P));
+Parameter.Scale=Parameter_IDP.Scale_Distance;
+Parameter.Breadth=Parameter_IDP.Breadth_Distance;
+w_Location=w_Location.*(1-Kernel_Function(Dist,Parameter));
 
 
-Parameter.Scale=Parameter_IDP.ScaleDistance;
-Parameter.Breadth=Parameter_IDP.BreadthDistance;
-parfor jj=1:nSite
-    Pd(jj,:)=Kernel_Displacement(Lat_IDP(jj),Lon_IDP(jj),Lat_P,Lon_P,Parameter);
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% Conflict in the specified location
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-PC=ones(1,length(Lon_P));
-
-PC_IDP=ones(1,length(Lon_P));
-
-
-for jj=1:nDays    
-    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,ParameterC);
-    PC=PC.*(1-P);
-    Ptemp=Parameter_IDP.ScaleConflict.*(Parameter.w.*P+(1-Parameter.w).*Parameter.ScaleC.*(1-PC));
-    PC_IDP=PC_IDP.*(1-Ptemp);
-end
-
-PC_IDP=1-PC_IDP;
-
-P_Tot=repmat(Ps,1,length(Lon_P)).*Pd.*repmat(PC_IDP,length(Lat_IDP),1);
-Num_IDP_Location=P_Tot*(Pop_Remain');
+w_Location=w_Location./repmat(sum(w_Location,1),length(Raion_Conflict),1);
+w_Location(isnan(w_Location))=0;
 end

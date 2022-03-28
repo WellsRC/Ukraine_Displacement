@@ -117,9 +117,9 @@ clear;
 clc;
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Load data and determine the dispacement per day
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 LoadData;
 
 load('Kernel_Paremeter.mat','Parameter');
@@ -130,7 +130,23 @@ load('Refugee_Country_Distribution_Parameters.mat');
 Displace_Pop=sum(Pop_Displace,2);
 Pop_Remain=Pop-Displace_Pop;
 
-[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Ukraine_Pop,lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nato,lambda_GDP,Border_Crossing_Country);
+nDays=length(vLat_C);
+PC=ones(length(Lon_P),1);
+PC_IDP=ones(length(Lon_P),nDays);
+
+for jj=1:nDays    
+    P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},Lat_P,Lon_P,Parameter);
+    PC=PC.*(1-P);
+    Ptemp=(Parameter.w.*P+(1-Parameter.w).*Parameter.Scale.*(1-PC));
+    PC_IDP(:,jj)=Ptemp;
+end
+load('Scale_Conflict_Fucntion_IDP.mat','ScaleConflict');
+PC_IDP=1-prod(1-ScaleConflict.*PC_IDP,2);
+Pop_Moving=PC_IDP.*Pop_Remain;
+
+[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Pop_Moving,Ukraine_Pop,lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nato,lambda_GDP,Border_Crossing_Country);
+
+save('Table_Output_Figure1.mat','Total_Burden_Refugee','Total_Burden_UKR');
 
 figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
 subplot('Position',[0.087147887323944,0.224383916990921,0.900528169014085,0.765239948119325]);
@@ -149,25 +165,28 @@ xlabel('Date','Fontsize',22);
 
 print(gcf,['Daily_Refugee_Fit.png'],'-dpng','-r300');
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% % Plot Disease Country
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Plot Disease Country
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
 figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
 subplot('Position',[0.215669014084507,0.121919584954604,0.748239436619718,0.862516212710766]);
 
-Country_Namev={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'};
+Country_Namev={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)','Ukraine (IDP)'};
 Disesev={'All refugees';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
+UKR_Cases=Total_Burden_UKR.Cases;
+IDP_Cases=UKR_Cases(4:4:end);
+T=[Total_Burden_Refugee.Cases];
+Tv=[reshape(T,length(Country_Namev)-1,length(Disesev))];
 
-T=Total_Burden_Refugee.Cases;
-Tv=reshape(T,length(Country_Namev),length(Disesev));
+Tv=[Tv ; IDP_Cases'];
 
 [Ts,srt_indx]=sortrows(Tv,1);
 [Tsc,srt_dindx]=sortrows(Ts',1);
 Country_Name=Country_Namev(srt_indx);
 Disese=Disesev(srt_dindx);
 T=Tsc';
-Ref_Num=[105897 1575703 938 185673 235576 84671 104929 304156];
+Ref_Num=[105897 1575703 938 185673 235576 84671 104929 304156 10^(-16)]; % 10^(-16) is so that it does not show on the graph
 
 
 bb=barh(T);
@@ -176,7 +195,6 @@ ylim([0.5 length(Country_Name)+0.5]);
 set(gca,'Tickdir','out','linewidth',2,'YTick',[1:length(Country_Name)],'YTicklabel',Country_Name,'Fontsize',18,'XSCale','log','XTick',10.^[0:7]);
 
 hold on;
-scatter(Ref_Num(srt_indx),[1:length(Country_Name)]+0.365,40,'r','filled');
 % xtickformat('percentage');
 
 legend(flip(bb),flip(Disese),'Location','SouthEast');

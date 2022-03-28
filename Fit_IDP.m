@@ -1,66 +1,101 @@
 clear;
-clc;
+load('IDP_Fit_Inputs.mat');
+% Pop_Raion_T=log(Pop_Raion)-min(log(Pop_Raion));
+SCI_IDPt=max(log10(SCI_IDP(:)))-log10(SCI_IDP);
 
-LoadData;
-
-load('Kernel_Paremeter.mat','Parameter');
-
-[Pop_Displace_Day,Pop_Displace]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Lat_P,Lon_P,Pop,false);
-
-Displace_Pop=sum(Pop_Displace,2);
-Pop_Remain=Pop-Displace_Pop;
 
 T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
 
-date_IDP=datenum('March 8, 2022');
+
 
 Lat_IDP=T.YLatitude;
 Lon_IDP=T.XLongitude;
-Num_IDP=T.IDPEstimation;
+Zone=T.IDPLocationCluster;
 
-% Need to trim the conflict based on the observed time of IDP
-vLat_C=vLat_C{Date_Displacement<=date_IDP};
-vLon_C=vLon_C{Date_Displacement<=date_IDP};
+S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
 
-S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
-Site_Oblast=zeros(length(Lon_IDP),1);
-
-for ii=1:length(S1)
-    tf=strcmp(Ukraine_Pop.oblast,S1(ii).NAME_1);
-    [p_in]=inpolygon(Lon_IDP,Lat_IDP,S1(ii).Lon,S1(ii).Lat);
-    Site_Oblast(p_in)=ii;
-end
-
-for ii=1:length(Site_Oblast)
-    if(Site_Oblast(ii)==0)
-        dob=zeros(length(S1),1);
-        for jj=1:length(S1)
-           dob(jj)=min(deg2km(distance('gc',Lon_IDP(ii),Lat_IDP(ii),S1(jj).Lon,S1(jj).Lat)));
-        end
-        Site_Oblast(ii)=find(dob==min(dob),1);
+Raion_Zone_R=zeros(length(S2),1);
+for ii=1:length(S2)
+    [p_in]=inpolygon(Lon_IDP,Lat_IDP,S2(ii).Lon,S2(ii).Lat);
+    if(sum(p_in)>0)
+        Raion_Zone_R(ii)=median(Zone(p_in));
+    end
+    if((Raion_IDP(ii)>0) && (Raion_Zone_R(ii)==0))
+       d=zeros(length( Lon_IDP));
+       parfor jj=1:length(d)
+           d(jj)=min(deg2km(distance('gc',Lon_IDP(jj),Lat_IDP(jj),S2(ii).Lon,S2(ii).Lat)));
+       end
+       Raion_Zone_R(ii)=median(Zone(d==min(d)));
     end
 end
 
-SCI_IDP=Ukraine_Pop.w_IDP;
+lb=[-1 -4 -9 -4 -2 0 0 -1 -1 -1 0 -2 -6];
+ub=[0 -1 0 10 0 4 3 0 1 0 3 0 -2];
+
+options = optimoptions('surrogateopt','MaxFunctionEvaluations',5000);
+[par,fval_so] = surrogateopt(@(x)ObjectiveFunction_IDP(x,Pop_Moving_R,Pop_Raion(Raion_IDP>0),SCI_IDPt(Raion_IDP>0,:),Raion_IDPSites(Raion_IDP>0),Raion_Dist_BC(Raion_IDP>0,:),Num_BC(Raion_IDP>0),Raion_Conflict(Raion_IDP>0),DistC(Raion_IDP>0,:),Dist(Raion_IDP>0,:),Raion_IDP(Raion_IDP>0),Raion_Zone_R(Raion_IDP>0)),lb,ub,options);
+ 
+% options = optimoptions(@fmincon,'FunctionTolerance',10^(-16),'MaxFunctionEvaluations',5000,'MaxIterations',10000,'StepTolerance',10^(-9));
+ 
+% [par,fval] = fmincon(@(x)ObjectiveFunction_IDP(x,Pop_Moving_R,Pop_Raion(Raion_IDP>0),SCI_IDP(Raion_IDP>0,:),Raion_IDPSites(Raion_IDP>0),Raion_Dist_BC(Raion_IDP>0),Num_BC(Raion_IDP>0),Raion_Conflict(Raion_IDP>0),DistC(Raion_IDP>0,:),Dist(Raion_IDP>0,:),Raion_IDP(Raion_IDP>0)),par,[],[],[],[],lb,ub,[],options);
+
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%     % SCI 
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%     Parameter_IDP.Scale_SCI=10.^par(1);
+%     Parameter_IDP.Breadth_SCI=10.^par(2);
+% 
+% 
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%     % Location of sites relative to pixels
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Parameter_IDP.Breadth_Distance=10.^par(3);
+%     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+    % Population_Sites
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameter_IDP.Scale_Population_Sites=10.^par(1);
+    Parameter_IDP.Breadth_Population_Sites=10.^par(2);
+    Parameter_IDP.Scale_Distance=10.^par(3);
+    Parameter_IDP.Breadth_Distance=10.^par(4);
     
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% Run Fitting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameter_IDP.Scale_Border_Distance=10.^par(5);
+    Parameter_IDP.Breadth_Border_Distance=10.^par(6);
+    
+    Parameter_IDP.Breadth_SCI=10^par(7);
+    
+    Parameter_IDP.Scale_Border_Number=10^par(8);
+    Parameter_IDP.Breadth_Border_Number=10^par(9);
+    
+    Parameter_IDP.Scale_Distance_Conflict=10^par(10);
+    Parameter_IDP.Breadth_Distance_Conflict=10^par(11);
+    
+    Parameter_IDP.Scale_Level_Conflict=10^par(12);
+    Parameter_IDP.Breadth_Level_Conflict=10^par(13);
+save('Kernel_Paremeter_IDP_Non_Zero_Raion.mat','Parameter_IDP');
 
-x0 = [-4 5 -4 5 -4 5];
-lb=[-6  0 -6 0 -6];
-ub=[0 10 0 10 0 10];
 
-options = optimoptions(@lsqnonlin,'FunctionTolerance',10^(-16),'MaxFunctionEvaluations',500,'MaxIterations',1000);
-[par,fval] = lsqnonlin(@(x)ObjectiveFunction_IDP(x,Parameter,vLat_C,vLon_C,Lat_P,Lon_P,Pop_Remain,Lat_IDP,Lon_IDP,SCI_IDP,Site_Oblast,Num_IDP),x0,lb,ub,options);
+[w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion(Raion_IDP>0),SCI_IDPt(Raion_IDP>0,:),Raion_IDPSites(Raion_IDP>0),Raion_Dist_BC(Raion_IDP>0,:),Num_BC(Raion_IDP>0),Raion_Conflict(Raion_IDP>0),DistC(Raion_IDP>0,:),Dist(Raion_IDP>0,:));
 
-Parameter_IDP.ScaleSite=10.^par(1);
-Parameter_IDP.BreadthSite=10.^par(2);
+Est_Raion_IDP=w_Location*Pop_Moving_R;
+%     Est_Raion_IDP(Est_Raion_IDP==0)=10^(-16);
+%     Raion_IDP(Raion_IDP==0)=10^(-16);
+    L=sqrt(sum((Raion_IDP(Raion_IDP>0)-Est_Raion_IDP).^2))./length(Raion_IDP(Raion_IDP>0));
+close all;
+figure(1)
+[SR,IR]=sort(Raion_IDP(Raion_IDP>0));
+bar([1:length(Est_Raion_IDP)],Est_Raion_IDP(IR)); hold on;
+scatter([1:length(Est_Raion_IDP)],SR,40,'r','filled');
 
-Parameter_IDP.ScaleDistance=10.^par(3);
-Parameter_IDP.ScaleDistance=10.^par(4);
+Raion_Zone_Rnz=Raion_Zone_R(Raion_IDP>0);
+Zone_IDP=zeros(length(unique(Raion_Zone_Rnz)),1);
+Est_Zone_IDP=zeros(length(unique(Raion_Zone_Rnz)),1);
 
-Parameter_IDP.ScaleConflict=10.^par(5);
-Parameter_IDP.ScaleConflict=10.^par(6);
+for ii=1:length(Zone_IDP)
+   Zone_IDP(ii)=sum(Raion_IDP(Raion_Zone_R==ii)); 
+   Est_Zone_IDP(ii)=sum(Est_Raion_IDP(Raion_Zone_Rnz==ii));
+end
 
-save('Kernel_Paremeter_IDP.mat','Parameter_IDP');
+figure(2)
+bar([1:length(Zone_IDP)],Est_Zone_IDP); hold on;
+scatter([1:length(Zone_IDP)],Zone_IDP,40,'r','filled');

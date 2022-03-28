@@ -10,7 +10,7 @@ lambda_GDP=10^x(6);
 w_tot=Determine_Weights_Refugee(lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country);
 Est_Ref=(Pop_Leave')*w_tot;
 
-
-F=log10(Est_Ref)-log10(Ref_Num);
+% Fit the percentage and not the number
+F=log10(Est_Ref./sum(Est_Ref))-log10(Ref_Num./sum(Ref_Num));
 
 end
