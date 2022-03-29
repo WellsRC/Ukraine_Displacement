@@ -5,6 +5,19 @@ LoadData;
 
 load('Kernel_Paremeter.mat','Parameter');
 
+
+T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+
+date_IDP=datenum('March 8, 2022');
+
+Lat_IDP=T.YLatitude;
+Lon_IDP=T.XLongitude;
+Num_IDP=T.IDPEstimation;
+
+% Need to trim the conflict based on the observed time of IDP
+vLat_C=vLat_C(Date_Displacement<=date_IDP);
+vLon_C=vLon_C(Date_Displacement<=date_IDP);
+
 [Pop_Displace_Day,Pop_Displace]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Lat_P,Lon_P,Pop,false);
 
 Displace_Pop=sum(Pop_Displace,2);
@@ -17,17 +30,7 @@ latitude_v=latitude_v(tp_UKR);
 
 
 
-T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
 
-date_IDP=datenum('March 8, 2022');
-
-Lat_IDP=T.YLatitude;
-Lon_IDP=T.XLongitude;
-Num_IDP=T.IDPEstimation;
-
-Need to trim the conflict based on the observed time of IDP
-vLat_C=vLat_C(Date_Displacement<=date_IDP);
-vLon_C=vLon_C(Date_Displacement<=date_IDP);
 
 S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
 
@@ -42,7 +45,7 @@ for ii=1:length(S2)
     Raion_IDP(ii)=sum(Num_IDP(p_in));
     Num_IDP(p_in)=0;
     Raion_IDPSites(ii)=sum(p_in);
-    tf=strcmp(Ukraine_Pop.raion,S2(ii).NAME_2);
+    tf=strcmp(Ukraine_Pop.raion,S2(ii).NAME_2) & strcmp(Ukraine_Pop.oblast,S2(ii).NAME_1);
     Pop_Raion(ii)=sum(Ukraine_Pop.population_size(tf));
 end
 
