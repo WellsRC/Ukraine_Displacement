@@ -1,9 +1,9 @@
-function [Total_Burden_IDP] = Disease_Burden_Displacement_IDP(Pop_Non_IDP,Pop_IDP,Pop_Male,Pop_Total,Mapped_Raion_Name,Parameter_IDP,Pop_Raion,SCI_IDPt,Raion_IDPSites,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist,Raion_Zone_R,Raion_Zone_Full)
+function [Total_Burden_IDP] = Disease_Burden_Displacement_IDP(Pop_Non_IDP,Pop_IDP,Pop_Male,Pop_Total,Mapped_Raion_Name,Parameter_IDP,Pop_Raion_M,SCI_IDPt,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist,Raion_Zone_R,Raion_Zone_Full)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute weights 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion,SCI_IDPt,Raion_IDPSites,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist);
+[w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion_M,SCI_IDPt,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist);
 
 
 Raion_IDP=w_Location*Pop_IDP;

@@ -37,25 +37,29 @@ load('Kernel_Paremeter.mat','Parameter');
 load('Grid_points_UKR_Fewer.mat')
 [longitude_v,latitude_v]=meshgrid(longitude,latitude);
 
+
+T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+Num_IDP=T.IDPEstimation;
+Lat_IDP=T.YLatitude;
+Lon_IDP=T.XLongitude;
+
 nDays=length(vLat_C);
-% PC=ones(length(latitude_v(:)),1);
-% PC_Day=ones(length(latitude_v(:)),nDays);
 PS_MinDay=zeros(length(latitude_v(:)),nDays);
 PS_MeanDay=zeros(size(PS_MinDay));
 PS_MedianDay=zeros(size(PS_MinDay));
+
+
 for jj=1:nDays    
     [PS_MinDay(:,jj),PS_MeanDay(:,jj),PS_MedianDay(:,jj)]=Min_Distance_Conflict(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:));
-    
 end
 
 PS_GeoDay=zeros(size(PS_MinDay));
 for ii=1:16
     PS_GeoDay(:,ii)=geomean(PS_MinDay(:,1:ii),2);
 end
-T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
+
 close all;
-Lat_IDP=T.YLatitude;
-Lon_IDP=T.XLongitude;
+
 load('safety_colormap.mat','safety_map');
 figure('units','normalized','outerposition',[0. 0. 1 1]);
 dp=[5 9 13 16];
@@ -73,14 +77,16 @@ for dayplot=1:4
     
     Safe_Day=PS_GeoDay(:,dp(dayplot));
     if(dayplot==3)
-    scatter(Lon_IDP,Lat_IDP,5,'r','filled'); hold on;
+        scatter(Lon_IDP,Lat_IDP,5,'r','filled'); hold on;
     end
     Ps=reshape(Safe_Day,length(longitude),length(latitude));
     Ps(~tp_UKR)=NaN;
     contourf(unique(longitude_v),unique(latitude_v),(Ps),'LineStyle','none');
     
     if(dayplot==3)
-        scatter(Lon_IDP,Lat_IDP,10,'r','filled'); hold on;
+        ss=scatter(Lon_IDP,Lat_IDP,10,'r','filled'); hold on;
+        legend(ss,'UNHCR IDP site','Fontsize',18);
+        legend boxoff;
     end
     if dayplot==1
         cxl=caxis;
@@ -96,6 +102,7 @@ for dayplot=1:4
         h.FontSize=20;
     end
     text(29.38,max(latitude),datestr([datenum('February 23, 2022')+dp(dayplot)],'mmmm dd, yyyy'),'Fontsize',28);
+    text(min(longitude),max(latitude),char(64+dayplot),'Fontsize',30,'FontWeight','bold');
     box off;
 set(gca, 'visible', 'off');
 colormap(safety_map);

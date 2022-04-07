@@ -1,4 +1,4 @@
-function w_tot=Determine_Weights_Refugee(lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country)
+function w_tot=Determine_Weights_Refugee(lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute weights 
@@ -6,7 +6,8 @@ function w_tot=Determine_Weights_Refugee(lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nat
 
 Parameter.Scale=1;
 Parameter.Breadth=lambda_sci;
-w_sci=1-Kernel_Function([Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other],Parameter);
+X=([Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
+w_sci=Kernel_Function(log(max(X(:)))-log(X),Parameter);
 % w_sci=1-exp(-lambda_sci.*[Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
 
 % max was chosen based on the calibration
@@ -14,12 +15,12 @@ w_sci=[max(w_sci,[],2) w_sci]; %[sc_sci.*ones(size(Ukraine_Pop.per_Poland)) w_sc
 
 %https://tradingeconomics.com/country-list/gdp?continent=europe
 GDP=[1484 594 60.26 105 155 249 11.91 15276./27];
-GDP=GDP-min(GDP);
+GDP=max(GDP)-GDP;
 % GDP_per_Capita=[11787 14588 6222 17252 14328 10830 3250 30997];
-Parameter.Scale=sc_GDP;
+Parameter.Scale=1;
 Parameter.Breadth=lambda_GDP;
 
-w_GDP=(1-Kernel_Function(GDP,Parameter));
+w_GDP=Kernel_Function(GDP,Parameter);
 % w_GDP=1-exp(-lambda_GDP.*GDP);
 w_GDP=repmat(w_GDP,length(Ukraine_Pop.per_Poland),1);
 Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova'};

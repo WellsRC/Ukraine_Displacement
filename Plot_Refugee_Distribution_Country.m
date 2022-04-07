@@ -28,11 +28,11 @@
 % Pop_Leave=Pop.*P_Total;
 % 
 % load('Refugee_Country_Distribution_Parameters.mat','lambda_sci','sc_GDP','lambda_bc','sc_bc','s_nato','lambda_GDP');
-% 
-% w_tot=Determine_Weights_Refugee(lambda_sci,sc_GDP,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country);
-% Est_Ref=(Pop_Leave')*w_tot;
-% 
-% Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'};
+
+w_tot=Determine_Weights_Refugee(lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country);
+Est_Ref=(Pop_Leave')*w_tot;
+
+Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'};
 figure('units','normalized','outerposition',[0.15 0.15 0.6 0.8]);
 subplot('Position',[0.095070422535211,0.291828793774319,0.892605633802818,0.682230869001297]);
 
