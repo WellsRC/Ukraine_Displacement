@@ -56,7 +56,7 @@ TempC=Total_Burden_IDP.Cases;
 
 for dd=0:length(Disease_Short)
     if(dd>0)
-        temp=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,false,Pop_Total_R)+Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,true,Pop_Total_R);
+        temp=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,false,Pop_Total_R-Pop_Male_R,Pop_Total_R-Pop_Male_R)+Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,true,Pop_Male_R,Pop_Male_R);
     else
         temp=Pop_Total_R;
     end
@@ -85,6 +85,14 @@ for ii=1:3
 end
 
 close all;
+
+CC=[hex2rgb('#F52549'); % CVD
+    hex2rgb('#807dba'); %Diabetes
+    hex2rgb('#FFBB00'); % Cancer
+    hex2rgb('#034e76'); % HIV
+    hex2rgb('#9ebcda'); % HIV Treatment
+    hex2rgb('#8c2d04'); %TB
+    hex2rgb('#DE7a22');]; %TB drug-resitant
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Comparison of disease change
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
@@ -105,16 +113,20 @@ subplot('Position',[0.119718309859155,0.121919584954604,0.848591549295775,0.8759
 
 bb=barh(Rt,'LineStyle','none');
 bb(8).FaceColor='k';
+for ii=1:7
+    bb(8-ii).FaceColor=CC(ii,:);
+    bb(8-ii).EdgeColor=CC(ii,:);
+end
 legend(flip(bb),flip(Disese),'Location','Northoutside','NumColumns',4);
 legend boxoff;
 ylim([0.5 3.5]);
-xlim([-10 65])
+xlim([-15 65])
 box off;
 xtickformat('percentage');
-set(gca,'Tickdir','out','linewidth',2,'YTick',[1:3],'YTickLabel',{'Zone 1','Zone 2','Zone 3'},'Fontsize',18,'XTick',[-10:5:65]);
+set(gca,'Tickdir','out','linewidth',2,'YTick',[1:3],'YTickLabel',{'Zone 1','Zone 2','Zone 3'},'Fontsize',18,'XTick',[-15:5:65]);
 xlabel('Percent change in population','Fontsize',22);
 ylabel('IDP cluster','Fontsize',22)
-text(-19.958,3.78,'A','FontSize',30,'FontWeight','bold');
+text(-25.684141078838177,3.78,'B','FontSize',30,'FontWeight','bold');
 print(gcf,['Change_in_Disease.png'],'-dpng','-r300');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Assume only hospitals in non-conflict areas functional
@@ -157,6 +169,10 @@ subplot('Position',[0.119718309859155,0.121919584954604,0.848591549295775,0.8759
 
 bb=barh(R,'LineStyle','none');
 bb(8).FaceColor='k';
+for ii=1:7
+    bb(8-ii).FaceColor=CC(ii,:);
+    bb(8-ii).EdgeColor=CC(ii,:);
+end
 legend(flip(bb),flip(Disese),'Location','Northoutside','NumColumns',4);
 legend boxoff;
 ylim([0.5 3.5]);

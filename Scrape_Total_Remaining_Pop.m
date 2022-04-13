@@ -31,7 +31,7 @@ Pop_Male_R=zeros(size(latitude_v));
 Pop_Remain_R=zeros(size(latitude_v));
 Pop_Total_R=zeros(size(latitude_v));
 for ii=1:length(f_nz)
-   d=deg2km(distance('gc',Lon_P(f_nz(ii)),Lat_P(f_nz(ii)),longitude_v,latitude_v));
+   d=deg2km(distance('gc',Lat_P(f_nz(ii)),Lon_P(f_nz(ii)),latitude_v,longitude_v));
    Pop_Remain_R(d==min(d))=Pop_Remain_R(d==min(d))+Pop_Remain(f_nz(ii))./sum((d==min(d)));
    Pop_Male_R(d==min(d))=Pop_Male_R(d==min(d))+Pop_Male(f_nz(ii))./sum((d==min(d)));
    Pop_Total_R(d==min(d))=Pop_Total_R(d==min(d))+Pop_Total(f_nz(ii))./sum((d==min(d)));

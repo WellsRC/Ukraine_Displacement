@@ -60,7 +60,7 @@ PopTotal=Ukraine_Pop.population_size;
 for dd=1:length(Disease_Short)
     
     Country={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'}';
-    Burden=(Displace_Pop./(Displace_Pop+Pop_Remain)).*Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,PopTotal); % Do not want to consider the males 20-59
+    Burden=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Displace_Pop,PopTotal-Pop_Male); % Do not want to consider the males 20-59
     Burden(PopTotal==0)=0;
     Cases=sum(w_tot.*repmat(Burden,1,length(Country)),1)';
     Per_Cases=100.*Cases./sum(Cases);
@@ -74,12 +74,12 @@ for dd=1:length(Disease_Short)
     
     
     Country={'UKR','Male (20-59)','All Civilians','IDP'}';
-    Burden_Male=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,true,PopTotal); % Want to consider the males 20-59
-    Burden_Remain=(Pop_Remain./(Displace_Pop+Pop_Remain)).*Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,PopTotal); % Do not want to consider the males 20-59
-    Burden_Moving=(Pop_Moving./(Displace_Pop+Pop_Remain)).*Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,PopTotal); % Do not want to consider the males 20-59
+    Burden_Male=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,true,Pop_Male,Pop_Male); % Want to consider the males 20-59
+    Burden_Remain=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Pop_Remain,PopTotal-Pop_Male); % Do not want to consider the males 20-59
+    Burden_Moving=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Pop_Moving,PopTotal-Pop_Male); % Do not want to consider the males 20-59
     Burden_Remain(PopTotal==0)=0;
     Burden_Moving(PopTotal==0)=0;
-    
+    Burden_Male(PopTotal==0)=0;
     Refugee_State=cell(size(Country));
     for jj=1:length(Country)
         Refugee_State{jj}=Disese_Description{dd};

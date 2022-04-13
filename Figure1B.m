@@ -25,9 +25,9 @@ for jj=1:nDays
 end
 load('Scale_Conflict_Fucntion_IDP.mat','ScaleConflict');
 PC_IDP=1-prod(1-ScaleConflict.*PC_IDP,2);
-Pop_Moving=PC_IDP.*Pop_Remain;
+Pop_IDP=PC_IDP.*Pop_Remain;
 
-[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Pop_Moving,Ukraine_Pop,lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Border_Crossing_Country);
+[Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Pop_IDP,Ukraine_Pop,lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Border_Crossing_Country);
 
 save('Table_Output_Figure1.mat','Total_Burden_Refugee','Total_Burden_UKR');
 

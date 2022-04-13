@@ -7,11 +7,12 @@ function w_tot=Determine_Weights_Refugee(lambda_sci,lambda_bc,sc_bc,s_nato,lambd
 Parameter.Scale=1;
 Parameter.Breadth=lambda_sci;
 X=([Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
+X=[min(X,[],2) X];
 w_sci=Kernel_Function(log(max(X(:)))-log(X),Parameter);
 % w_sci=1-exp(-lambda_sci.*[Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
 
-% max was chosen based on the calibration
-w_sci=[max(w_sci,[],2) w_sci]; %[sc_sci.*ones(size(Ukraine_Pop.per_Poland)) w_sci];
+% min was chosen to reduce connectedness to russia
+ %[sc_sci.*ones(size(Ukraine_Pop.per_Poland)) w_sci];
 
 %https://tradingeconomics.com/country-list/gdp?continent=europe
 GDP=[1484 594 60.26 105 155 249 11.91 15276./27];
@@ -23,6 +24,7 @@ Parameter.Breadth=lambda_GDP;
 w_GDP=Kernel_Function(GDP,Parameter);
 % w_GDP=1-exp(-lambda_GDP.*GDP);
 w_GDP=repmat(w_GDP,length(Ukraine_Pop.per_Poland),1);
+
 Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova'};
 
 w_nato=repmat([s_nato 1 s_nato 1 1 1 s_nato 1],length(Ukraine_Pop.per_Poland),1);

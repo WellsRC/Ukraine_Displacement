@@ -100,7 +100,7 @@ Prob_DB=zeros(length(S2),length(Disease_Short));
 
 PopTotal=Ukraine_Pop.population_size;
 for dd=1:length(Disease_Short)
-    dpc=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,PopTotal)+Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,true,PopTotal);
+    dpc=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Pop,Pop)+Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,true,Pop_Male,Pop_Male);
     for rr=1:length(S2)      
         tf=strcmp(S2(rr).NAME_1,Ukraine_Pop.oblast) & strcmp(S2(rr).NAME_2,Ukraine_Pop.raion);
         Prob_DB(rr,dd)=sum(dpc(tf))./sum(Ukraine_Pop.population_size(tf));

@@ -1,4 +1,4 @@
-function dpc=Disease_Distribution(Disease,Raion,MartialLaw,Pop)
+function dpc=Disease_Distribution(Disease,Raion,MartialLaw,Pop,PopTotal)
 
 
 % National disease burden, raion mortality
@@ -30,7 +30,7 @@ tf=strcmp(UKR_Mortality.sex,'m') & (strcmp(UKR_Mortality.age_group,'20-24')| str
        tf=strcmp(UKR_Mortality.raj_name,U_Raion{jj});
        weightr=sum(UKR_Mortality.deaths(tf));
        t_out=strcmp(Raion,U_Raion{jj});
-       dpc(t_out)=weightr.*Pop(t_out)./sum(Pop(t_out));
+       dpc(t_out)=weightr.*Pop(t_out)./sum(PopTotal(t_out));
     end
     dpc=prev.*dpc./NC;
 end

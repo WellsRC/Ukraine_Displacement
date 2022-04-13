@@ -1,4 +1,4 @@
-function L = ObjectiveFunction_IDP(x,Pop_Moving_R,Pop_Raion_M,SCI_IDP,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist,Raion_IDP,Raion_Zone_R)
+function L = ObjectiveFunction_IDP(x,Pop_IDP_R,Pop_Raion_M,SCI_IDP,Raion_Dist_BC,Num_BC,Raion_Conflict_M,DistC,Dist,Raion_IDP,Raion_Zone_R)
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
     % Population_Sites
@@ -26,10 +26,14 @@ function L = ObjectiveFunction_IDP(x,Pop_Moving_R,Pop_Raion_M,SCI_IDP,Raion_Dist
     
     Parameter_IDP.Scale_Level_Conflict=10^x(12);
     Parameter_IDP.Breadth_Level_Conflict=10^x(13);
-    
-    [w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion_M,SCI_IDP,Raion_Dist_BC,Num_BC,Raion_Conflict,DistC,Dist);
-    
-    Est_Raion_IDP=w_Location*Pop_Moving_R;
+    for dd=1:length(Pop_IDP_R(1,:))
+        [w_Location]=Estimate_IDP_Displacement(Parameter_IDP,Pop_Raion_M,SCI_IDP,Raion_Dist_BC,Num_BC,squeeze(Raion_Conflict_M(:,:,dd)),DistC(:,dd),Dist);
+        if(dd==1)
+            Est_Raion_IDP=w_Location*Pop_IDP_R(:,dd);
+        else
+            Est_Raion_IDP=Est_Raion_IDP+w_Location*Pop_IDP_R(:,dd);
+        end
+    end
     
     Zone_IDP=zeros(length(unique(Raion_Zone_R)),1);
     Est_Zone_IDP=zeros(length(unique(Raion_Zone_R)),1);

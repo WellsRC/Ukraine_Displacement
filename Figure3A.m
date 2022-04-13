@@ -8,7 +8,7 @@ load('Input_Figure3D.mat','Raion_Zone_R');
 
 
 figure('units','normalized','outerposition',[0. 0. 1 1]);
-ColRZ=[hex2rgb('E6DF44');hex2rgb('20948B');hex2rgb('598234')];
+ColRZ=[hex2rgb('33685b');hex2rgb('6fb98f');hex2rgb('b3c100')];
 
 scatter(37.62,51.5,1,'w'); hold on;
 text(37.62,52.5,'IDP Zone-1','Fontsize',28,'Color',ColRZ(1,:));
@@ -18,7 +18,7 @@ text(37.62,51.5,'IDP Zone-3','Fontsize',28,'Color',ColRZ(3,:));
 S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
 for ii=1:length(S2)
     if(Raion_IDP(ii)==0)
-        geoshow(S2(ii),'LineWidth',1.5,'FaceAlpha',0);
+        geoshow(S2(ii),'LineWidth',1.5,'FaceAlpha',0,'Edgecolor',[0.4 0.4 0.4]);
     end
 end
 

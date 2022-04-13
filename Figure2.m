@@ -108,3 +108,21 @@ set(gca, 'visible', 'off');
 colormap(safety_map);
 end
 print(gcf,['Estimated_Safety_Region.png'],'-dpng','-r300');
+
+close all;
+figure('units','normalized','outerposition',[0.2 0.2 0.6 0.6]);
+Sum_Safe=sum(PS_GeoDay,1);
+Sum_Safe=(Sum_Safe-min(Sum_Safe))./(max(Sum_Safe)-min(Sum_Safe));
+subplot('Position',[0.139084507042254,0.335135135135135,0.84154929577465,0.618018018018018]);
+plot([1:16],Sum_Safe,'-ko','LineWidth',2,'MarkerFaceColor','k');
+xlabel('Date','Fontsize',24);
+ylabel('Relative level of safety','Fontsize',24,'Position',[-0.797489521979788,0.500000476837158,-0.999999999999986]);
+xlim([1 16]);
+ylim([0 1]);
+text(-0.603593843395098,1.010260770975057,{'Most','safe'},'Fontsize',16)
+text(-0.725941422594142,-0.005830903790087,{'Least','safe'},'Fontsize',16)
+set(gca,'LineWidth',2,'tickdir','out','Fontsize',20,'XTick',[1:16],'Ytick',[0:0.1:1],'XTickLabel',{datestr(datenum('February 24,2022')+[0:15])});
+xtickangle(45);
+box off;
+print(gcf,['Relative_Safety_UKR.png'],'-dpng','-r300');
+

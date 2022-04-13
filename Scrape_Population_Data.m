@@ -61,7 +61,7 @@ for ii=1:length(S2)
     per_Country_Desplace(tp_in | tp_on,:)=repmat(w,sum(tp_in | tp_on),1);
     
     for cc=1:height(BC)
-       distance_bc(tp_in | tp_on,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Lat(cc),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
+       distance_bc(tp_in | tp_on,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Long(cc),latitude(tp_in | tp_on),longitude(tp_in | tp_on)));
     end
     
     w_IDP(tp_in | tp_on,:)=repmat(M_FB_UKR(S2(ii).ID_1,:),sum(tp_in | tp_on),1);
@@ -103,7 +103,7 @@ parfor jj=1:length(oblast)
         per_Country_Desplace(jj,:)=w;    
         
         for cc=1:NBC
-            distance_bc(jj,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Lat(cc),latitude(jj),longitude(jj)));
+            distance_bc(jj,cc)=deg2km(distance('gc',BC.Lat(cc),BC.Long(cc),latitude(jj),longitude(jj)));
         end
         
          w_IDP(jj,:)=M_FB_UKR(S2(f).ID_1,:);

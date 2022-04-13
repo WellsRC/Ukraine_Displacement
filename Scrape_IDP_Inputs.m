@@ -28,10 +28,6 @@ load('Grid_points_UKR_Fewer.mat')
 longitude_v=longitude_v(tp_UKR);
 latitude_v=latitude_v(tp_UKR);
 
-
-
-
-
 S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
 
 S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
@@ -53,7 +49,7 @@ for ii=1:length(Num_IDP)
     if(Num_IDP(ii)>0)
         dob=zeros(length(S2),1);
         for jj=1:length(S2)
-           dob(jj)=min(deg2km(distance('gc',Lon_IDP(ii),Lat_IDP(ii),S2(jj).Lon,S2(jj).Lat)));
+           dob(jj)=min(deg2km(distance('gc',Lat_IDP(ii),Lon_IDP(ii),S2(jj).Lat,S2(jj).Lon)));
         end
         Raion_IDP(dob==min(dob))=Raion_IDP(dob==min(dob))+Num_IDP(ii)./sum(dob==min(dob));
         Num_IDP(ii)=0;
@@ -86,20 +82,12 @@ Raion_Dist_BC=zeros(length(S2),length(BC_Lon));
 for jj=1:length(BC_Lon)
     dobt=zeros(length(S2),1);
     for ii=1:length(S2)  
-        dobt(ii)=min(deg2km(distance('gc',BC_Lon(jj),BC_Lat(jj),S2(ii).Lon,S2(ii).Lat)));
+        dobt(ii)=min(deg2km(distance('gc',BC_Lat(jj),BC_Lon(jj),S2(ii).Lat,S2(ii).Lon)));
     end
     Raion_Dist_BC(:,jj)=dobt;
     Num_BC(dobt==min(dobt))=Num_BC(dobt==min(dobt))+1./sum(dobt==min(dobt));
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% Run Fitting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 % Determine the scalining factor for the overall number of IDP
-
-
-
 nDays=length(vLat_C);
 PC=ones(length(Lon_P),1);
 PC_IDP=ones(length(Lon_P),nDays);
@@ -113,43 +101,57 @@ end
 
 
 options = optimoptions(@fmincon,'FunctionTolerance',10^(-16),'MaxFunctionEvaluations',500,'MaxIterations',1000);
-[pars,fval]=fmincon(@(x)ObjectiveFunction_SCaleConflict_IDP(x,PC_IDP,Pop_Remain,sum(T.IDPEstimation)),-0.001,[],[],[],[],-6,0,[],options);
+[pars,fval]=fmincon(@(x)ObjectiveFunction_SCaleConflict_IDP(x,PC_IDP,Pop_Remain,sum(T.IDPEstimation)),-0.001,[],[],[],[],-8,0,[],options);
 
 
 ScaleConflict=10^pars;
 
-PC_IDPt=1-prod(1-ScaleConflict.*PC_IDP,2);
+f_nz=find((1-prod(1-ScaleConflict.*PC_IDP,2)).*Pop_Remain>0);
 
-Pop_Moving=PC_IDPt.*Pop_Remain;
+Pop_IDP_R=zeros(length(latitude_v),nDays);
 
-f_nz=find(Pop_Moving>0);
+PC_IDPt=ScaleConflict.*PC_IDP;
+Pop_Remaint=Pop_Remain;
 
-Pop_Moving_R=zeros(size(latitude_v));
+min_d_index=cell(length(latitude_v),2);
 for ii=1:length(f_nz)
-   d=deg2km(distance('gc',Lon_P(f_nz(ii)),Lat_P(f_nz(ii)),longitude_v,latitude_v));
-   Pop_Moving_R(d==min(d))=Pop_Moving_R(d==min(d))+Pop_Moving(f_nz(ii))./sum((d==min(d)));
+   d=deg2km(distance('gc',Lat_P(f_nz(ii)),Lon_P(f_nz(ii)),latitude_v,longitude_v));
+   fd=find(d==min(d));
+   for jj=1:length(fd)
+       min_d_index{fd(jj),1}=[min_d_index{fd(jj),1} f_nz(ii)];
+       min_d_index{fd(jj),2}=[min_d_index{fd(jj),2} 1./length(fd)];
+   end
+end
+
+for dd=1:nDays
+    Pop_IDP=PC_IDPt(:,dd).*Pop_Remaint;
+    Pop_Remaint=Pop_Remaint-PC_IDPt(:,dd).*Pop_Remaint;
+    parfor ii=1:length(latitude_v)        
+       Pop_IDP_R(ii,dd)=sum(min_d_index{ii,2}'.*Pop_IDP(min_d_index{ii,1}));
+    end
 end
 
 save('Scale_Conflict_Fucntion_IDP.mat','ScaleConflict');
 
-PC_IDP=1-prod(1-PC_IDP,2);
-Raion_Conflict=zeros(length(S2),1);
-for ii=1:length(Raion_Conflict)    
-    Raion_Conflict(ii)=mean(PC_IDP(strcmp(Ukraine_Pop.raion,S2(ii).NAME_2)));
+Raion_Conflict=zeros(length(S2),nDays);
+for dd=1:nDays
+    for ii=1:length(S2)   
+        temp=1-prod(1-PC_IDP(:,1:dd),2);
+        Raion_Conflict(ii,dd)=mean(temp(strcmp(Ukraine_Pop.raion,S2(ii).NAME_2)));
+    end
 end
-DistC=zeros(length(S2),length(vLat_C));
-
+DistC=zeros(length(S2),nDays);
 for jj=1:length(S2)
     for kk=1:length(vLat_C)
         cLon=vLon_C{kk};
         cLat=vLat_C{kk};
         temp=zeros(1,(length(cLat)));
         parfor zz=1:length(cLon)
-            temp(zz)=min(deg2km(distance('gc',cLon(zz),cLat(zz),S2(jj).Lon,S2(jj).Lat)));                   
+            temp(zz)=min(deg2km(distance('gc',cLat(zz),cLon(zz),S2(jj).Lat,S2(jj).Lon)));                   
         end
         [p_in]=inpolygon(cLon,cLat,S2(jj).Lon,S2(jj).Lat);
         if(sum(p_in)==0)
-            DistC(jj,kk)=min(temp);
+            DistC(jj,kk,dd)=min(temp);
         end
     end
 end
@@ -157,8 +159,8 @@ end
 Raion_Index=zeros(length(latitude_v),1);
 
 for ii=1:length(S2)       
-[p_in,p_on]=inpolygon(longitude_v,latitude_v,S2(ii).Lon,S2(ii).Lat);
-Raion_Index(p_in|p_on)=ii;
+    [p_in,p_on]=inpolygon(longitude_v,latitude_v,S2(ii).Lon,S2(ii).Lat);
+    Raion_Index(p_in|p_on)=ii;
 end
 
 Dist=zeros(length(S2),length(latitude_v));
@@ -166,4 +168,4 @@ parfor ii=1:length(latitude_v)
     Dist(:,ii)=DistanceBorder_Polygon(longitude_v(ii),latitude_v(ii),S2,Raion_Index(ii));
 end
 
-save('IDP_Fit_Inputs.mat','Pop_Raion','Pop_Moving_R','SCI_IDP','Raion_IDPSites','Raion_Conflict','DistC','Dist','Raion_IDP','Raion_Index','Raion_Dist_BC','Num_BC');
+save('IDP_Fit_Inputs.mat','Pop_Raion','Pop_IDP_R','SCI_IDP','Raion_IDPSites','Raion_Conflict','DistC','Dist','Raion_IDP','Raion_Index','Raion_Dist_BC','Num_BC');
