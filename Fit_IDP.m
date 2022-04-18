@@ -6,7 +6,7 @@ SCI_IDPt=max(log10(SCI_IDP(:)))-log10(SCI_IDP);
 
 Raion_Conflict_M=zeros(length(Raion_Conflict(:,1)),length(Raion_Index),length(Raion_Conflict(1,:)));
 for dd=1:length(Raion_Conflict(1,:))
-    Raion_Conflict_pix=Raion_Conflict_M(Raion_Index,dd)';
+    Raion_Conflict_pix=Raion_Conflict(Raion_Index,dd)';
     Raion_Conflict_M(:,:,dd)=(repmat(Raion_Conflict_pix,length(Raion_Conflict_M(:,dd)),1)-repmat(Raion_Conflict(:,dd),1,length(Raion_Index)))+1;
 end
 
@@ -38,11 +38,12 @@ for ii=1:length(S2)
 end
 
 lb=[-5 -3 -9 -4 -2 0 0 -3 -1 -1 0 -3 -2];
-ub=[0 3 0 10 0 6 3 2 1 0 6 0 2];
-
-options = optimoptions('surrogateopt','MaxFunctionEvaluations',5000);
+ub=[0 3 0 10 0 6 3 2 1 0 6 2 2];
+    
+options = optimoptions('surrogateopt','MaxFunctionEvaluations',5000,'PlotFcn','surrogateoptplot');
 [par,fval_so] = surrogateopt(@(x)ObjectiveFunction_IDP(x,Pop_IDP_R,Pop_Raion_M(Raion_IDP>0,:),SCI_IDPt(Raion_IDP>0,:),Raion_Dist_BC(Raion_IDP>0,:),Num_BC(Raion_IDP>0),Raion_Conflict_M(Raion_IDP>0,:,:),DistC(Raion_IDP>0,:),Dist(Raion_IDP>0,:),Raion_IDP(Raion_IDP>0),Raion_Zone_R(Raion_IDP>0)),lb,ub,options);
- 
+% options = optimoptions('fmincon','PlotFcn','optimplotfval','StepTolerance',10^(-8),'FunctionTolerance',10^(-8));
+%  [par,fval]=fmincon(@(x)ObjectiveFunction_IDP(x,Pop_IDP_R,Pop_Raion_M(Raion_IDP>0,:),SCI_IDPt(Raion_IDP>0,:),Raion_Dist_BC(Raion_IDP>0,:),Num_BC(Raion_IDP>0),Raion_Conflict_M(Raion_IDP>0,:,:),DistC(Raion_IDP>0,:),Dist(Raion_IDP>0,:),Raion_IDP(Raion_IDP>0),Raion_Zone_R(Raion_IDP>0)),x0,[],[],[],[],lb,ub);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
     % Population_Sites
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

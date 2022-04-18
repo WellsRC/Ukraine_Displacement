@@ -5,7 +5,7 @@ SCI_IDPt=max(log10(SCI_IDP(:)))-log10(SCI_IDP);
 
 Raion_Conflict_M=zeros(length(Raion_Conflict(:,1)),length(Raion_Index),length(Raion_Conflict(1,:)));
 for dd=1:length(Raion_Conflict(1,:))
-    Raion_Conflict_pix=Raion_Conflict_M(Raion_Index,dd)';
+    Raion_Conflict_pix=Raion_Conflict(Raion_Index,dd)';
     Raion_Conflict_M(:,:,dd)=(repmat(Raion_Conflict_pix,length(Raion_Conflict_M(:,dd)),1)-repmat(Raion_Conflict(:,dd),1,length(Raion_Index)))+1;
 end
 
@@ -50,9 +50,6 @@ for dd=1:length(Pop_IDP_R(1,:))
     end
 end
 
-%     Est_Raion_IDP(Est_Raion_IDP==0)=10^(-16);
-%     Raion_IDP(Raion_IDP==0)=10^(-16);
-    L=sqrt(sum((Raion_IDP(Raion_IDP>0)-Est_Raion_IDP).^2))./length(Raion_IDP(Raion_IDP>0));
 close all;
 
 

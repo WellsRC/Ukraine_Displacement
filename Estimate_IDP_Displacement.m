@@ -28,7 +28,7 @@ w_Location=w_Location.*(1-Kernel_Function(median(DistC,2),Parameter));
     
 Parameter.Scale=Parameter_IDP.Scale_Level_Conflict;
 Parameter.Breadth=Parameter_IDP.Breadth_Level_Conflict;
-w_Location=repmat(w_Location,1,length(SCI_IDP(1,:))).*(1-exp(Parameter.Scale.*(Raion_Conflict.^Parameter.Breadth)));
+w_Location=repmat(w_Location,1,length(SCI_IDP(1,:))).*(1-exp(-Parameter.Scale.*(Raion_Conflict.^Parameter.Breadth)));
 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Population
