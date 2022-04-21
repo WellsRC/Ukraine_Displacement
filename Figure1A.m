@@ -107,7 +107,7 @@ for dd=1:length(Disease_Short)
     end
 end
 
-CC=[hex2rgb('#F52549'); % CVD
+CC=[hex2rgb('#FB6542'); % CVD
     hex2rgb('#807dba'); %Diabetes
     hex2rgb('#FFBB00'); % Cancer
     hex2rgb('#034e76'); % HIV
@@ -117,7 +117,7 @@ CC=[hex2rgb('#F52549'); % CVD
     
 xp=linspace(22.15,40.22,101);
      yp=[44 44.3];
-     fact_inc=[1 1 10 10 100];
+     fact_inc=[10 10 10 10 10];
 %      
 for dd=1:(length(Disease_Short))
     test_M=Prob_DB(:,dd).*100.*fact_inc(dd);
@@ -143,10 +143,18 @@ for dd=1:(length(Disease_Short))
     box off;
     for jj=1:length(FA)
         patch([xp(jj) xp(jj) xp(jj+1) xp(jj+1)],[yp(1) yp(2) yp(2) yp(1)],CC(dd,:),'FaceAlpha',FA(jj));
-        if(jj==1)
-            text(xp(jj+1),yp(1)-0.01,[ '\leq' num2str(X(jj),'%3.1f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
-        elseif(rem(jj,10)==0)
-            text(xp(jj+1),yp(1)-0.01,[ num2str(X(jj),'%3.1f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
+        if(dd~=1)
+            if(jj==1)
+                text(xp(jj+1),yp(1)-0.01,[ '\leq' num2str(X(jj),'%3.1f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
+            elseif(rem(jj,10)==0)
+                text(xp(jj+1),yp(1)-0.01,[ num2str(X(jj),'%3.1f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
+            end
+        else
+            if(jj==1)
+                text(xp(jj+1),yp(1)-0.01,[ '\leq' num2str(X(jj),'%3.0f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
+            elseif(rem(jj,10)==0)
+                text(xp(jj+1),yp(1)-0.01,[ num2str(X(jj),'%3.0f')],'Rotation',90,'Fontsize',18,'Horizontalalignment','right')
+            end            
         end
     end
     text(22,52.74,char(65+dd),'Fontsize',40,'FontWeight','bold');

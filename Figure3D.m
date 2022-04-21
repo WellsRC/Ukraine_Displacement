@@ -83,10 +83,10 @@ for ii=1:3
     Hosp_Zone(ii)=sum(Raion_Hosp(Raion_Zone_R==ii));
     Hosp_Zone_Weighted(ii)=sum(Raion_Hosp_Weigthed(Raion_Zone_R==ii));
 end
-
+save('Affected_Hospitals.mat','Hosp_Zone_Weighted','Hosp_Zone','PC_IDP');
 close all;
 
-CC=[hex2rgb('#F52549'); % CVD
+CC=[hex2rgb('#FB6542'); % CVD
     hex2rgb('#807dba'); %Diabetes
     hex2rgb('#FFBB00'); % Cancer
     hex2rgb('#034e76'); % HIV
@@ -101,7 +101,7 @@ Pre_HC=(Pre_WAR_Disease)';
 
 Current_HC=(WAR_Disease)';
 [test,indxS]=sortrows(Current_HC);
-Disesev={'All';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
+Disesev={'Total people';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
 
 R=100.*(Current_HC./Pre_HC-1);
 R=flip(R);
@@ -159,7 +159,7 @@ Pre_HC=Pre_WAR_Disease./repmat(Hosp_Zone,1,8);
 Current_HC=WAR_Disease./repmat(Hosp_Zone_Weighted,1,8);
 
 
-Disesev={'All';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
+Disesev={'Total people';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
 
 R=100.*(Current_HC./Pre_HC-1);
 Rt=R(:,indxS);

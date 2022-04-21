@@ -54,10 +54,10 @@ print(gcf,['Daily_Refugee_Fit.png'],'-dpng','-r300');
 % 
 
 figure('units','normalized','outerposition',[0. 0.2 1 0.6]);
-subplot('Position',[0.064600840336134,0.189189189189189,0.930147058823529,0.774774774774775]);
+subplot('Position',[0.064600840336134,0.131531531531532,0.930147058823529,0.832432432432433]);
 
 Country_Namev={'Russia','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)','Ukraine (IDP)'};
-Disesev={'All refugees';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
+Disesev={'Total refugees';'TB';'Drug-resistant TB';'HIV';'HIV Treatment';'Diabetes';'Cancer';'CVD'};
 UKR_Cases=Total_Burden_UKR.Cases;
 IDP_Cases=UKR_Cases(4:4:end);
 T=[Total_Burden_Refugee.Cases];
@@ -72,7 +72,7 @@ Disese=Disesev(srt_dindx);
 T=Tsc';
 % Ref_Num=[105897 1575703 938 185673 235576 84671 104929 304156 10^(-16)]; % 10^(-16) is so that it does not show on the graph
 
-CC=[hex2rgb('#F52549'); % CVD
+CC=[hex2rgb('#FB6542'); % CVD
     hex2rgb('#807dba'); %Diabetes
     hex2rgb('#FFBB00'); % Cancer
     hex2rgb('#034e76'); % HIV
@@ -94,7 +94,7 @@ hold on;
 legend(flip(bb),flip(Disese),'Location','NorthEast','NumColumns',8);
 legend boxoff;
 box off;
-xlabel('Country','Fontsize',30,'Position',[5.000004291534425,0.062691391491044,-1]);
+% xlabel('Country','Fontsize',30,'Position',[5.000004291534425,0.062691391491044,-1]);
 ylabel('Number of Refugees','Fontsize',30);
 ylim([0.5 10^7]);
 text(-0.116664381313886,10613961.8691112,'G','Fontsize',40,'FontWeight','bold');
