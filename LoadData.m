@@ -42,9 +42,9 @@ end
 % Population Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load('Ukraine_Population_Regions.mat','Ukraine_Pop','Border_Crossing_Country');
-Lat_P=Ukraine_Pop.latitude;
-Lon_P=Ukraine_Pop.longitude;
-Pop=Ukraine_Pop.population_size.*(1-Ukraine_Pop.per_male_fight); % considering only those who can leave under martial law
-Pop_Male=Ukraine_Pop.population_size.*Ukraine_Pop.per_male_fight;
+load('Ukraine_Population_Reduced.mat','Ukraine_Pop','Border_Crossing_Country');
+Lat_P=Ukraine_Pop.latitude_v;
+Lon_P=Ukraine_Pop.longitude_v;
+Pop=Ukraine_Pop.pop_adj.*(1-sum(Ukraine_Pop.age_Dist_male(:,5:12),2)); % considering only those who can leave under martial law
+Pop_Male=Ukraine_Pop.pop_adj-Pop;
 

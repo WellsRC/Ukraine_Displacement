@@ -1,14 +1,17 @@
-function [Pop_Adjust,Pop_Displace] = Population_Adjustment_Displacement(Pop,P,Random_Sample)
-    
-    % See if randomness needs to be integrated into the output
-    if(~Random_Sample)
-        Pop_Displace=Pop.*P;
-    else
-        Pop_Displace=zeros(size(Pop));
-        Pt=betarnd(P(P>0 & Pop>0).*Pop(P>0 & Pop>0),(1-P(P>0 & Pop>0)).*Pop(P>0 & Pop>0));
-        Pop_Displace(P>0 & Pop>0)=bnldev(Pop(P>0 & Pop>0),Pt);
-    end
-
-    Pop_Adjust=Pop-Pop_Displace;
+function [Pop_Adjust_F,Pop_Adjust_M,Pop_Displace] = Population_Adjustment_Displacement(Pop_F_Age,Pop_M_Age,P,W_Gender_Age)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Female
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+    Pop_Displace_F=Pop_F_Age.*(repmat(W_Gender_Age(1,:),length(P),1).*repmat(P,1,length(W_Gender_Age(1,:))));
+    Pop_Adjust_F=Pop_F_Age-Pop_Displace_F;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Male
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+    Pop_Displace_M=Pop_M_Age.*(repmat(W_Gender_Age(2,:),length(P),1).*repmat(P,1,length(W_Gender_Age(2,:))));
+    Pop_Adjust_M=Pop_M_Age-Pop_Displace_M;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Total
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Pop_Displace=Pop_Displace_F+Pop_Displace_M;
 end
 
