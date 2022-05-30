@@ -20,6 +20,7 @@ S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
 oblast=cell(length(longitude_v),1);
 raion=cell(length(longitude_v),1);
 map_raion=cell(length(longitude_v),1);
+macro_region=cell(length(longitude_v),1);
 
 % For determining the location where individuals go
 per_Country_Desplace=zeros(length(longitude_v),7);
@@ -29,13 +30,15 @@ age_Dist_male=zeros(length(longitude_v),17);
 w_IDP=zeros(length(longitude_v),27);
 distance_bc=zeros(length(longitude_v),height(BC));
 
-
+load('Macro_Oblast_Map.mat');
 
 for ii=1:length(S2)
     [tp_in,tp_on]=inpolygon(longitude_v,latitude_v,S2(ii).Lon,S2(ii).Lat);
     oblast(tp_in | tp_on)={S2(ii).NAME_1};
     raion(tp_in | tp_on)={S2(ii).NAME_2};
     
+    tfm=strcmp(Macro_Map(:,2),S2(ii).NAME_1);
+    macro_region(tp_in | tp_on)=Macro_Map(tfm,3);
     tfmn=strcmp(S2(ii).HASC_2,Mapped_Names.HASC_2) & strcmp(S2(ii).NAME_2,Mapped_Names.NAME_2);
     if(sum(tfmn)>0)
         NN=Mapped_Names.DistrictName{tfmn};
@@ -90,6 +93,6 @@ for mm=1:length(map_raion)
     end
 end
 
-Ukraine_Pop=table(longitude_v,latitude_v,pop_adj,oblast,raion,map_raion,age_Dist_female,age_Dist_male,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Belarus,per_Moldova,per_Other,distance_bc,w_IDP);
+Ukraine_Pop=table(longitude_v,latitude_v,pop_adj,oblast,raion,macro_region,map_raion,age_Dist_female,age_Dist_male,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Belarus,per_Moldova,per_Other,distance_bc,w_IDP);
 
 save('Ukraine_Population_Reduced.mat','Ukraine_Pop','Border_Crossing_Country');

@@ -1,98 +1,91 @@
-function [Total_Burden_Refugee,Total_Burden_UKR] = Disease_Burden_Displacement(Displace_Pop,Pop_Male,Pop_Remain,Pop_Moving,Ukraine_Pop,lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Border_Crossing_Country)
+function Disease_Burden_Displacement(Pop_IDP_Origin,Pop_Refugee_Origin,Pop_Total,Mapped_Raion_Name,Raion_All,Raion_Full,Oblast_All,Oblast_Full)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Compute weights 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-w_tot=Determine_Weights_Refugee(lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country);
-   
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NMumber of refugees
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Burden=Displace_Pop;
-
-
-Country={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'}';
-Refugee_State=cell(size(Country));
-for jj=1:length(Country)
-    Refugee_State{jj}='All';
-end
-
-Cases=sum(w_tot.*repmat(Burden,1,length(Country)),1)';
-
-TotRef=sum(w_tot.*repmat(Burden,1,length(Country)),1)';
-
-Per_Cases=100.*Cases./sum(Cases);   
-
-Prev=Cases./TotRef;
-Total_Burden_Refugee=table(Country,Refugee_State,Cases,Prev,Per_Cases);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NMumber of people remaining
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-Country={'UKR','Male (20-59)','All Civilians','IDP'}';
-Refugee_State=cell(size(Country));
-for jj=1:length(Country)
-    Refugee_State{jj}='All';
-end
-
-Cases=[sum(Pop_Male+Pop_Remain);sum(Pop_Male);sum(Pop_Remain);sum(Pop_Moving)];
-
-TotRemain=[sum(Pop_Male+Pop_Remain);sum(Pop_Male);sum(Pop_Remain);sum(Pop_Moving)];
-
-Prev=Cases./TotRemain;
-
-Per_Cases=[sum(Pop_Male+Pop_Remain);sum(Pop_Male);sum(Pop_Remain);sum(Pop_Moving)]./sum(Pop_Male+Pop_Remain);
-Total_Burden_UKR=table(Country,Refugee_State,Cases,Prev,Per_Cases);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Refugees with chronic illness
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-Disease_Short={'TB';'TB_DR';'HIV';'HIV_T';'Diabetes';'Cancer';'CVD'};
-Disese_Description={'Tuberculosis';'Drug resistant tuberculosis';'HIV';'HIV Treatment';'Diabetes';'Cancer';'Cardiovascular disease'};
+Disease_Short={'All','TB';'TB_DR';'HIV';'HIV_T';'Diabetes';'Cancer';'CVD'};
+Country={'Russian','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'};
+age_class={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
+gender={'m','f'};
 
+Pop_Non_IDP=Pop_Total-Pop_IDP_Origin-Pop_Refugee_Origin;
 
-PopTotal=Ukraine_Pop.population_size;
-for dd=1:length(Disease_Short)
-    
-    Country={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova','Europe (Other)'}';
-    Burden=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Displace_Pop,PopTotal-Pop_Male); % Do not want to consider the males 20-59
-    Burden(PopTotal==0)=0;
-    Cases=sum(w_tot.*repmat(Burden,1,length(Country)),1)';
-    Per_Cases=100.*Cases./sum(Cases);
-    
-    Refugee_State=cell(size(Country));
-    for jj=1:length(Country)
-        Refugee_State{jj}=Disese_Description{dd};
+for dd=1:length(Disease_Short)        
+    if(strcmp(Disease_Short{dd},Disease_Short{1}))
+        Burden_Non_IDP=Pop_Non_IDP;
+        Burden_IDP=Pop_IDP_Origin;
+        Burden_Refugee=Pop_Refugee_Origin;
+        
+    else            
+        Burden_Non_IDP=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class,gender,Pop_Non_IDP,Pop_Total);
+        Burden_IDP=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class,gender,Pop_IDP_Origin,Pop_Total);
+        Burden_Refugee=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class,gender,Pop_Refugee_Origin,Pop_Total);
     end
-    Prev=Cases./TotRef;
-    Total_Burden_Refugee=[Total_Burden_Refugee;table(Country,Refugee_State,Cases,Prev,Per_Cases)];
     
-    
-    Country={'UKR','Male (20-59)','All Civilians','IDP'}';
-    Burden_Male=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,true,Pop_Male,Pop_Male); % Want to consider the males 20-59
-    Burden_Remain=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Pop_Remain,PopTotal-Pop_Male); % Do not want to consider the males 20-59
-    Burden_Moving=Disease_Distribution(Disease_Short{dd},Ukraine_Pop.map_raion,false,Pop_Moving,PopTotal-Pop_Male); % Do not want to consider the males 20-59
-    Burden_Remain(PopTotal==0)=0;
-    Burden_Moving(PopTotal==0)=0;
-    Burden_Male(PopTotal==0)=0;
-    Refugee_State=cell(size(Country));
-    for jj=1:length(Country)
-        Refugee_State{jj}=Disese_Description{dd};
+    IDP_Raion=zeros(length(gender),length(Raion_All),length(age_class));
+    Refugee_Country=zeros(length(gender),length(Country),length(age_class));
+    for gg=1:length(gender)  
+        for aa=1:length(age_class)
+                IDP_Raion(gg,:,aa)=w_Raion_IDP*squeeze(Burden_IDP(gg,:,aa));
+                Refugee_Country(gg,:,aa)=w_Country_Refugee*squeeze(Burden_Refugee(gg,:,aa));
+        end
     end
-    Cases=[sum(Burden_Male+Burden_Remain);sum(Burden_Male);sum(Burden_Remain);sum(Burden_Moving)];
     
-    Prev=Cases./TotRemain;
+    for rr=1:length(Raion_All)
+        
+        % Non-IDP
+        tf=strcmp(Raion_Full,Raion_All{rr}) & strcmp(Oblast_Full,Oblast_All{rr});
+        
+        Non_IDP=sum(Burden_Non_IDP(:,tf,:),[1 2 3]);
+        Non_IDP_Gender=sum(Burden_Non_IDP(:,tf,:),[2 3])./Non_IDP;
+        Non_IDP_Age_Female=sum(Burden_Non_IDP(1,tf,:),2)./Non_IDP_Gender(1);
+        Non_IDP_Age_Male=sum(Burden_Non_IDP(2,tf,:),2)./Non_IDP_Gender(2);
+        
+        % IDP
+        IDP=sum(IDP_Raion(:,rr,:),[1 2 3]);
+        IDP_Gender=sum(IDP_Raion(:,rr,:),[2 3])./IDP;
+        IDP_Age_Female=sum(IDP_Raion(1,rr,:),2)./IDP_Gender(1);
+        IDP_Age_Male=sum(IDP_Raion(2,rr,:),2)./IDP_Gender(2);
+        
+        if(~isfile(['Table_IDP_' Raion{rr} '_' Disease_Short{dd} '.mat']))
+            Table_Non_IDP=table(Non_IDP,Non_IDP_Gender,Non_IDP_Age_Female,Non_IDP_Age_Male);
+            Table_IDP=table(IDP,IDP_Gender,IDP_Age_Female,IDP_Age_Male);
+        
+        else
+            load(['Table_IDP_' Raion{rr} '_' Disease_Short{dd} '.mat'],'Table_IDP');
+            load(['Table_Non_IDP_' Raion{rr} '_' Disease_Short{dd} '.mat'],'Table_Non_IDP');
+            
+            Table_Non_IDP_t=table(Non_IDP,Non_IDP_Gender,Non_IDP_Age_Female,Non_IDP_Age_Male);
+            Table_IDP_t=table(IDP,IDP_Gender,IDP_Age_Female,IDP_Age_Male);
+            
+            Table_Non_IDP=[Table_Non_IDP;Table_Non_IDP_t];
+            Table_IDP=[Table_IDP;Table_IDP_t];
+        end
+        
+        save(['Table_IDP_' Raion{rr} '_' Disease_Short{dd} '.mat'],'Table_IDP');
+        save(['Table_Non_IDP_' Raion{rr} '_' Disease_Short{dd} '.mat'],'Table_Non_IDP');
+    end
     
-    Per_Cases=[sum(Burden_Male+Burden_Remain);sum(Burden_Male);sum(Burden_Remain);sum(Burden_Moving)]./sum(Burden_Male+Burden_Remain);
-    Total_Burden_UKR=[Total_Burden_UKR;table(Country,Refugee_State,Cases,Prev,Per_Cases)];
-    
+    for cc=1:length(Country)
+        
+        % Refugee
+        Refugee=sum(Refugee_Country(:,cc,:),[1 2 3]);
+        Refugee_Gender=sum(Refugee_Country(:,cc,:),[2 3])./Refugee;
+        Refugee_Age_Female=sum(Refugee_Country(1,cc,:),2)./Refugee_Gender(1);
+        Refugee_Age_Male=sum(Refugee_Country(2,cc,:),2)./Refugee_Gender(2);
+        if(~isfile(['Table_Refugee_' Country{cc} '_' Disease_Short{dd} '.mat']))
+            Table_Refugee=table(Refugee,Refugee_Gender,Refugee_Age_Female,Refugee_Age_Male);
+        else
+            load(['Table_Refugee_' Country{cc} '_' Disease_Short{dd} '.mat'],'Table_Refugee');
+            Table_Refugee_t=table(Refugee,Refugee_Gender,Refugee_Age_Female,Refugee_Age_Male);
+            Table_Refugee=[Table_Refugee;Table_Refugee_t];
+        end
+        save(['Table_Refugee_' Country{cc} '_' Disease_Short{dd} '.mat'],'Table_Refugee');
+    end
 end
-
 
 
 end

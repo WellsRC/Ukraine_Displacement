@@ -1,3 +1,5 @@
+clear;
+
 UKR_Mortality=readtable('Mortality_UKR_Eng_Ref_Col.csv');
 DB_UKR=readtable('Disease_UKR_National.xlsx');
 
