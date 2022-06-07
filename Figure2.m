@@ -20,7 +20,7 @@
 %    end
 % end
 % 
-% [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
+% [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
 % 
 % T=readtable('idp_estimation_08_03_2022-unhcr-protection-cluster.xlsx','Sheet','Dataset');
 % Num_IDP=T.IDPEstimation;
@@ -36,63 +36,84 @@
 % for jj=1:nDays    
 %     [PS_MinDay(:,jj),PS_MeanDay(:,jj),PS_MedianDay(:,jj)]=Min_Distance_Conflict(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:));
 % end
-% 
+
 % PS_GeoDay=zeros(size(PS_MinDay));
 % for ii=1:nDays
-%     PS_GeoDay(:,ii)=1-geomean(PS_MinDay(:,1:ii),2);
+%     PS_GeoDay(:,ii)=1-geomean(PS_MinDay(:,max(1,ii-6):ii),2);
 % end
-% 
-% close all;
+% clear;
 % S0=shaperead('UKR_ADM_0\UKR_adm0.shp','UseGeoCoords',true);
-% load('Conflict_Colourmap.mat','conflict_map');
-% dp=[7 13 21 28;
-%     35 49 63 77];
-% for jj=1:2    
-%     figure('units','normalized','outerposition',[0. 0. 1 1]);
-%     for dayplot=1:4
-%         switch dayplot
-%             case 1
-%                 subplot('Position',[0.01 0.51 0.45 0.45])
-%             case 2
-%                 subplot('Position',[0.46 0.51 0.45 0.45])
-%             case 3
-%                 subplot('Position',[0.01 0.02 0.45 0.45])
-%             case 4
-%                 subplot('Position',[0.46 0.02 0.45 0.45])
-%         end
-% 
-%         Safe_Day=PS_GeoDay(:,dp(jj,dayplot));
-%         Ps=reshape(Safe_Day,length(latitude),length(longitude));
-%         Ps(~tp_UKR)=NaN;
-%         contourf(longitude,latitude,(Ps),'LineStyle','none'); hold on;
-%         geoshow(S0,'FaceColor','none','LineWidth',1.5,'EdgeColor',[0.4 0.4 0.4]);
-% 
-%         if(datenum('February 23, 2022')+dp(jj,dayplot)==datenum('March 8, 2022'))
-%             ss=scatter(Lon_IDP,Lat_IDP,30,'MarkerFaceColor',hex2rgb('#258039'),'MarkerEdgeColor',hex2rgb('#258039')); hold on;
-%             legend(ss,'UNHCR IDP site','Fontsize',18);
-%             legend boxoff;
-%         end
-%         if dayplot==1
-%             cxl=caxis;
-%         else
-%             caxis(cxl);
-%         end
-% 
-%         if(dayplot==4)
-%             h=colorbar;
-%             h.Position=[0.892419467669721,0.041540020263425,0.011204481792717,0.931104356636274];
-%             h.Ticks=[h.Limits];
-%             h.TickLabels={'Low-risk','High-Risk'};
-%             h.FontSize=20;
-%         end
-%         text(29.38,max(latitude),datestr([datenum('February 23, 2022')+dp(jj,dayplot)],'mmmm dd, yyyy'),'Fontsize',28);
-%         text(min(longitude),max(latitude),char(64+dayplot),'Fontsize',30,'FontWeight','bold');
-%         box off;
-%     set(gca, 'visible', 'off');
-%     colormap(conflict_map);
+% fig1=figure('units','normalized','outerposition',[0. 0. 1 1]);
+% for dayplot=1:4
+%     switch dayplot
+%         case 1
+%             sp1=subplot('Position',[0.01 0.51 0.45 0.45]);
+%         case 2
+%             sp2=subplot('Position',[0.46 0.51 0.45 0.45]);
+%         case 3
+%             sp3=subplot('Position',[0.01 0.02 0.45 0.45]);
+%         case 4
+%             sp4=subplot('Position',[0.46 0.02 0.45 0.45]);
 %     end
-%     print(gcf,['Estimated_Risk_Region-' num2str(jj) '.png'],'-dpng','-r300');
+% 
+%     geoshow(S0,'FaceColor','none','LineWidth',1.5,'EdgeColor',[0.4 0.4 0.4]);
 % end
+%save('Fig_2_Properties.mat','fig1','sp1','sp2','sp3','sp4');
+close all;
+load('Figure_2_Plotting_Data.mat');
+
+
+load('Conflict_Colourmap.mat','conflict_map');
+dp=[7 13 21 42;
+    59 66 72 79];
+
+for jj=1:2    
+    close all;
+    load('Fig_2_Properties.mat')
+    for dayplot=1:4
+        switch dayplot
+            case 1
+                set(fig1, 'CurrentAxes', sp1)
+            case 2
+                set(fig1, 'CurrentAxes', sp2)
+            case 3
+                set(fig1, 'CurrentAxes', sp3)
+            case 4
+                set(fig1, 'CurrentAxes', sp4)
+        end
+
+        Safe_Day=PS_GeoDay(:,dp(jj,dayplot));
+        Ps=reshape(Safe_Day,length(latitude),length(longitude));
+        Ps(~tp_UKR)=NaN;
+        
+        hold on;
+        contourf(longitude,latitude,(Ps),'LineStyle','none'); 
+        if(datenum('February 23, 2022')+dp(jj,dayplot)==datenum('March 8, 2022'))
+            ss=scatter(Lon_IDP,Lat_IDP,30,'MarkerFaceColor',hex2rgb('#258039'),'MarkerEdgeColor',hex2rgb('#258039')); hold on;
+            legend(ss,'UNHCR IDP site','Fontsize',18);
+            legend boxoff;
+        end
+        if dayplot==1
+            cxl=caxis;
+        else
+            caxis(cxl);
+        end
+
+        if((dayplot==4) &&(jj==2))
+            h=colorbar;
+            h.Position=[0.892419467669721,0.041540020263425,0.011204481792717,0.931104356636274];
+            h.Ticks=[h.Limits];
+            h.TickLabels={'Low-risk','High-Risk'};
+            h.FontSize=20;
+        end
+        text(29.38,max(latitude),datestr([datenum('February 23, 2022')+dp(jj,dayplot)],'mmmm dd, yyyy'),'Fontsize',28);
+        text(min(longitude),max(latitude),char(64+dayplot+4.*(jj-1)),'Fontsize',30,'FontWeight','bold');
+        box off;
+    set(gca, 'visible', 'off');
+    colormap(conflict_map);
+    end
+    print(gcf,['Estimated_Risk_Region-' num2str(jj) '.png'],'-dpng','-r300');
+end
 
 figure('units','normalized','outerposition',[0.2 0.2 0.6 0.6]);
 Sum_Safe=sum(PS_GeoDay,1);

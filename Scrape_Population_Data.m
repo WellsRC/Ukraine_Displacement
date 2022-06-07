@@ -4,7 +4,7 @@ clear;
 Mapped_Names=readtable('mapped_data.csv');
 
 
-BC=readtable('ukr_border_crossings_170322.xlsx','Sheet','Border Crossings');
+BC=readtable('ukr_border_crossings_140422.xlsx','Sheet','Border Crossings');
 
 Border_Crossing_Country=BC.Country;
 load('FB_SCI_Lookup.mat');

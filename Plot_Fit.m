@@ -1,12 +1,15 @@
 clear;
 close all;
 
-[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-
+[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
+load('MCMC_out-k=1371.mat','L_V','Parameter_V')
+day_W_fix=7;
+ff=find(L_V==max(L_V(L_V<0)),1);
+[Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(ff,:),RC,Time_Switch,day_W_fix);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Run Fitting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Kernel_Paremeter-Window_Conflict=7_days','Parameter');
+% load('Kernel_Paremeter-Window_Conflict=7_days','Parameter');
 
 [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
  
@@ -24,7 +27,7 @@ end
 figure('units','normalized','outerposition',[0. 0. 1 1]);
 bar(Y,'k'); hold on
 scatter([1:length(Number_Displacement.Refugee)],Number_Displacement.Refugee,40,'r','filled');
-
+ylabel('No. refugee');
 
 % IDP
 Y=zeros(length(Date_Displacement.IDP_Origin),6);
@@ -68,12 +71,14 @@ for ii=1:4
 
     bar(Y(ii,:)./sum(Y(ii,:),2),'k'); hold on
     scatter(1:6,Z(ii,:)./sum(Z(ii,:),2),40,'r','filled');
+    ylabel('Proportion origin (MACRO)');
 end
 
 
 figure('units','normalized','outerposition',[0. 0. 1 1]);
     bar(sum(Y,2),'k'); hold on
     scatter(1:length(Date_Displacement.IDP_Origin),sum(Z,2),40,'r','filled');
+    ylabel('No. IDP');
 
 Y=zeros(length(Date_Displacement.Proportion_IDP_Age),length(Daily_IDP_Age(:,1)));
 Z=Y;
@@ -88,6 +93,7 @@ for ii=1:4
 
     bar(Y(ii,:),'k'); hold on
     scatter(1:4,Z(ii,:),40,'r','filled');
+    ylabel('Proportion age');
 end
 
 Y=zeros(length(Date_Displacement.Proportion_IDP_Female),1);
@@ -101,3 +107,4 @@ figure('units','normalized','outerposition',[0. 0. 1 1]);
 
     bar(Y,'k'); hold on
     scatter(1:4,Z,40,'r','filled');
+ylabel('Proportion female');

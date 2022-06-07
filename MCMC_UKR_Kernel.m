@@ -1,12 +1,9 @@
-function [Parameter_V,L_V,a_V] = MCMC_UKR_Kernel(MCMC_Parameters,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix)
+function [Parameter_V,L_V,a_V] = MCMC_UKR_Kernel(MCMC_Parameters,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix,L_V,Parameter_V,a_V,k)
 
 x_old=MCMC_Parameters.x0;
 L_old = -ObjectiveFunction(x_old,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix);
 P_old=Prior_Dist(x_old);
 
-Parameter_V=zeros(MCMC_Parameters.Size,length(x_old));
-L_V=zeros(MCMC_Parameters.Size,1);
-a_V=zeros(MCMC_Parameters.Size,1);
 
 Parameter_V(1,:)=x_old;
 L_V(1)=L_old;
@@ -24,7 +21,6 @@ L_MD=L_Last;
 Parameter_Last(1,:)=x_old;
 Parameter_MD=Parameter_Last;
 L_Last(1)=L_old;
-k=1;
 count_sample=1;
 while(count<MCMC_Parameters.Size)
     if(rem(count_sample,MCMC_Parameters.Last_Sample_COV)==0)        

@@ -1,50 +1,45 @@
-function w_tot=Determine_Weights_Refugee(lambda_sci,lambda_bc,sc_bc,s_nato,lambda_GDP,Ukraine_Pop,Border_Crossing_Country)
+function w_tot=Determine_Weights_Refugee(Parameter_Map_Refugee,Data)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute weights 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Social connectedness
 Parameter.Scale=1;
-Parameter.Breadth=lambda_sci;
-X=([Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
-X=[min(X,[],2) X];
+Parameter.Breadth=Parameter_Map_Refugee.lambda_sci;
+X=([Data.Refugee.Poland.FB Data.Refugee.Slovakia.FB Data.Refugee.Hungary.FB Data.Refugee.Romania.FB Data.Refugee.Belarus.FB Data.Refugee.Moldova.FB Data.Refugee.Russia.FB]);
 w_sci=Kernel_Function(log(max(X(:)))-log(X),Parameter);
-% w_sci=1-exp(-lambda_sci.*[Ukraine_Pop.per_Poland Ukraine_Pop.per_Belarus Ukraine_Pop.per_Slovakia Ukraine_Pop.per_Hungary Ukraine_Pop.per_Romania Ukraine_Pop.per_Moldova Ukraine_Pop.per_Other]);
 
-% min was chosen to reduce connectedness to russia
- %[sc_sci.*ones(size(Ukraine_Pop.per_Poland)) w_sci];
-
-%https://tradingeconomics.com/country-list/gdp?continent=europe
-GDP=[1484 594 60.26 105 155 249 11.91 15276./27];
+% GDP
+GDP=([Data.Refugee.Poland.GDP Data.Refugee.Slovakia.GDP Data.Refugee.Hungary.GDP Data.Refugee.Romania.GDP Data.Refugee.Belarus.GDP Data.Refugee.Moldova.GDP Data.Refugee.Russia.GDP]);
 GDP=max(GDP)-GDP;
-% GDP_per_Capita=[11787 14588 6222 17252 14328 10830 3250 30997];
 Parameter.Scale=1;
-Parameter.Breadth=lambda_GDP;
-
+Parameter.Breadth=Parameter_Map_Refugee.lambda_GDP;
 w_GDP=Kernel_Function(GDP,Parameter);
-% w_GDP=1-exp(-lambda_GDP.*GDP);
-w_GDP=repmat(w_GDP,length(Ukraine_Pop.per_Poland),1);
+w_GDP=repmat(w_GDP,length(Data.Refugee.Poland.Distance_Border),1);
 
-Country_Name={'Russian Federation','Poland','Belarus','Slovakia','Hungary','Romania','Moldova'};
-
-w_nato=repmat([s_nato 1 s_nato 1 1 1 s_nato 1],length(Ukraine_Pop.per_Poland),1);
-
-w_bc=zeros(length(Ukraine_Pop.per_Poland),length(Country_Name));
-
-dist_BC=Ukraine_Pop.distance_bc;
+% GDP per capita
+GDPc=([Data.Refugee.Poland.GDP_per_Capita Data.Refugee.Slovakia.GDP_per_Capita Data.Refugee.Hungary.GDP_per_Capita Data.Refugee.Romania.GDP_per_Capita Data.Refugee.Belarus.GDP_per_Capita Data.Refugee.Moldova.GDP_per_Capita Data.Refugee.Russia.GDP_per_Capita]);
+GDPc=max(GDPc)-GDPc;
 Parameter.Scale=1;
-Parameter.Breadth=lambda_bc;
+Parameter.Breadth=Parameter_Map_Refugee.lambda_GDPc;
+w_GDPc=Kernel_Function(GDPc,Parameter);
+w_GDPc=repmat(w_GDPc,length(Data.Refugee.Poland.Distance_Border),1);
 
-for ii=1:length(Country_Name)
-    f_BC=strcmp(Border_Crossing_Country,Country_Name{ii});
-    w_bc(:,ii)=Kernel_Function(median(dist_BC(:,f_BC),2),Parameter).^(1./sum(f_BC));
-end
+% NATO
+NATO=max([Data.Refugee.Poland.NATO Data.Refugee.Slovakia.NATO Data.Refugee.Hungary.NATO Data.Refugee.Romania.NATO Data.Refugee.Belarus.NATO Data.Refugee.Moldova.NATO Data.Refugee.Russia.NATO],Parameter_Map_Refugee.weight_NATO);
+w_nato=repmat(NATO,length(Data.Refugee.Poland.Distance_Border),1);
 
-w_bc=[w_bc sc_bc.*ones(size(Ukraine_Pop.per_Poland))];
+% Distance to Border Crossing
+X=[Data.Refugee.Poland.Distance_Border Data.Refugee.Slovakia.Distance_Border Data.Refugee.Hungary.Distance_Border Data.Refugee.Romania.Distance_Border Data.Refugee.Belarus.Distance_Border Data.Refugee.Moldova.Distance_Border Data.Refugee.Russia.Distance_Border];
+Y=[Data.Refugee.Poland.Number_Border_Crossings Data.Refugee.Slovakia.Number_Border_Crossings Data.Refugee.Hungary.Number_Border_Crossings Data.Refugee.Romania.Number_Border_Crossings Data.Refugee.Belarus.Number_Border_Crossings Data.Refugee.Moldova.Number_Border_Crossings Data.Refugee.Russia.Number_Border_Crossings];
+Parameter.Scale=1;
+Parameter.Breadth=Parameter_Map_Refugee.lambda_border;
+w_bc=Kernel_Function(X,Parameter).^repmat(1./Y,length(X(:,1)),1);
 
+w_tot=(w_sci.*w_nato.*w_GDP.*w_bc.*w_GDPc);
 
-w_tot=(w_sci.*w_nato.*w_GDP.*w_bc);
+w_tot=w_tot./repmat(sum(w_tot,2),1,7);
 
-w_tot=w_tot./repmat(sum(w_tot,2),1,length(Country_Name)+1);
-
+w_tot=[(1-Parameter_Map_Refugee.weight_Europe).*w_tot Parameter_Map_Refugee.weight_Europe.*ones(size(w_tot(:,1)))];
 end
