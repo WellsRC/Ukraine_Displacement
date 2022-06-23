@@ -7,5 +7,5 @@ for ii=1:length(Data_Points)
     Model_Est(ii)=Est_Daily_IDP.oblast(IDP_Displacement.Oblast.Index(ii),ismember(Time_Sim,datenum(IDP_Displacement.Oblast.Date)));
 end
 
-L=sum(log(normpdf(sum(Model_Est(:)).*(Data_Points(:))./sum(Data_Points(:)),(Model_Est(:)),Parameter_Mapping.STDEV_OBLAST)));
+L=(log(normpdf(sum(Model_Est(:)).*(Data_Points(:))./sum(Data_Points(:)),(Model_Est(:)),Parameter_Mapping.STDEV_OBLAST)));
 end

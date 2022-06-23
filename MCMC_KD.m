@@ -1,8 +1,3 @@
-% parpool(32);
-% 
-% [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-% day_W_fix=7;
-
 load('Load_Data_MCMC.mat');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Run Fitting
@@ -10,8 +5,7 @@ load('Load_Data_MCMC.mat');
 
 [lb,ub]=ParameterBounds;
 
-load('MCMC_out-k=1161.mat','L_V','Parameter_V','Sigma_J','a_V','k','lambda_J')
-% load('MCMC_Sigma_Initial.mat','Sigma_J','MLE');
+load('MCMC_out-k=2331.mat','L_V','Parameter_V','Sigma_J','a_V','k','lambda_J')
 MCMC_Parameters.x0=Parameter_V(L_V==max(L_V(L_V<0)),:);
 MCMC_Parameters.p=0.25;
 MCMC_Parameters.alpha_F=0.23;

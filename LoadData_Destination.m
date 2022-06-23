@@ -192,14 +192,14 @@ CAP(isnan(CAP))=1;
 Mapping_Data.IDP.Captial=CAP';
 Mapping_Data.IDP.Population_Ratio=(Pop_R./repmat(Pop_S2,height(Ukraine_Pop),1))';
 
-Dist=zeros(height(Ukraine_Pop),length(S2));
-for jj=1:length(S2)
-   parfor ii=1:height(Ukraine_Pop)
-      tf= strcmp(Ukraine_Pop.oblast,S2(jj).NAME_1) &  strcmp(Ukraine_Pop.raion,S2(jj).NAME_2); 
-      Dist(ii,jj)=sum(Ukraine_Pop.pop_adj(tf).*deg2km(distance('gc',Ukraine_Pop.latitude_v(ii),Ukraine_Pop.longitude_v(ii),Ukraine_Pop.latitude_v(tf),Ukraine_Pop.longitude_v(tf))))./(sum(Ukraine_Pop.pop_adj(tf)));
-   end
-end
-Mapping_Data.IDP.Distance=Dist';
+% Dist=zeros(height(Ukraine_Pop),length(S2));
+% for jj=1:length(S2)
+%    parfor ii=1:height(Ukraine_Pop)
+%       tf= strcmp(Ukraine_Pop.oblast,S2(jj).NAME_1) &  strcmp(Ukraine_Pop.raion,S2(jj).NAME_2); 
+%       Dist(ii,jj)=sum(Ukraine_Pop.pop_adj(tf).*deg2km(distance('gc',Ukraine_Pop.latitude_v(ii),Ukraine_Pop.longitude_v(ii),Ukraine_Pop.latitude_v(tf),Ukraine_Pop.longitude_v(tf))))./(sum(Ukraine_Pop.pop_adj(tf)));
+%    end
+% end
+% Mapping_Data.IDP.Distance=Dist';
 
 
 
@@ -254,12 +254,48 @@ for ii=1:nDays
 end
 
 Conflict=zeros(length(S2),nDays);
+Raion_Index=zeros(length(PS_GeoDay(:,1)),1);
 
 for jj=1:length(S2)
     tf= strcmp(Ukraine_Pop.oblast,S2(jj).NAME_1) &  strcmp(Ukraine_Pop.raion,S2(jj).NAME_2); 
     Conflict(jj,:)=median(PS_GeoDay(tf,:),1);
+    Raion_Index(tf)=jj;
 end
-Mapping_Data.IDP.Raion_Conflict=Conflict;
-Mapping_Data.IDP.Pixel_Conflict=PS_GeoDay;
 
+
+Mapping_Data.IDP.Raion_Conflict=Conflict;
+Mapping_Data.IDP.Restricted_Travel_Indexing=Raion_Index;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+%% Area under control
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+
+% https://www.arcgis.com/home/item.html?id=9f04944a2fe84edab9da31750c2b15eb
+SP=shaperead('Test_Shape\DonbasBeforeFeb24_2022.shp','UseGeoCoords',true);
+SA=shaperead('Test_Shape\Assessed Russian-controlled Ukrainian Territory.shp','UseGeoCoords',true);
+SC=shaperead('Test_Shape\Claimed Russian Control over Ukrainian Territory.shp','UseGeoCoords',true);
+SU=shaperead('Test_Shape\Claimed Ukrainian Counteroffensives.shp','UseGeoCoords',true);
+SR=shaperead('Test_Shape\AssessedRussianAdvancesinUkraine.shp','UseGeoCoords',true);
+
+AURC=zeros(length(S2),2);
+for ii=1:length(S2)
+    tf=inpolygon(S2(ii).Lat,S2(ii).Lon,SA(1).Lat,SA(1).Lon);
+    for jj=2:length(SA)
+        tf=inpolygon(S2(ii).Lat,S2(ii).Lon,SA(jj).Lat,SA(jj).Lon) | tf;
+    end
+    for jj=1:length(SC)
+        tf=inpolygon(S2(ii).Lat,S2(ii).Lon,SC(jj).Lat,SC(jj).Lon) | tf;
+    end
+    
+    for jj=1:length(SU)
+        tf=inpolygon(S2(ii).Lat,S2(ii).Lon,SU(jj).Lat,SU(jj).Lon) | tf;
+    end
+    
+    for jj=1:length(SR)
+        tf=inpolygon(S2(ii).Lat,S2(ii).Lon,SR(jj).Lat,SR(jj).Lon) | tf;
+    end
+    
+    tf2=inpolygon(S2(ii).Lat,S2(ii).Lon,SP(1).Lat,SP(1).Lon) | inpolygon(S2(ii).Lat,S2(ii).Lon,SP(2).Lat,SP(2).Lon);
+    AURC(ii,:)=[min(1,sum(tf)) min(1,sum(tf2))];
 end
+Mapping_Data.IDP.Raion_Russian_Control=AURC;

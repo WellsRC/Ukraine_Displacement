@@ -68,7 +68,7 @@ dp=[7 13 21 42;
     59 66 72 79];
 
 for jj=1:2    
-    close all;
+%     close all;
     load('Fig_2_Properties.mat')
     for dayplot=1:4
         switch dayplot

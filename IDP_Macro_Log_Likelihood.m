@@ -28,6 +28,8 @@ for ii=1:length(L)
         Data_Points=IDP_Displacement.Macro.Center;
         Model_Est=Est_Daily_IDP.macro(ii,ismember(Time_Sim,datenum(IDP_Displacement.Macro.Center_Date)));
        
+   else
+       Model_Est=zeros(size(Tot_Model));
    end
    Tot_Model=Tot_Model+Model_Est;
 end
@@ -58,7 +60,8 @@ for ii=1:length(L)
        
    end
    if(~strcmp('N/A',N{ii}))
-        L(ii)=sum(log(normpdf((Tot_Model(:).*Data_Points(:)./Tot_Data(:)),(Model_Est(:)),Parameter_Mapping.STDEV_MACRO)));
+        L(ii)=sum(log(normpdf((Tot_Model(end).*Data_Points(end)./Tot_Data(end)),(Model_Est(end)),Parameter_Mapping.STDEV_MACRO)));
    end 
 end
+
 end

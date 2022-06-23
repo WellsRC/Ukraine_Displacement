@@ -10,15 +10,10 @@ Parameter_Map_Refugee.weight_Europe=x(6);
 Parameter_Map_Refugee.STDEV=10^x(7);
 
 % IDP parameters
-Parameter_Map_IDP.Breadth_Border_Distance=10.^x(8);
-Parameter_Map_IDP.Breadth_SCI=10^x(9);
-Parameter_Map_IDP.Breadth_Population_Sites=10^x(10);
-Parameter_Map_IDP.Scale_Capital=x(11);
-Parameter_Map_IDP.Breadth_Capital=10.^x(12);
-Parameter_Map_IDP.Scale_Distance=x(13);
-Parameter_Map_IDP.Breadth_Distance=10.^x(14);
-Parameter_Map_IDP.Breadth_Distance_Conflict=10.^x(15);
-Parameter_Map_IDP.STDEV_MACRO=10.^x(16);
-Parameter_Map_IDP.STDEV_OBLAST=10.^x(17);
-Parameter_Map_IDP.STDEV_RAION=10.^x(18);
+Parameter_Map_IDP.Breadth_SCI=10^x(8);
+Parameter_Map_IDP.Breadth_Conflict=x(9);
+Parameter_Map_IDP.Breadth_Travel_Conflict=x(10);
+Parameter_Map_IDP.Capital=10.^x(11);
+Parameter_Map_IDP.STDEV_MACRO=10.^x(12);
+
 end

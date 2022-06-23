@@ -24,11 +24,11 @@ for ii=1:length(D)
             end
 
             UKR_Mortality=UKR_Mortality_t(tf,:); 
-            
+            region_name=UKR_Mortality.region_name;
             raj_name=UKR_Mortality.raj_name;
             deaths=UKR_Mortality.deaths;
             
-            save(['UKR_Disease_Burden_' D{ii} '_Genger=' gender{g} '_Age=' age_class{aa} '.mat'],'prev','raj_name','deaths');
+            save(['UKR_Disease_Burden_' D{ii} '_Genger=' gender{g} '_Age=' age_class{aa} '.mat'],'prev','raj_name','deaths','region_name');
         end
     end
 end

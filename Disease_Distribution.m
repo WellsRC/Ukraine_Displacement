@@ -1,7 +1,9 @@
-function dpc=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop,PopTotal,Random)
+function [Burden_Non_IDP,Burden_IDP,Burden_Refugee]=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop_Non_IDP,Pop_IDP,Pop_Refugee,PopTotal,PopR,Random)
 
 U_Raion=unique(Raion);
-dpc=zeros(length(gender_v),length(Raion),length(age_class_v));
+Burden_IDP=zeros(size(Pop_IDP));
+weight=zeros(length(gender_v),length(Raion),length(age_class_v));
+test_w=zeros(length(U_Raion),2);
 for gg=1:length(gender_v)
     for aa=1:length(age_class_v)
         % National disease burden, raion mortality
@@ -16,18 +18,33 @@ for gg=1:length(gender_v)
                weightr=(sum(deaths(tf)));
            end
            t_out=strcmp(Raion,U_Raion{jj});
-           dpc(gg,t_out,aa)=weightr./sum(PopTotal(gg,t_out,aa));
+           total_r=length(unique(PopR(gg,t_out,aa)));
+           weight(gg,t_out,aa)=(weightr./total_r).*PopTotal(gg,t_out,aa)./PopR(gg,t_out,aa);           
         end
 
-        tfnz=find(dpc(gg,:,aa)>0);
+        tfnz=find(weight(gg,:,aa)>0);
         if(~isempty(tfnz))
-            indxs=dpc(gg,:,aa)==0 & Pop(gg,:,aa) >0;
-            dpc(gg,indxs,aa)=dpc(gg,tfnz(randi(length(tfnz),sum(indxs),1)),aa);
+            indxs=weight(gg,:,aa)==0 & PopTotal(gg,:,aa) >0;
+            if(Random)
+                r=randi(length(tfnz),sum(indxs),1);
+                weight(gg,indxs,aa)=(weight(gg,tfnz(r),aa)./PopTotal(gg,tfnz(r),aa)).*PopTotal(gg,indxs,aa);
+            else
+                weight(gg,indxs,aa)=mean(weight(gg,tfnz,aa)./PopTotal(gg,tfnz,aa)).*PopTotal(gg,indxs,aa);
+            end
         end
     end
 end
-dpc=dpc.*Pop;
 
-dpc=prev.*dpc./sum(dpc(:));
+Burden_Non_IDP=(prev.*weight./sum(weight(:))).*(Pop_Non_IDP./PopTotal);
+Burden_Non_IDP(PopTotal==0)=0;
+Burden_Refugee=(prev.*weight./sum(weight(:))).*(Pop_Refugee./PopTotal);
+Burden_Refugee(PopTotal==0)=0;
+nDays=length(Pop_IDP(1,1,1,:));
+for jj=1:nDays
+    temp=(prev.*weight./sum(weight(:))).*(Pop_IDP(:,:,:,jj)./PopTotal);
+    temp(PopTotal==0)=0;
+    Burden_IDP(:,:,:,jj)=temp;
+end
+
 
 end

@@ -1,4 +1,4 @@
-function L=Refugee_Country_Log_Likelihood(Est_Daily_Refugee,Refugee_Displacement,Time_Sim,Parameter_Map_Refugee,Tot_Refugee_Data)
+function L=Refugee_Country_Log_Likelihood(Est_Daily_Refugee,Refugee_Displacement,Parameter_Map_Refugee)
 
 Data=zeros(7,1);
 Model=zeros(7,1);
@@ -38,6 +38,6 @@ for ii=1:7
 end
 Tot_Model=sum(Model)+Est_Daily_Refugee.Europe_Other(end);
 
-L=log(normpdf(Tot_Model.*Data./Tot_Refugee_Data,Model,Parameter_Map_Refugee.STDEV));
+L=log(normpdf(Tot_Model.*Data./sum(Data),Model,Parameter_Map_Refugee.STDEV));
 
 end

@@ -9,5 +9,5 @@ for ii=1:length(Data_Points)
     end
 end
 
-L=sum(log(normpdf(sum(Model_Est(:)).*(Data_Points(:))./sum(Data_Points(:)),(Model_Est(:)),Parameter_Mapping_IDP.STDEV_RAION)));
+L=(log(normpdf(sum(Model_Est(Data_Points>0)).*(Data_Points(Data_Points>0))./sum(Data_Points(Data_Points>0)),(Model_Est(Data_Points>0)),Parameter_Mapping_IDP.STDEV_RAION)));
 end
