@@ -49,12 +49,6 @@ Number_Displacement.Proportion_IDP_Age=table2array(T(:,2:end));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 T=readtable('2022-02-15-2022-05-18-Ukraine.csv');
 
-ET=T.sub_event_type;
-
-tf=~strcmp(ET,'Protest');
-
-T=T(tf,:);
-
 DT=datenum(T.event_date);
 
 T=T(DT>=datenum('February 24, 2022'),:);

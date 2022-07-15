@@ -1,13 +1,13 @@
-function [Burden_Non_IDP,Burden_IDP,Burden_Refugee]=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop_Non_IDP,Pop_IDP,Pop_Refugee,PopTotal,PopR,Random)
+function [Burden_Non_IDP,Burden_IDP,Burden_Refugee,prev]=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop_Non_IDP,Pop_IDP,Pop_Refugee,PopTotal,PopR,Random)
 
 U_Raion=unique(Raion);
 Burden_IDP=zeros(size(Pop_IDP));
 weight=zeros(length(gender_v),length(Raion),length(age_class_v));
-test_w=zeros(length(U_Raion),2);
+prev=Prev_Disease(Disease,Random);
 for gg=1:length(gender_v)
     for aa=1:length(age_class_v)
         % National disease burden, raion mortality
-        load(['UKR_Disease_Burden_' Disease '_Genger=' gender_v{gg} '_Age=' age_class_v{aa} '.mat']);
+        load(['UKR_Disease_Burden_' Disease '_Genger=' gender_v{gg} '_Age=' age_class_v{aa} '.mat'],'deaths','raj_name');
 
 
         for jj=1:length(U_Raion)
@@ -35,11 +35,32 @@ for gg=1:length(gender_v)
     end
 end
 
-Burden_Non_IDP=(prev.*weight./sum(weight(:))).*(Pop_Non_IDP./PopTotal);
-Burden_Non_IDP(PopTotal==0)=0;
-Burden_Refugee=(prev.*weight./sum(weight(:))).*(Pop_Refugee./PopTotal);
-Burden_Refugee(PopTotal==0)=0;
+
 nDays=length(Pop_IDP(1,1,1,:));
+if(length(size(Pop_Non_IDP))==3)
+    Burden_Non_IDP=(prev.*weight./sum(weight(:))).*(Pop_Non_IDP./PopTotal);
+    Burden_Non_IDP(PopTotal==0)=0;
+else
+    Burden_Non_IDP=zeros(size(Pop_Non_IDP));
+    for jj=1:nDays
+        temp=(prev.*weight./sum(weight(:))).*(Pop_Non_IDP(:,:,:,jj)./PopTotal);
+        temp(PopTotal==0)=0;
+        Burden_Non_IDP(:,:,:,jj)=temp;
+    end
+end
+
+if(length(size(Pop_Refugee))==3)
+    Burden_Refugee=(prev.*weight./sum(weight(:))).*(Pop_Refugee./PopTotal);
+    Burden_Refugee(PopTotal==0)=0;
+else
+    Burden_Refugee=zeros(size(Pop_Refugee));
+    for jj=1:nDays
+        temp=(prev.*weight./sum(weight(:))).*(Pop_Refugee(:,:,:,jj)./PopTotal);
+        temp(PopTotal==0)=0;
+        Burden_Refugee(:,:,:,jj)=temp;
+    end
+end
+
 for jj=1:nDays
     temp=(prev.*weight./sum(weight(:))).*(Pop_IDP(:,:,:,jj)./PopTotal);
     temp(PopTotal==0)=0;

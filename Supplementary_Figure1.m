@@ -2,12 +2,15 @@ clear;
 close all;
 
 [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-load('MCMC_out-k=2821.mat','L_V','Parameter_V')
+load('Merge_Parameter_Uncertainty.mat')
 day_W_fix=7;
 
-Parameter_V=Parameter_V(L_V<0,:);
-Parameter_V=unique(Parameter_V(end-9999:end,:),'rows');
-NS=500;
+Parameter_V=Par_KD;
+
+
+NS=length(Par_KD(:,1));
+
+
 Daily_Refugee=zeros(NS,length(Time_Sim));
 Daily_IDP=zeros(NS,length(Time_Sim));
 Daily_IDP_Origin_Kyiv=zeros(NS,length(Time_Sim));
@@ -21,9 +24,8 @@ Daily_IDP_Age_30_39=zeros(NS,length(Time_Sim));
 Daily_IDP_Age_40_49=zeros(NS,length(Time_Sim));
 Daily_IDP_Age_Over_50=zeros(NS,length(Time_Sim));
 Daily_IDP_Female=zeros(NS,length(Time_Sim));
-r_samp=randi(length(Parameter_V(:,1)),NS,1);
 parfor jj=1:NS
-    [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(r_samp(jj),:),RC,Time_Switch,day_W_fix);
+    [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(jj,:),RC,Time_Switch,day_W_fix);
     [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
     Daily_Refugee(jj,:)=squeeze(sum(Pop_Refugee,[1:3]));
     Daily_IDP_Origin_Macro_Full=Calc_Macro_Displacement(squeeze(sum(Pop_IDP,[1 3])),Pop_MACRO);
@@ -33,7 +35,7 @@ parfor jj=1:NS
     Daily_IDP_Origin_East(jj,:)=Daily_IDP_Origin_Macro_Full.East;
     Daily_IDP_Origin_West(jj,:)=Daily_IDP_Origin_Macro_Full.West;
     Daily_IDP_Origin_North(jj,:)=Daily_IDP_Origin_Macro_Full.North;
-    Daily_IDP_Origin_Central(jj,:)=Daily_IDP_Origin_Macro_Full.Central;
+    Daily_IDP_Origin_Central(jj,:)=Daily_IDP_Origin_Macro_Full.Center;
     
     Daily_IDP_Age_Full=Calc_Age_Displacement(squeeze(sum(Pop_IDP,[1 2])));
     
@@ -85,3 +87,96 @@ set(gca,'tickdir','out','lineWidth',2,'XTick',Time_Sim(1:7:end),'XTickLabel',{da
 xtickangle(45)
 xlabel('Date','Fontsize',28);
 ylabel({'Number of IDPs','(100,000)'},'Fontsize',28);
+
+print(gcf,'Supplementary_Figure_Refugee_IDP_Temporal.png','-dpng','-r300');
+
+figure('units','normalized','outerposition',[0 0.05 1 1]);
+for dd=1:4
+    switch dd
+        case 1
+            subplot('Position',[0.06,0.60 0.43 0.35]);
+        case 2
+            subplot('Position',[0.55,0.60 0.43 0.35]);
+        case 3
+            subplot('Position',[0.06,0.1 0.43 0.35]);
+        case 4
+            subplot('Position',[0.55,0.1 0.43 0.35]);
+    end
+datas=[Number_Displacement.IDP_Origin.Kyiv(dd) Number_Displacement.IDP_Origin.South(dd) Number_Displacement.IDP_Origin.East(dd) Number_Displacement.IDP_Origin.West(dd) Number_Displacement.IDP_Origin.North(dd) Number_Displacement.IDP_Origin.Center(dd)];
+datas=100.*datas./sum(datas);
+
+model_est=[Daily_IDP_Origin_Kyiv(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Origin_South(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Origin_East(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Origin_West(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Origin_North(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Origin_Central(:,Time_Sim==Date_Displacement.IDP_Origin(dd))];
+
+model_est=100.*model_est./repmat(sum(model_est,2),1,6);
+for mm=1:6
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[25 75 75 25]),Colors,'FaceAlpha',0.5,'LineStyle','none');
+    hold on;
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[2.5 97.5 97.5 2.5]),Colors,'FaceAlpha',0.5,'LineStyle','none');
+end
+scatter([1:6],datas,40,Scatter_Color,'filled');
+
+set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:6],'XTickLabel',{'Kyiv','South','East','West','North','Center'})
+xlim([0.5 6.5])
+title(datestr(Date_Displacement.IDP_Origin(dd),'mmmm dd'))
+ytickformat('percentage')
+ylabel('Proportion','Fontsize',24)
+xlabel('Origin macro-region','Fontsize',24);
+end
+
+print(gcf,'Supplementary_Figure_IDP_Origin.png','-dpng','-r300');
+
+figure('units','normalized','outerposition',[0.15 0.15 0.5 0.5]);
+subplot('Position',[0.167372881355932,0.212527964205817,0.820974576271186,0.753914988814318]);
+model_est=zeros(NS,length(Date_Displacement.Proportion_IDP_Female),1);
+for dd=1:length(Date_Displacement.Proportion_IDP_Female)
+    model_est(:,dd)=100.*Daily_IDP_Female(:,Time_Sim==Date_Displacement.Proportion_IDP_Female(dd));
+end
+for mm=1:length(Date_Displacement.Proportion_IDP_Female)
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[25 75 75 25]),Colors,'FaceAlpha',0.5,'LineStyle','none');
+    hold on;
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[2.5 97.5 97.5 2.5]),Colors,'FaceAlpha',0.5,'LineStyle','none');    
+end
+scatter([1:length(Date_Displacement.Proportion_IDP_Female)],100.*Number_Displacement.Proportion_IDP_Female,40,Scatter_Color,'filled');
+set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:length(Date_Displacement.Proportion_IDP_Female)],'XTickLabel',{datestr(Date_Displacement.Proportion_IDP_Female)})
+xlim([0.5 length(Date_Displacement.Proportion_IDP_Female)+0.5])
+ytickformat('percentage')
+ylim([0 80]);
+ylabel({'Percentage of IDPs','that are female'},'Fontsize',24)
+xlabel('Date','Fontsize',24);
+
+print(gcf,'Supplementary_Figure_IDP_Female.png','-dpng','-r300');
+
+figure('units','normalized','outerposition',[0 0.05 1 1]);
+for dd=1:4
+    switch dd
+        case 1
+            subplot('Position',[0.06,0.60 0.43 0.35]);
+        case 2
+            subplot('Position',[0.55,0.60 0.43 0.35]);
+        case 3
+            subplot('Position',[0.06,0.1 0.43 0.35]);
+        case 4
+            subplot('Position',[0.55,0.1 0.43 0.35]);
+    end
+datas=100.*[Number_Displacement.Proportion_IDP_Age(dd,:)];
+
+model_est=100.*[Daily_IDP_Age_18_29(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_30_39(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_40_49(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_Over_50(:,Time_Sim==Date_Displacement.IDP_Origin(dd))];
+
+
+for mm=1:4
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[25 75 75 25]),Colors,'FaceAlpha',0.5,'LineStyle','none');
+    hold on;
+    patch(mm+[-0.45 -0.45 0.45 0.45],prctile(model_est(:,mm),[2.5 97.5 97.5 2.5]),Colors,'FaceAlpha',0.5,'LineStyle','none');
+end
+scatter([1:4],datas,40,Scatter_Color,'filled');
+
+set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:4],'XTickLabel',{'18-29','30-39','40-49','50+'})
+xlim([0.5 4.5])
+ylim([0 40]);
+title(datestr(Date_Displacement.Proportion_IDP_Age(dd),'mmmm dd'))
+ytickformat('percentage')
+ylabel('Proportion','Fontsize',24)
+xlabel('Age class','Fontsize',24);
+end
+
+print(gcf,'Supplementary_Figure_IDP_Age.png','-dpng','-r300');

@@ -32,23 +32,24 @@ for ii=1:length(Raion_S)
    end
 end
 
-Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'HIV_T';'TB';'TB_DR'};
+Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 
-load(['Mapping_Refugee_IDP_MLE.mat'],'par_V');
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(par_V);
+load('Merge_Parameter_Uncertainty.mat')
+day_W_fix=7;
+
+L=sum(L_T,2);
+Par_KD=Par_KD(L==max(L),:);
+Par_Map=Par_Map(L==max(L),:);
+
+[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map);
 load('Load_Data_MCMC_Mapping.mat','Mapping_Data');
 w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 
 
 Refugee_Disease=zeros(length(Disease_Short)+1,9);
 
-load('MCMC_out-k=2821.mat')
-Parameter_V=Parameter_V(L_V<0,:);
-L_V=L_V(L_V<0);
-Parameter_V=Parameter_V(end-9999:end,:);
-L_V=L_V(end-9999:end);
 
-[Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(L_V==max(L_V),:),RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(Par_KD,RC,Time_Switch,day_W_fix);
 
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
 
@@ -78,9 +79,9 @@ CC=[0 0 0; % All
     hex2rgb('#807dba'); %Diabetes
     hex2rgb('#FFBB00'); % Cancer
     hex2rgb('#034e76'); % HIV
-    hex2rgb('#9ebcda'); % HIV Treatment
-    hex2rgb('#8c2d04'); %TB
-    hex2rgb('#DE7a22');]; %TB drug-resitant
+%     hex2rgb('#9ebcda'); % HIV Treatment
+    hex2rgb('#8c2d04')]; %TB
+%     hex2rgb('#DE7a22');]; %TB drug-resitant
 
 [B,I] = sort(Refugee_Disease(1,:));
 I=flip(I);
@@ -97,7 +98,7 @@ set(gca,'Tickdir','out','linewidth',2,'XTick',[1:length(Country_Name)],'XTicklab
 
 hold on;
 % xtickformat('percentage');
-Disease={'All';'CVD';'Diabetes';'Cancer';'HIV';'HIV (Treated)';'TB';'TB (Drug resistant)'};
+Disease={'All';'CVD';'Diabetes';'Cancer';'HIV';'TB';};
 legend((bb),(Disease),'Location','NorthEast','NumColumns',8);
 legend boxoff;
 box off;

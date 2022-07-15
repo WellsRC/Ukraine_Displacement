@@ -5,13 +5,12 @@ clear;
 close all;
 clc;
 
-load('MCMC_out-k=2821.mat')
-Parameter_V=Parameter_V(L_V<0,:);
-L_V=L_V(L_V<0);
-Parameter_V=Parameter_V(end-9999:end,:);
-L_V=L_V(end-9999:end);
+[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
+day_W_fix=7;
+load('Merge_Parameter_Uncertainty.mat')
 
-x=Parameter_V(L_V==max(L_V),:);
+L=sum(L_T,2);
+x=Par_KD(L==max(L),:);
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
