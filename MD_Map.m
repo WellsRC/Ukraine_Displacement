@@ -24,7 +24,8 @@ par_V=zeros(NS,length(LB));
 L_V_Mapping=zeros(NS,1);
 
 load('Macro_Oblast_Map.mat','Macro_Map');
-x=[1.28002277839657,2.80219780031663,4.20104005286396,0.0753034566282208,2.61146699502349,0.0403068705232432,2.70689046521075,0.9373,0.9897,0.6227,0.2502,5.7];
+x=[1.28002277839657,2.80219780031663,4.20104005286396,0.0753034566282208,2.61146699502349,0.0403068705232432,4,0.9373,0.9897,0.6227,0.2502,5.7];
+
 options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',250,'InitialPoints',x,'UseParallel',false);
 
 ccf=0;
@@ -44,11 +45,9 @@ for ss=1:NS
     [Pop_Displace,~,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
     Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to examine the new idp only
-
+    
     [par_V(ss,:),fval]=surrogateopt(@(x)ObjectiveFunction_IDP_Refugee(x,Daily_Refugee,Daily_IDP_Origin,Mapping_Data,Refugee_Displacement,IDP_Displacement,Time_Sim,Parameter,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map),LB,UB,options);
     L_V_Mapping(ss)=-fval;
-        
-    
 end
 
 save(['Mapping_Refugee_IDP_' num2str(ccf) '.mat'],'par_V','L_V_Mapping','L_V_Samp','Parameter_Samp');

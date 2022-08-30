@@ -13,10 +13,9 @@ HLat=[H.Lat];
 
 [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
 day_W_fix=7;
-load('Merge_Parameter_Uncertainty.mat')
+load('Merge_Parameter_MLE.mat')
 
-L=sum(L_T,2);
-x=Par_KD(L==max(L),:);
+x=MLE_KD;
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
@@ -110,22 +109,22 @@ for ii=1:length(MNR)
    if(strcmp(MNR{ii},'KYIV'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',20);     
+        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',28);     
         annotation(gcf,'arrow',[0.379755434782609 0.447010869565217],[0.916919959473151 0.753799392097264],'LineWidth',2,'color',[0.4 0.4 0.4]);
    elseif(strcmp(MNR{ii},'SOUTH'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',20);
+       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',28);
    elseif(strcmp(MNR{ii},'NORTH'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',28)
    elseif(~strcmp(MNR{ii},'N/A'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x,y,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x,y,test,'HorizontalAlignment','center','Fontsize',28)
    end
 end
 
@@ -143,7 +142,7 @@ for jj=1:1001
 end
 patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0);
 
-text(median(xp),yp(1)-1.27,['Proportion of hospitals affected'],'Fontsize',30,'Horizontalalignment','center');
+text(31.252835977086363,43.412321118918925,['Proportion of hospitals affected'],'Fontsize',30,'Horizontalalignment','center');
 
 axis off;
 
@@ -171,14 +170,11 @@ end
 
 [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
 
-load('Merge_Parameter_Uncertainty.mat')
+load('Merge_Parameter_MLE.mat')
 day_W_fix=7;
 
-L=sum(L_T,2);
-Par_KD=Par_KD(L==max(L),:);
-Par_Map=Par_Map(L==max(L),:);
 
-[Parameter,STDEV_Displace]=Parameter_Return(Par_KD,RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
     
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
@@ -224,7 +220,7 @@ Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 
 IDP_Disease=zeros(length(Disease_Short)+1,7);
 
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map);
+[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
 
 % w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data);
@@ -324,15 +320,15 @@ bb=barh([1:7],100.*RR,'LineStyle','none');
 for ii=1:length(bb)
    bb(ii).FaceColor=CC(ii,:); 
 end
-set(gca,'LineWidth',2,'tickdir','out','YTick',1:7,'YTickLabel',NMR,'Fontsize',24,'XTick',[-5 0:10:70]);
-xlim([-5 70]);
+set(gca,'LineWidth',2,'tickdir','out','YTick',1:7,'YTickLabel',NMR,'Fontsize',24,'XTick',[-5 0:10:50]);
+xlim([-5 50]);
 box off;
 xlabel('Percent increase in people per hospital','Fontsize',30);
 ylabel('Macro region','Fontsize',30);
 xtickformat('percentage');
-Disease={'All';'CVD';'Diabetes';'Cancer';'HIV';'TB'};
+Disease={'Population';'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 legend(flip(bb),Disease,'Fontsize',22,'Location','SouthEast')
-text(-14.434497585732899,7.575635984963929,0,'D','Fontsize',40,'FontWeight','bold');
+text(-11.819607843137254,7.575635984963931,'D','Fontsize',40,'FontWeight','bold');
 print(gcf,['Percent_increase_people_per_hospital.png'],'-dpng','-r300');
 
 
@@ -358,7 +354,7 @@ xlim([-1 65]);
 box off;
 xlabel('Number of additional hospitals needed','Fontsize',30);
 ylabel('Macro region','Fontsize',30);
-Disease={'All';'CVD';'Diabetes';'Cancer';'HIV';'TB'};
+Disease={'Population';'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 legend(flip(bb),Disease,'Fontsize',22,'Location','SouthEast')
 
 print(gcf,['Number_Additinal_Hospitals.png'],'-dpng','-r300');
@@ -416,22 +412,22 @@ for ii=1:length(MNR)
    if(strcmp(MNR{ii},'KYIV'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',20);     
+        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',28);     
         annotation(gcf,'arrow',[0.379755434782609 0.447010869565217],[0.916919959473151 0.753799392097264],'LineWidth',2,'color',[0.4 0.4 0.4]);
    elseif(strcmp(MNR{ii},'SOUTH'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',20);
+       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',28);
    elseif(strcmp(MNR{ii},'NORTH'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',28)
    elseif(~strcmp(MNR{ii},'N/A'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x,y,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x,y,test,'HorizontalAlignment','center','Fontsize',28)
    end
 end
 axis off;

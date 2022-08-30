@@ -65,20 +65,17 @@ for ii=1:length(Raion_S)
    end
 end
 
-load('Merge_Parameter_Uncertainty.mat')
+load('Merge_Parameter_MLE.mat')
 day_W_fix=7;
 
-L=sum(L_T,2);
-Par_KD=Par_KD(L==max(L),:);
-Par_Map=Par_Map(L==max(L),:);
 
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map);
+[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
 load('Load_Data_MCMC_Mapping.mat','Mapping_Data');
 w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 
 
 
-[Parameter,STDEV_Displace]=Parameter_Return(Par_KD,RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
 
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
 
@@ -86,6 +83,7 @@ Num_Refugee=squeeze(sum(Pop_Refugee,[4]));
 
 
 Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
+Country_Name={'Poland';'Slovakia';'Hungary';'Romania';'Belarus';'Moldova';'Russia';'Europe'};
 
 Prev_Dis_Gender_Age=zeros(length(Disease_Short),length(gender_v),length(age_class_v));
 Prev_Dis_Age=zeros(length(Disease_Short),length(age_class_v));
@@ -96,7 +94,7 @@ Refugee_Dis_Gender_Age=zeros(8,length(gender_v),length(age_class_v));
 Refugee_Dis_Age=zeros(8,length(age_class_v));
 Refugee_Dis_Gender=zeros(8,length(gender_v));
 Refugee_Dis_Nat=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
-
+   
 for gg=1:2
     Refugee_Dis_Gender(:,gg)=squeeze(sum(Num_Refugee(gg,:,:),3))*w_tot_ref;
     for aa=1:17
@@ -106,31 +104,17 @@ for gg=1:2
 end
 
 
+Model_Est_Disease=zeros(length(Disease_Short),8);
 for dd=1:length(Disease_Short)
-    [~,~,pop_dis]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Pop,Pop,PopR,false);
+    [pop_dis,~,Burden_Refugee]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Num_Refugee,Pop,PopR,false);
     Prev_Dis_Gender_Age(dd,:,:)=squeeze(sum(pop_dis,2))./squeeze(sum(Pop,2));
     Prev_Dis_Age(dd,:)=squeeze(sum(pop_dis,[1 2]))./squeeze(sum(Pop,[1 2]));
     Prev_Dis_Gender(dd,:)=squeeze(sum(pop_dis,[2 3]))./squeeze(sum(Pop,[2 3]));
     Prev_Dis_Nat(dd)=squeeze(sum(pop_dis,[1 2 3]))./squeeze(sum(Pop,[1 2 3]));
+    Model_Est_Disease(dd,:)= squeeze(sum(Burden_Refugee,[1 3 4]))*w_tot_ref;
 end
 
-Country_Name_temp={'Poland';'Slovakia';'Hungary';'Romania';'Belarus';'Moldova';'Russia';'Europe'};
 
-Shift_index=zeros(size(Country_Name_temp));
-
-load('Figure1G_Output.mat','Refugee_Disease_t','Country_Name','Disease');
-temp_C=Country_Name(2:end);
-for ii=1:length(Shift_index)
-    Shift_index(ii)=find(strcmp(Country_Name_temp,temp_C{ii}));
-end
-Country_Name_temp2=Country_Name_temp(Shift_index);
-Refugee_Dis_Gender_Age=Refugee_Dis_Gender_Age(Shift_index,:,:);
-Refugee_Dis_Age=Refugee_Dis_Age(Shift_index,:);
-Refugee_Dis_Gender=Refugee_Dis_Gender(Shift_index,:);
-Refugee_Dis_Nat=Refugee_Dis_Nat(Shift_index);
-
-
-Model_Est_Disease=Refugee_Disease_t(2:end,2:end);
 
 Proxy_Disease_Age_Gender=zeros(size(Model_Est_Disease));
 Proxy_Disease_Gender=zeros(size(Model_Est_Disease));
@@ -146,7 +130,7 @@ for cc=1:8
     end
 end
 
-[x,y]=meshgrid(Country_Name(2:end),Disease(2:end));
+[x,y]=meshgrid(Country_Name,Disease_Short);
 
 Model_Est_Disease=Model_Est_Disease(:);
 Proxy_Disease_Age_Gender=Proxy_Disease_Age_Gender(:);
@@ -216,18 +200,9 @@ NS=length(Par_KD(:,1));
 Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 
 
-Country_Name_temp={'Poland';'Slovakia';'Hungary';'Romania';'Belarus';'Moldova';'Russia';'Europe'};
+Country_Name={'Poland';'Slovakia';'Hungary';'Romania';'Belarus';'Moldova';'Russia';'Europe'};
 
-Shift_index=zeros(size(Country_Name_temp));
-
-load('Figure1G_Output.mat','Refugee_Disease_t','Country_Name','Disease');
-temp_C=Country_Name(2:end);
-for ii=1:length(Shift_index)
-    Shift_index(ii)=find(strcmp(Country_Name_temp,temp_C{ii}));
-end
-
-
-[x,y]=meshgrid(Country_Name(2:end),Disease(2:end));
+[x,y]=meshgrid(Country_Name,Disease_Short);
 
 Disease=y(:);
 Country_Name=x(:);
@@ -238,17 +213,23 @@ Proxy_Disease_Age_UN=zeros(NS,length(Disease));
 Proxy_Disease_Gender_UN=zeros(NS,length(Disease));
 Proxy_Disease_Nat_UN=zeros(NS,length(Disease));
 
+
+Rel_Diff_Age_Gender_UN=zeros(NS,length(Disease));
+Rel_Diff_Age_UN=zeros(NS,length(Disease));
+Rel_Diff_Gender_UN=zeros(NS,length(Disease));
+Rel_Diff_Nat_UN=zeros(NS,length(Disease));
+
 for ss=1:NS
 
-    [Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map);
+    [Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map(ss,:));
     w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 
 
 
-    [Parameter,STDEV_Displace]=Parameter_Return(Par_KD,RC,Time_Switch,day_W_fix);
+    [Parameter,STDEV_Displace]=Parameter_Return(Par_KD(ss,:),RC,Time_Switch,day_W_fix);
 
     [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
-
+    
     Num_Refugee=squeeze(sum(Pop_Refugee,[4]));
 
 
@@ -270,23 +251,16 @@ for ss=1:NS
         end
     end
 
-
+    
+    Model_Est_Disease=zeros(length(Disease_Short),8);
     for dd=1:length(Disease_Short)
-        [~,~,pop_dis]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Pop,Pop,PopR,false);
+        [pop_dis,~,Burden_Refugee]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Num_Refugee,Pop,PopR,true);
         Prev_Dis_Gender_Age(dd,:,:)=squeeze(sum(pop_dis,2))./squeeze(sum(Pop,2));
         Prev_Dis_Age(dd,:)=squeeze(sum(pop_dis,[1 2]))./squeeze(sum(Pop,[1 2]));
         Prev_Dis_Gender(dd,:)=squeeze(sum(pop_dis,[2 3]))./squeeze(sum(Pop,[2 3]));
         Prev_Dis_Nat(dd)=squeeze(sum(pop_dis,[1 2 3]))./squeeze(sum(Pop,[1 2 3]));
+        Model_Est_Disease(dd,:)= squeeze(sum(Burden_Refugee,[1 3 4]))*w_tot_ref;
     end
-
-    Country_Name_temp2=Country_Name_temp(Shift_index);
-    Refugee_Dis_Gender_Age=Refugee_Dis_Gender_Age(Shift_index,:,:);
-    Refugee_Dis_Age=Refugee_Dis_Age(Shift_index,:);
-    Refugee_Dis_Gender=Refugee_Dis_Gender(Shift_index,:);
-    Refugee_Dis_Nat=Refugee_Dis_Nat(Shift_index);
-
-
-    Model_Est_Disease=Refugee_Disease_t(2:end,2:end);
 
     Proxy_Disease_Age_Gender=zeros(size(Model_Est_Disease));
     Proxy_Disease_Gender=zeros(size(Model_Est_Disease));
@@ -311,10 +285,10 @@ for ss=1:NS
     Proxy_Disease_Nat=Proxy_Disease_Nat(:);
 
 
-    Rel_Diff_Nat(ss,:)=Proxy_Disease_Nat./Model_Est_Disease-1;
-    Rel_Diff_Gender(ss,:)=Proxy_Disease_Gender./Model_Est_Disease-1;
-    Rel_Diff_Age(ss,:)=Proxy_Disease_Age./Model_Est_Disease-1;
-    Rel_Diff_Age_Gender(ss,:)=Proxy_Disease_Age_Gender./Model_Est_Disease-1;
+    Rel_Diff_Nat_UN(ss,:)=Proxy_Disease_Nat./Model_Est_Disease-1;
+    Rel_Diff_Gender_UN(ss,:)=Proxy_Disease_Gender./Model_Est_Disease-1;
+    Rel_Diff_Age_UN(ss,:)=Proxy_Disease_Age./Model_Est_Disease-1;
+    Rel_Diff_Age_Gender_UN(ss,:)=Proxy_Disease_Age_Gender./Model_Est_Disease-1;
 
     Model_Est_Disease_UN(ss,:)=Model_Est_Disease(:);
     Proxy_Disease_Age_Gender_UN(ss,:)=Proxy_Disease_Age_Gender(:);
@@ -323,9 +297,4 @@ for ss=1:NS
     Proxy_Disease_Nat_UN(ss,:)=Proxy_Disease_Nat(:);
 end
 
-
-T=table(Country_Name,Disease,Model_Est_Disease,Proxy_Disease_Nat,Proxy_Disease_Gender,Proxy_Disease_Age,Proxy_Disease_Age_Gender,Rel_Diff_Nat,Rel_Diff_Gender,Rel_Diff_Age,Rel_Diff_Age_Gender);
-
-save('Comparison_Proxy_Prev_Table_Uncertainty.mat','T');
-
-writetable(T,'Comparison_Estimated_Disease_Uncertainty.csv')
+save('Comparison_Proxy_Prev_Table_Uncertainty.mat')

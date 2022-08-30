@@ -7,10 +7,9 @@ clc;
 
 [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
 day_W_fix=7;
-load('Merge_Parameter_Uncertainty.mat')
+load('Merge_Parameter_MLE.mat')
 
-L=sum(L_T,2);
-x=Par_KD(L==max(L),:);
+x=MLE_KD;
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
@@ -97,8 +96,8 @@ xp=linspace(22.15,40.22,length(conflict_map(:,1))+1);
     end
     patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0);
     text(22,52.74,'A','Fontsize',40,'FontWeight','bold');
-    text(median(xp),yp(1)-1.27,['Probability of forcible displacement'],'Fontsize',30,'Horizontalalignment','center');
-    text(32,52.83,'Conflict','Fontsize',30,'Horizontalalignment','center');   
+    text(31.252835977086363,43.412321118918925,['Probability of forcible displacement'],'Fontsize',30,'Horizontalalignment','center');
+    text(32,52.83,'Forcible displacement','Fontsize',30,'Horizontalalignment','center');   
     
     ss=scatter(bc_lon,bc_lat,200,'x','MarkerEdgeColor','k','MarkerFaceColor','k','LineWidth',4.5);
 legend(ss,'Border crossing','Fontsize',28,'Position',[0.681612324145068,0.868625465789303,0.212635864260728,0.051671731103638]);

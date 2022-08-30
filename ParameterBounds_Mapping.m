@@ -21,7 +21,7 @@ function [LB,UB]=ParameterBounds_Mapping()
 % Parameter_Map_IDP.STDEV_OBLAST=10.^x(17);
 % Parameter_Map_IDP.STDEV_RAION=10.^x(18);
 
- LB=[ 0.75 1.5 2.5 0    1.5 0    1.5 log10(0.1)  0.5       0.1 -1  4];
- UB=[ 2.25 4.5 5.5 0.25 4.5 0.25 4.5 log10(50)   1          1  1.5 6];
+ LB=[ 0.75 1.5 2.5 0    1.5 0    3 log10(0.1)  0.5       0.1 -1  4];
+ UB=[ 2.25 4.5 5.5 0.25 4.5 0.25 6 log10(50)   1          1  1.5 6];
 
 end

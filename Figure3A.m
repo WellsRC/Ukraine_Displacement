@@ -4,13 +4,10 @@ close all;
 
 load('Load_Data_MCMC_Mapping.mat');
 load('Macro_Oblast_Map.mat','Macro_Map');
-load('Merge_Parameter_Uncertainty.mat')
+load('Merge_Parameter_MLE.mat')
 
-L=sum(L_T,2);
-Par_KD=Par_KD(L==max(L),:);
-Par_Map=Par_Map(L==max(L),:);
 
-[Parameter,STDEV_Displace]=Parameter_Return(Par_KD,RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
     
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
@@ -19,7 +16,7 @@ Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to ex
 Daily_IDP_Origin_Age=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1]));
 
 
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map);
+[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
 
 w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data);
@@ -64,22 +61,22 @@ for ii=1:length(MNR)
    if(strcmp(MNR{ii},'KYIV'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',20);     
+        text(29.05904703547412,52.48141713894448,test,'HorizontalAlignment','center','Fontsize',28);     
         annotation(gcf,'arrow',[0.379755434782609 0.447010869565217],[0.916919959473151 0.753799392097264],'LineWidth',2,'color',[0.4 0.4 0.4]);
    elseif(strcmp(MNR{ii},'SOUTH'))
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',20);
+       text(31.564633464708603,47.2770598612715,test,'HorizontalAlignment','center','Fontsize',28);
    elseif(strcmp(MNR{ii},'NORTH'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x.*1.025,y.*1.005,test,'HorizontalAlignment','center','Fontsize',28)
    elseif(~strcmp(MNR{ii},'N/A'))
         [x,y] = centroid(polyout);
         test=MNR{ii};
         test=[test(1) lower(test(2:end))];
-        text(x,y,test,'HorizontalAlignment','center','Fontsize',20)
+        text(x,y,test,'HorizontalAlignment','center','Fontsize',28)
    end
 end
 
@@ -100,7 +97,7 @@ for jj=1:1001
 end
 patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0);
 
-text(median(xp),yp(1)-1.27,['Proportion of IDPs'],'Fontsize',30,'Horizontalalignment','center');
+text(31.252835977086363,43.412321118918925,['Proportion of IDPs'],'Fontsize',30,'Horizontalalignment','center');
 
 print(gcf,['IDP_Macro_Regions_Map.png'],'-dpng','-r300');
 

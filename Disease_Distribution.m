@@ -1,4 +1,4 @@
-function [Burden_Non_IDP,Burden_IDP,Burden_Refugee,prev]=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop_Non_IDP,Pop_IDP,Pop_Refugee,PopTotal,PopR,Random)
+function [Burden_Non_IDP,Burden_IDP,Burden_Refugee,prev,Burden_Baseline]=Disease_Distribution(Disease,Raion,age_class_v,gender_v,Pop_Non_IDP,Pop_IDP,Pop_Refugee,PopTotal,PopR,Random)
 
 U_Raion=unique(Raion);
 Burden_IDP=zeros(size(Pop_IDP));
@@ -67,5 +67,7 @@ for jj=1:nDays
     Burden_IDP(:,:,:,jj)=temp;
 end
 
-
+Burden_Baseline=(prev.*weight./sum(weight(:))).*(PopTotal./PopTotal);
+Burden_Baseline(PopTotal==0)=0;
+    
 end
