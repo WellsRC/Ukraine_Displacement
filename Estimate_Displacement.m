@@ -1,4 +1,4 @@
-function [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx)
+function [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES)
 
 nDays=length(vLat_C);
 PC_W=zeros(length(Lat_P),Parameter.day_W);
@@ -21,7 +21,7 @@ for jj=1:nDays
     PC=1-prod(1-PC_W(:,[1:min(jj,Parameter.day_W)]),2);
     
     szData=size(Pop_F_Age);
-    Prob_Displace=Probability_Forcible_Displacement(PC,Parameter,szData,ML_Indx);
+    Prob_Displace=Probability_Forcible_Displacement(PC,Parameter,Pop_SES,szData);
     [Pop_F_Age,Pop_M_Age,Pop_Displace(:,:,:,jj)] = Population_Adjustment_Displacement(Pop_F_Age,Pop_M_Age,Prob_Displace); 
     
     if(jj>1)

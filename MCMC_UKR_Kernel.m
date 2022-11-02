@@ -1,8 +1,8 @@
-function [Parameter_V,L_V,a_V] = MCMC_UKR_Kernel(MCMC_Parameters,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix,L_V,Parameter_V,a_V,k)
+function [Parameter_V,L_V,a_V] = MCMC_UKR_Kernel(MCMC_Parameters,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_SES,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,day_W_fix,L_V,Parameter_V,a_V,k,Model_Num)
 
 x_old=MCMC_Parameters.x0;
-L_old = -ObjectiveFunction(x_old,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix);
-P_old=Prior_Dist(x_old);
+L_old = -ObjectiveFunction(x_old,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,day_W_fix,Model_Num);
+P_old=Prior_Dist(x_old,Model_Num);
 
 
 Parameter_V(1,:)=x_old;
@@ -43,10 +43,10 @@ while(count<MCMC_Parameters.Size)
         a=0;
     end
     x_new=Jumping_Dist(x_old,lambda_J,Sigma_J);
-    P_new=Prior_Dist(x_new);
+    P_new=Prior_Dist(x_new,Model_Num);
     count_sample=count_sample+1;
     if(P_new>0)
-        L_new = -ObjectiveFunction(x_new,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix);
+        L_new = -ObjectiveFunction(x_new,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,day_W_fix,Model_Num);
 
         Parameter_MD(count_sample,:)=x_new;
         L_MD(count_sample)=L_new;

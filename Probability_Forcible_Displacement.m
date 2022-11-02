@@ -1,16 +1,19 @@
-function Prob=Probability_Forcible_Displacement(PC,Parameter,szData,ML_Indx)
+function Prob=Probability_Forcible_Displacement(PC,Parameter,Pop_SES,szData)
 
 
 Prob=zeros(2,szData(1),szData(2));
-
+if(Parameter.SES>0)
 % Females
-for jj=1:szData(2)
-    Prob(1,:,jj)=(Parameter.Age(jj)).*(Parameter.Female_w).*PC;
-end
+    Prob(1,:,:)=(Parameter.Female_w).*(PC.*Prob_SES(Pop_SES,Parameter.SES));
 
 % Males
-for jj=1:szData(2)
-    if(~ismember(jj,ML_Indx))
-        Prob(2,:,jj)=(Parameter.Age(jj)).*(Parameter.Male_w).*PC;
-    end
+        Prob(2,:,:)=(Parameter.Male_w).*(PC.*Prob_SES(Pop_SES,Parameter.SES));
+else
+    
+% Females
+    Prob(1,:,:)=(Parameter.Female_w).*PC;
+
+% Males
+        Prob(2,:,:)=(Parameter.Male_w).*PC;
+end
 end

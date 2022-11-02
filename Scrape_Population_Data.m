@@ -11,6 +11,7 @@ load('FB_SCI_Lookup.mat');
 
 load('FB_UKR_UKR.mat','M_FB_UKR');
 
+load('Reduced_GAR15_UKR.mat','tot_capital_per_capita');
 
 Age_Structure=readtable('ukr_admpop_2020_v02.xlsx','Sheet','ukr_admpop_adm1_2020');
 load('Reduced_Pop_UKR.mat');
@@ -21,6 +22,7 @@ oblast=cell(length(longitude_v),1);
 raion=cell(length(longitude_v),1);
 map_raion=cell(length(longitude_v),1);
 macro_region=cell(length(longitude_v),1);
+
 
 % For determining the location where individuals go
 per_Country_Desplace=zeros(length(longitude_v),7);
@@ -93,6 +95,6 @@ for mm=1:length(map_raion)
     end
 end
 
-Ukraine_Pop=table(longitude_v,latitude_v,pop_adj,oblast,raion,macro_region,map_raion,age_Dist_female,age_Dist_male,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Belarus,per_Moldova,per_Other,distance_bc,w_IDP);
+Ukraine_Pop=table(longitude_v,latitude_v,pop_adj,tot_capital_per_capita,oblast,raion,macro_region,map_raion,age_Dist_female,age_Dist_male,per_Poland,per_Slovakia,per_Hungary,per_Romania,per_Belarus,per_Moldova,per_Other,distance_bc,w_IDP);
 
 save('Ukraine_Population_Reduced.mat','Ukraine_Pop','Border_Crossing_Country');

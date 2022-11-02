@@ -1,7 +1,7 @@
-function L = ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix)
-    [Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix);
+function L = ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,day_W_fix,Model_Num)
+    [Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix,Model_Num);
     
-    [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+    [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
     
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1:3]));
     Daily_IDP_Origin_Macro=Calc_Macro_Displacement(squeeze(sum(Pop_IDP,[1 3])),Pop_MACRO);

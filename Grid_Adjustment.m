@@ -1,5 +1,5 @@
 clear;
-T=readtable('ukr_pd_2020_1km_ASCII_XYZ.csv'); % obtains the population density based on long and lat
+T=readtable('ppp_UKR_2020_1km_Aggregated_UNadj.csv'); % obtains the population density based on long and lat
 longitude=table2array(T(:,1));
 latitude=table2array(T(:,2));
 population_size=table2array(T(:,3));

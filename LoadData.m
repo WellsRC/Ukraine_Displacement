@@ -1,10 +1,10 @@
-function [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData()
+function [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,RC,Time_Switch]=LoadData(Rad_Conflict)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %% Impact of the Kernel
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
-RC=fmincon(@(x)(norminv(0.975,0,x)-12.5).^2,6.4);
+RC=fmincon(@(x)(norminv(0.975,0,x)-Rad_Conflict).^2,6.4);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 %% Displacement data
@@ -83,10 +83,11 @@ Lon_P=Ukraine_Pop.longitude_v;
 Pop_MACRO=Ukraine_Pop.macro_region;
 Pop_raion=Ukraine_Pop.raion;
 Pop_oblast=Ukraine_Pop.oblast;
+Pop_SES=Ukraine_Pop.tot_capital_per_capita;
 Pop_F_Age=repmat(Ukraine_Pop.pop_adj,1,17).*Ukraine_Pop.age_Dist_female;
 Pop_M_Age=repmat(Ukraine_Pop.pop_adj,1,17).*Ukraine_Pop.age_Dist_male;
-
-% Index of age for martial law
-ML_Indx=[5:12];
+% 
+% % Index of age for martial law
+% ML_Indx=[5:12];
 
 end
