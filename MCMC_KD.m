@@ -31,7 +31,7 @@ MCMC_Parameters.Size=5.*10^4;
 MCMC_Parameters.Last_Sample_COV=1000;
 MCMC_Parameters.Last_Sample_LAMBDA=100;
 MCMC_Parameters.lambda_J=0.75;
-MCMC_Parameters.Sigma_J=eye(length(x0));
+MCMC_Parameters.Sigma_J=0.1.*eye(length(x0));
 k=1;
 
 L_V=zeros(MCMC_Parameters.Size,1);

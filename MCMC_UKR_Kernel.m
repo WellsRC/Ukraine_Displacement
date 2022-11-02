@@ -23,12 +23,11 @@ Parameter_MD=Parameter_Last;
 L_Last(1)=L_old;
 count_sample=1;
 while(count<MCMC_Parameters.Size)
-    if(rem(count_sample,MCMC_Parameters.Last_Sample_COV)==0)        
-        save(['MCMC_out-k=' num2str(k) '.mat']);
+    if(rem(count_sample,MCMC_Parameters.Last_Sample_COV)==0)   
         [~,Sigma_J]=Update_Jump(lambda_J,Sigma_J,Parameter_Last,L_Last,a./count_sample,k,MCMC_Parameters);
         [lambda_J,~]=Update_Jump(lambda_J,Sigma_J,Parameter_Last(count_sample-(MCMC_Parameters.Last_Sample_LAMBDA-1):count_sample,:),L_Last(count_sample-(MCMC_Parameters.Last_Sample_LAMBDA-1):count_sample),a./MCMC_Parameters.Last_Sample_LAMBDA,k,MCMC_Parameters);
-        k=k+1;
         save(['MCMC_out-k=' num2str(k) '.mat']);
+        k=k+1;
         a=0;
         Parameter_Last(1,:)=Parameter_Last(end,:);
         Parameter_Last(2:end)=0.*Parameter_Last(2:end);
