@@ -128,9 +128,6 @@ for ii=1:NS
     UN_Refugee_Num_Country(ii,:)=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
     
     Refugee_Dis_Nat_UN(ii,:)=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
-    
-    Displaced_UKR_Nat_UN(ii)=sum(Num_Displaced(:));
-    
     temp_m=Macro_Return(squeeze(sum(Num_Displaced,[1 3]))',Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
     Displaced_Macro_Nat_UN(ii,:)=temp_m.macro;
     
@@ -269,6 +266,7 @@ Refugee_Dis_Nat_MLE=zeros(1,8);
 Displaced_UKR_Gender_Age_MLE=zeros(length(gender_v),length(age_class_v));
 Displaced_UKR_Age_MLE=zeros(1,length(age_class_v));
 Displaced_UKR_Gender_MLE=zeros(1,length(gender_v));
+Displaced_UKR_Nat_MLE=zeros(1,1);
 
 Displaced_Macro_Gender_Age_MLE=zeros(7,length(gender_v),length(age_class_v));
 Displaced_Macro_Age_MLE=zeros(7,length(age_class_v));
@@ -301,9 +299,6 @@ MLE_Num_IDP=sum(Pop_IDP(:,:,:,end),[1 2 3]);
 MLE_Refugee_Num_Country(:)=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
 
 Refugee_Dis_Nat_MLE(:)=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
-
-Displaced_UKR_Nat_MLE=sum(Num_Displaced(:));
-
 temp_m=Macro_Return(squeeze(sum(Num_Displaced,[1 3]))',Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
 Displaced_Macro_Nat_MLE(:)=temp_m.macro;
 

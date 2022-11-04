@@ -9,6 +9,7 @@ load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.
 L(ii)=-min(fval);
 k(ii)=length(x0(1,:));
 end
+
 aics=aicbic(L,k);
 
 daics=aics-min(aics);

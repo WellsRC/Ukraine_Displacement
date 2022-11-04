@@ -11,6 +11,11 @@ function [Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix,
     STDEV_Displace.Refugee=10.^x(5);
     STDEV_Displace.IDP=10.^x(6);
     
+    %0-4 5-9 10-14 15-19
+    % 20-24 25-29
+    % 30-34 35-39
+    % 40-44 45-49
+    % 50-54 55-59 60-64 65-69 70-74 75-79 80+
     Parameter.SES=0;
     if(Model_Num==5 || Model_Num==8) % Age and Gender
         Parameter.Male_w=[x(7) x(7) x(7) x(7) 0 0 0 0 0 0 0 0 x(8).*ones(1,5)];

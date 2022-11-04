@@ -30,7 +30,7 @@ else
     Parameter_Map_Refugee.weight_NATO=0;
 end
 if(Refugee_Mv(5)>0)
-    Parameter_Map_Refugee.lambda_border=10^x(2+sum(Refugee_Mv(1:4)));
+    Parameter_Map_Refugee.lambda_border=10^x(2+sum(Refugee_Mv(1:5)));
 else
     Parameter_Map_Refugee.lambda_border=0;
 end

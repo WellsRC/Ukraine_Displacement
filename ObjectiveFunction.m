@@ -6,7 +6,7 @@ function L = ObjectiveFunction(x,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,P
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1:3]));
     Daily_IDP_Origin_Macro=Calc_Macro_Displacement(squeeze(sum(Pop_IDP,[1 3])),Pop_MACRO);
     Daily_IDP_Age=Calc_Age_Displacement(squeeze(sum(Pop_IDP,[1 2])));
-    Daily_IDP_Female=Calc_Gender_Displacement(squeeze(sum(Pop_IDP,[2 3])));
+    Daily_IDP_Female=Calc_Gender_Displacement(squeeze(sum(Pop_IDP(:,:,5:end),[2 3]))); % Need to look at those 18 and older as that is what the data suggested
     
     L1=Refugee_Log_Likelihood(Number_Displacement.Refugee,Date_Displacement.Refugee,Daily_Refugee,Time_Sim,STDEV_Displace.Refugee);
     L2=IDP_Log_Likelihood(Number_Displacement.IDP_Origin,Date_Displacement.IDP_Origin,Daily_IDP_Origin_Macro,Time_Sim,STDEV_Displace.IDP);

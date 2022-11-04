@@ -39,7 +39,7 @@ load('Macro_Oblast_Map.mat','Macro_Map');
 
 for model_num=1:32
     [LB,UB]=ParameterBounds_Mapping_Refugee(model_num-1);
-    options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',1500,'UseParallel',false);
+    options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',750,'UseParallel',true);
 
     [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
 

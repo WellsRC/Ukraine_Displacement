@@ -10,7 +10,9 @@ if(Refugee_Mv(1)>0)
     Parameter.Scale=1;
     Parameter.Breadth=Parameter_Map_Refugee.lambda_sci;
     X=([Data.Refugee.Poland.FB Data.Refugee.Slovakia.FB Data.Refugee.Hungary.FB Data.Refugee.Romania.FB Data.Refugee.Belarus.FB Data.Refugee.Moldova.FB Data.Refugee.Russia.FB]);
-    w=w.*(Kernel_Function(log(max(X(:)))-log(X),Parameter));
+    wSCI=(Kernel_Function(log(max(X(:)))-log(X),Parameter));    
+    w=w.*wSCI;
+    
 end
 
 if(Refugee_Mv(2)>0)
@@ -45,7 +47,8 @@ if(Refugee_Mv(5)>0)
     Y=[Data.Refugee.Poland.Number_Border_Crossings Data.Refugee.Slovakia.Number_Border_Crossings Data.Refugee.Hungary.Number_Border_Crossings Data.Refugee.Romania.Number_Border_Crossings Data.Refugee.Belarus.Number_Border_Crossings Data.Refugee.Moldova.Number_Border_Crossings Data.Refugee.Russia.Number_Border_Crossings];
     Parameter.Scale=1;
     Parameter.Breadth=Parameter_Map_Refugee.lambda_border;
-    w=w.*(Kernel_Function(X,Parameter).^repmat(1./Y,length(X(:,1)),1));
+    wBD=(Kernel_Function(X,Parameter).^repmat(1./Y,length(X(:,1)),1));
+    w=w.*wBD;
 end
 w_tot=w;
 

@@ -28,10 +28,10 @@ MCMC_Parameters.x0=x0;
 MCMC_Parameters.p=0.25;
 MCMC_Parameters.alpha_F=0.23;
 MCMC_Parameters.Size=5.*10^4;
-MCMC_Parameters.Last_Sample_COV=1000;
-MCMC_Parameters.Last_Sample_LAMBDA=100;
+MCMC_Parameters.Last_Sample_COV=5000;
+MCMC_Parameters.Last_Sample_LAMBDA=1000;
 MCMC_Parameters.lambda_J=0.75;
-MCMC_Parameters.Sigma_J=0.1.*eye(length(x0));
+MCMC_Parameters.Sigma_J=0.01.*eye(length(x0));
 k=1;
 
 L_V=zeros(MCMC_Parameters.Size,1);
