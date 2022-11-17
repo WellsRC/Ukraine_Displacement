@@ -1,13 +1,13 @@
 clear;
-parpool(16)
+parpool(32)
 % [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,~,Time_Switch]=LoadData(25);
 load('Calibration_Conflict_Kernel.mat');
-Rad_Conflict=[25:25:200];
+Rad_Conflict=[25:25:100];
 RC=zeros(size(Rad_Conflict));
 for ii=1:length(Rad_Conflict)
     RC(ii)=fmincon(@(x)(norminv(0.975,0,x)-Rad_Conflict(ii)).^2,6.4);
 end
-day_W_fix=[1:21];
+day_W_fix=[3:17]; % go roughly half-week to two and a half weeks
 
 [RC,day_W_fix]=meshgrid(RC,day_W_fix);
 

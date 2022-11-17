@@ -15,6 +15,9 @@ elseif(strcmp('HIV',Disease))
 elseif(strcmp('Tuberculosis',Disease))    
     CC=[hex2rgb('#8c2d04');]; %TB
     sub_p='E';
+else    
+    CC=[hex2rgb('#1E0000');]; %Displacement
+    sub_p='F';
 end
 
 theta_v=linspace(0,2*pi,35);

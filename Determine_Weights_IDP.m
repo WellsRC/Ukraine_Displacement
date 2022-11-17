@@ -13,16 +13,11 @@ if(IDP_Mv(1)>0)
     w_Location=w_Location.*repmat(Kernel_Function(log(max(X(:)))-log(X),Parameter),1,1,nDays);
 end
 
-if(IDP_Mv(2)>0)
-    Parameter.Scale=1;
-    Parameter.Breadth=Parameter_Map_IDP.Capital;
-    w_Location=w_Location.*repmat(Kernel_Function(Mapping_Data.IDP.Captial,Parameter),1,1,nDays);
-end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Raion distance to conflict
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if(IDP_Mv(3)>0)
+if(IDP_Mv(2)>0)
     X=Mapping_Data.IDP.Raion_Conflict;
     X=1-Parameter_Map_IDP.Breadth_Conflict.*(X-min(X(:)))./(1-min(X(:)));
     test=repmat(X,1,1,length(w_Location(1,:,1)));
@@ -32,7 +27,7 @@ end
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Restricted travel due to conflict
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if(IDP_Mv(4)>0)
+if(IDP_Mv(3)>0)
     Parameter.Scale=1;
     Parameter.Breadth=Parameter_Map_IDP.Breadth_Travel_Conflict;
 
@@ -42,6 +37,18 @@ if(IDP_Mv(4)>0)
 end
 % w_Location(w_Location==0)=min(w_Location(w_Location>0));
 
+
+
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Capital
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if(IDP_Mv(4)>0)
+    Parameter.Scale=1;
+    Parameter.Breadth=Parameter_Map_IDP.Capital;
+    w_Location=w_Location.*repmat(Kernel_Function(Mapping_Data.IDP.Captial,Parameter),1,1,nDays);
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Normalize weights
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

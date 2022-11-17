@@ -1,6 +1,15 @@
 clear;
 % close all;
 
+CCC=[hex2rgb('#7fc97f');
+hex2rgb('#beaed4');
+hex2rgb('#fdc086');
+hex2rgb('#ffff99');
+hex2rgb('#386cb0');
+hex2rgb('#666666');
+hex2rgb('#bf5b17');
+hex2rgb('#f0027f');];
+
 
 L=zeros(8,1);
 k=zeros(8,1);
@@ -59,7 +68,7 @@ for jj=1:8
     Daily_IDP_Age_40_49(jj,:)=Daily_IDP_Age_Full(3,:);
     Daily_IDP_Age_Over_50(jj,:)=Daily_IDP_Age_Full(4,:);
     
-    Daily_IDP_Female(jj,:)=Calc_Gender_Displacement(squeeze(sum(Pop_IDP,[2 3])));
+    Daily_IDP_Female(jj,:)=Calc_Gender_Displacement(squeeze(sum(Pop_IDP(:,:,5:end,:),[2 3])));
     
     Daily_IDP(jj,:)=Daily_IDP_Origin_Macro_Full.Kyiv+Daily_IDP_Origin_Macro_Full.East+Daily_IDP_Origin_Macro_Full.South+Daily_IDP_Origin_Macro_Full.Center+Daily_IDP_Origin_Macro_Full.North+Daily_IDP_Origin_Macro_Full.West;
 end
@@ -80,9 +89,9 @@ figure('units','normalized','outerposition',[0.061458333333333,0.185185185185185
 subplot('Position',[0.088235294117646,0.309248554913295,0.400735294117645,0.674515376191068]);
 for ii=1:8
     if(daics(ii)==0)
-        plot( Time_Sim,Daily_Refugee(ii,:)./100000,'LineWidth',2.5); hold on;
+        plot( Time_Sim,Daily_Refugee(ii,:)./100000,'LineWidth',2.5,'color',CCC(ii,:)); hold on;
     else
-        plot( Time_Sim,Daily_Refugee(ii,:)./100000,'-.','LineWidth',1.5); hold on;
+        plot( Time_Sim,Daily_Refugee(ii,:)./100000,'-.','LineWidth',1.5,'color',CCC(ii,:)); hold on;
     end
 end
 hold on
@@ -100,9 +109,9 @@ subplot('Position',[0.59,0.313583815028902,0.400735294117645,0.670180116075461])
 
 for ii=1:8
     if(daics(ii)==0)
-        plot( Time_Sim,Daily_IDP(ii,:)./100000,'LineWidth',2.5); hold on;
+        plot( Time_Sim,Daily_IDP(ii,:)./100000,'LineWidth',2.5,'color',CCC(ii,:)); hold on;
     else
-        plot( Time_Sim,Daily_IDP(ii,:)./100000,'-.','LineWidth',1.5); hold on;
+        plot( Time_Sim,Daily_IDP(ii,:)./100000,'-.','LineWidth',1.5,'color',CCC(ii,:)); hold on;
     end
 end
 hold on
@@ -121,16 +130,16 @@ for dd=1:4
     switch dd
         case 1
             subplot('Position',[0.06,0.60 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 2
             subplot('Position',[0.55,0.60 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 3
             subplot('Position',[0.06,0.1 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 4
             subplot('Position',[0.55,0.1 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
     end
 datas=[Number_Displacement.IDP_Origin.Kyiv(dd) Number_Displacement.IDP_Origin.South(dd) Number_Displacement.IDP_Origin.East(dd) Number_Displacement.IDP_Origin.West(dd) Number_Displacement.IDP_Origin.North(dd) Number_Displacement.IDP_Origin.Center(dd)];
 datas=100.*datas./sum(datas);
@@ -140,11 +149,13 @@ model_est=[Daily_IDP_Origin_Kyiv(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) D
 model_est=100.*model_est./repmat(sum(model_est,2),1,6);
 b=bar([1:6],model_est); hold on
 for ii=1:8
-    b(ii).EdgeColor=b(ii).FaceColor;
+    b(ii).EdgeColor=CCC(ii,:);
    if(daics(ii)~=0)
        b(ii).FaceColor=[1 1 1];
        b(ii).LineStyle='-.';
        b(ii).LineWidth=1.5;
+   else       
+       b(ii).FaceColor=CCC(ii,:);
    end
 end
 for ii=1:6
@@ -153,28 +164,49 @@ end
 
 set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:6],'XTickLabel',{'Kyiv','South','East','West','North','Center'})
 xlim([0.5 6.5])
+ylim([0 80]);
 title(datestr(Date_Displacement.IDP_Origin(dd),'mmmm dd'))
 ytickformat('percentage')
 ylabel('Proportion','Fontsize',24)
 xlabel('Origin macro-region','Fontsize',24);
 box off;
+
+
+    switch dd
+        case 1
+%             subplot('Position',[0.06,0.60 0.43 0.35]);
+            legend(Model_Type,'FontSize',12,'NumColumns',2);
+            text(-0.134326200116974,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 2
+%             subplot('Position',[0.55,0.60 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 3
+%             subplot('Position',[0.06,0.1 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 4
+%             subplot('Position',[0.55,0.1 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
+    end
 end
 
 print(gcf,'Supplementary_Figure_IDP_Origin_Calibration.png','-dpng','-r300');
 
 figure('units','normalized','outerposition',[0.15 0.15 0.5 0.5]);
-subplot('Position',[0.167372881355932,0.212527964205817,0.820974576271186,0.753914988814318]);
+subplot('Position',[0.1875,0.212527964205817,0.800847457627118,0.753914988814318]);
 model_est=zeros(NS,length(Date_Displacement.Proportion_IDP_Female),1);
 for dd=1:length(Date_Displacement.Proportion_IDP_Female)
     model_est(:,dd)=100.*Daily_IDP_Female(:,Time_Sim==Date_Displacement.Proportion_IDP_Female(dd));
 end
 b=bar([1:length(Date_Displacement.Proportion_IDP_Female)],model_est); hold on
 for ii=1:8
-    b(ii).EdgeColor=b(ii).FaceColor;
+   
+    b(ii).EdgeColor=CCC(ii,:);
    if(daics(ii)~=0)
        b(ii).FaceColor=[1 1 1];
        b(ii).LineStyle='-.';
        b(ii).LineWidth=1.5;
+   else       
+       b(ii).FaceColor=CCC(ii,:);
    end
 end
 for ii=1:length(Date_Displacement.Proportion_IDP_Female)
@@ -187,6 +219,8 @@ ylim([0 100]);
 ylabel({'Percentage of IDPs','that are female'},'Fontsize',24)
 xlabel('Date','Fontsize',24);
 box off;
+
+legend(Model_Type,'FontSize',12,'NumColumns',2,'Location','NorthOutside');
 print(gcf,'Supplementary_Figure_IDP_Female_Calibration.png','-dpng','-r300');
 
 figure('units','normalized','outerposition',[0 0.05 1 1]);
@@ -194,27 +228,30 @@ for dd=1:4
     switch dd
         case 1
             subplot('Position',[0.06,0.60 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(0,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 2
             subplot('Position',[0.55,0.60 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 3
             subplot('Position',[0.06,0.1 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 4
             subplot('Position',[0.55,0.1 0.43 0.35]);
-            text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
+%             text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
     end
 datas=100.*[Number_Displacement.Proportion_IDP_Age(dd,:)];
 
 model_est=100.*[Daily_IDP_Age_18_29(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_30_39(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_40_49(:,Time_Sim==Date_Displacement.IDP_Origin(dd)) Daily_IDP_Age_Over_50(:,Time_Sim==Date_Displacement.IDP_Origin(dd))];
 b=bar([1:length(Date_Displacement.Proportion_IDP_Female)],model_est); hold on
 for ii=1:8
-    b(ii).EdgeColor=b(ii).FaceColor;
+   
+    b(ii).EdgeColor=CCC(ii,:);
    if(daics(ii)~=0)
        b(ii).FaceColor=[1 1 1];
        b(ii).LineStyle='-.';
        b(ii).LineWidth=1.5;
+   else       
+       b(ii).FaceColor=CCC(ii,:);
    end
 end
 for ii=1:4
@@ -223,12 +260,29 @@ end
 
 set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:4],'XTickLabel',{'18-29','30-39','40-49','50+'})
 xlim([0.5 4.5])
-ylim([0 60]);
+ylim([0 80]);
 title(datestr(Date_Displacement.Proportion_IDP_Age(dd),'mmmm dd'))
 ytickformat('percentage')
 ylabel('Proportion','Fontsize',24)
 xlabel('Age class','Fontsize',24);
 box off;
+
+    switch dd
+        case 1
+            
+            legend(Model_Type,'FontSize',12,'NumColumns',2);
+%             subplot('Position',[0.06,0.60 0.43 0.35]);
+            text(0,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 2
+%             subplot('Position',[0.55,0.60 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 3
+%             subplot('Position',[0.06,0.1 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'C','Units','normalized','Fontsize',40,'FontWeight','bold');
+        case 4
+%             subplot('Position',[0.55,0.1 0.43 0.35]);
+            text(-0.134326200116974,1.085282445865074,'D','Units','normalized','Fontsize',40,'FontWeight','bold');
+    end
 end
 
 print(gcf,'Supplementary_Figure_IDP_Age_Calibration.png','-dpng','-r300');

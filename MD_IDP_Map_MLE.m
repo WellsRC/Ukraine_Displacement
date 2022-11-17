@@ -39,7 +39,50 @@ load('Macro_Oblast_Map.mat','Macro_Map');
 
 for model_num=1:16
     [LB,UB]=ParameterBounds_Mapping_IDP(model_num-1);
-    options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',1500,'UseParallel',false);
+    if((model_num==1)||(model_num==5))
+        options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',1250,'UseParallel',false);
+    else
+        IDP_Mv=zeros(1,4);
+        temp=de2bi(model_num-1);
+        IDP_Mv(1:length(temp))=temp;
+        if(IDP_Mv(3)==0)
+            temp_c=2^sum(IDP_Mv);
+            f_temp=zeros(temp_c-1,2);
+            par_X0=cell(temp_c-1,1);
+            for jj=1:temp_c-1
+                MdX0=IDP_Mv;
+                tempv=zeros(1,sum(IDP_Mv));
+                temp=de2bi(jj-1);
+                tempv(1:length(temp))=temp;
+                MdX0(MdX0>0)=tempv;
+                load(['Mapping_IDP_MLE_Model=' num2str(bi2de(MdX0)) '.mat'],'L_V_Mapping','par_V');
+                f_temp(jj,1)=bi2de(MdX0);
+                f_temp(jj,2)=L_V_Mapping;
+                par_X0{jj}=par_V;
+            end
+            findx=find(f_temp(:,2)==max(f_temp(:,2)), 1, 'last' );
+        else
+            temp_c=2^(sum(IDP_Mv)-1);
+            f_temp=zeros(temp_c-1,2);
+            par_X0=cell(temp_c-1,1);
+            for jj=1:temp_c-1
+                MdX0=IDP_Mv;
+                MdX0(3)=0;
+                tempv=zeros(1,sum(IDP_Mv)-1);
+                temp=de2bi(jj-1);
+                tempv(1:length(temp))=temp;
+                MdX0(MdX0>0)=tempv;
+                MdX0(3)=1;
+                load(['Mapping_IDP_MLE_Model=' num2str(bi2de(MdX0)) '.mat'],'L_V_Mapping','par_V');
+                f_temp(jj,1)=bi2de(MdX0);
+                f_temp(jj,2)=L_V_Mapping;
+                par_X0{jj}=par_V;
+            end
+            findx=find(f_temp(:,2)==max(f_temp(:,2)), 1, 'last' );
+        end
+        X0=Initialize_Model_IDP(par_X0{findx},f_temp(findx,1),model_num-1);
+        options = optimoptions('surrogateopt','PlotFcn',[],'MaxFunctionEvaluations',1250,'UseParallel',false,'InitialPoints',X0);
+    end
 
     [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
 
