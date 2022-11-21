@@ -32,7 +32,7 @@ load('Macro_Oblast_Map.mat','Macro_Map');
 
 Data_O=[Refugee_Displacement.Cumulative_Poland(end) Refugee_Displacement.Cumulative_Slovakia(end) Refugee_Displacement.Cumulative_Hungary(end) Refugee_Displacement.Cumulative_Romania(end) Refugee_Displacement.Cumulative_Belarus(end) Refugee_Displacement.Cumulative_Moldova(end)  Refugee_Displacement.Cumulative_Russia(end)];
 Data_O=Data_O./sum(Number_Displacement.Refugee);
-Data_O=round([Data_O 1-sum(Data_O)],4);
+Data_O=[Data_O 1-sum(Data_O)];
 [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
 
 [Pop_Displace,~,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
@@ -66,14 +66,14 @@ for ii=0:31
 
         [Est_Daily_Refugee]=Country_Refuge_Displaced(w_tot_ref,Daily_Refugee);
         Tot_temp=sum(Est_Daily_Refugee.Poland)+sum(Est_Daily_Refugee.Slovakia)+sum(Est_Daily_Refugee.Hungary)+sum(Est_Daily_Refugee.Romania)+sum(Est_Daily_Refugee.Belarus)+sum(Est_Daily_Refugee.Moldova)+sum(Est_Daily_Refugee.Russia)+sum(Est_Daily_Refugee.Europe_Other);
-        Poland(ii+1)=round(sum(Est_Daily_Refugee.Poland)./Tot_temp,4)-Data_O(1);
-        Slovakia(ii+1)=round(sum(Est_Daily_Refugee.Slovakia)./Tot_temp,4)-Data_O(2);
-        Hungary(ii+1)=round(sum(Est_Daily_Refugee.Hungary)./Tot_temp,4)-Data_O(3);
-        Romania(ii+1)=round(sum(Est_Daily_Refugee.Romania)./Tot_temp,4)-Data_O(4);
-        Belarus(ii+1)=round(sum(Est_Daily_Refugee.Belarus)./Tot_temp,4)-Data_O(5);
-        Moldova(ii+1)=round(sum(Est_Daily_Refugee.Moldova)./Tot_temp,4)-Data_O(6);
-        Russia(ii+1)=round(sum(Est_Daily_Refugee.Russia)./Tot_temp,4)-Data_O(7);
-        Europe(ii+1)=round(sum(Est_Daily_Refugee.Europe_Other)./Tot_temp,4)-Data_O(8);
+        Poland(ii+1)=round(sum(Est_Daily_Refugee.Poland)./Tot_temp,4)./Data_O(1)-1;
+        Slovakia(ii+1)=round(sum(Est_Daily_Refugee.Slovakia)./Tot_temp,4)./Data_O(2)-1;
+        Hungary(ii+1)=round(sum(Est_Daily_Refugee.Hungary)./Tot_temp,4)./Data_O(3)-1;
+        Romania(ii+1)=round(sum(Est_Daily_Refugee.Romania)./Tot_temp,4)./Data_O(4)-1;
+        Belarus(ii+1)=round(sum(Est_Daily_Refugee.Belarus)./Tot_temp,4)./Data_O(5)-1;
+        Moldova(ii+1)=round(sum(Est_Daily_Refugee.Moldova)./Tot_temp,4)./Data_O(6)-1;
+        Russia(ii+1)=round(sum(Est_Daily_Refugee.Russia)./Tot_temp,4)./Data_O(7)-1;
+        Europe(ii+1)=round(sum(Est_Daily_Refugee.Europe_Other)./Tot_temp,4)./Data_O(8)-1;
     else
         L(ii+1)=-Inf;
         k(ii+1)=1;

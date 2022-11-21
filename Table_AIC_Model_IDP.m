@@ -132,8 +132,8 @@ for ii=0:15
     end
     
     
-    temp=de2bi(jj);
-    Model_BN(jj+1,1:length(temp))=temp;
+    temp=de2bi(ii);
+    Model_BN(ii+1,1:length(temp))=temp;
 end
 
 Data_O=Data_O./sum(Data_O);
@@ -142,5 +142,11 @@ aics=aicbic(L,k);
 daics=aics-min(aics);
 w=exp(-daics./2)./sum(exp(-daics./2));
 
-T=table(Model_BN,daics,w);
+MC=(w')*Model_BN;
 
+RelErr=IDPc./Data_O-1;
+
+T=table(Model_BN,RelErr,daics);
+
+
+writetable(T,'AIC_IDP_Map.csv');

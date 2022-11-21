@@ -18,8 +18,8 @@ Refugee_Mv(1:length(temp))=temp;
 % Parameter_Map_Refugee.weight_NATO=x(6);
 % Parameter_Map_Refugee.lambda_border=10^x(7);
 
- LB=[0    3  0.75 1.5 2.5 0 1.5];
- UB=[0.25 6  4.00 6.0 7.0 1 6.0]; 
+ LB=[0.001 3  0.75 1.5 2.5 0 1.5];
+ UB=[0.01  6  4.00 6.0 7.0 1 6.0]; 
      
 LB=LB(Refugee_Mv==1);
 UB=UB(Refugee_Mv==1);

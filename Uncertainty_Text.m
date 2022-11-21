@@ -316,7 +316,7 @@ for gg=1:2
         Refugee_Dis_Gender_Age_MLE(:,gg,aa)=squeeze(Num_Refugee(gg,:,aa))*w_tot_ref;
         Displaced_UKR_Gender_Age_MLE(gg,aa)=squeeze(sum(Num_Displaced(gg,:,aa)));
         Refugee_Dis_Age_MLE(:,aa)=squeeze(sum(Num_Refugee(:,:,aa),1))*w_tot_ref;
-        Displaced_UKR_Age_MLE(aa)=squeeze(sum(Num_Displaced(:,:,aa),1));
+        Displaced_UKR_Age_MLE(aa)=squeeze(sum(Num_Displaced(:,:,aa),[1 2]));
 
         temp_m=Macro_Return(squeeze(Num_Displaced(gg,:,aa))',Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
         Displaced_Macro_Gender_Age_MLE(:,gg,aa)=temp_m.macro;
