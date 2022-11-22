@@ -4,109 +4,128 @@
 clear;
 close all;
 clc;
-% 
-% [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-% day_W_fix=7;
+L=zeros(8,1);
+k=zeros(8,1);
+for ii=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
+    L(ii)=-min(fval);
+    k(ii)=length(x0(1,:));
+end
+aics=aicbic(L,k);
+
+daics=aics-min(aics);
+
+AIC_model_num=find(daics==0);
+
+
+load('Calibration_Conflict_Kernel.mat');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
+day_W_fix=day_W_fix(fval==min(fval));
+RC=RC(fval==min(fval));
+
 % load('Merge_Parameter_MLE.mat')
-% 
-% x=MLE_KD;
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% % % Load data and determine the dispacement per day
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% [Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix);
-% load('Conflict_Colourmap.mat','conflict_map');
-% 
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% % % Determine the disease burden
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% 
-% 
-% c=5;
-% d_lon=fminbnd(@(z)(integral(@(x)deg2km(distance('gc',x,32,x,32+z)),44,53)./(53-44)-c).^2,0,1);
-% d_lat=fminbnd(@(z)(integral(@(x)deg2km(distance('gc',48,x,48+z,x)),22,42)./(42-22)-c).^2,0,1);
-% 
-% latitude=44:d_lat:53;
-% longitude=22:d_lon:42;
-% [longitude_v,latitude_v]=meshgrid(longitude,latitude);
-% 
-% S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
-% 
-% for ii=1:length(S1)
-%    [tp_in,tp_on]=inpolygon(longitude_v(:),latitude_v(:),S1(ii).Lon,S1(ii).Lat);
-%    if(ii==1)
-%       tp_UKR=tp_in|tp_on;
-%    else
-%       tp_UKR=tp_UKR|tp_in|tp_on; 
-%    end
-% end
-% nDays=length(Time_Sim);
-% PC=zeros(length(latitude_v(:)),nDays);
-% 
-% PC_W=zeros(length(latitude_v(:)),Parameter.day_W);
-% for jj=1:nDays
-%     if(Time_Sim(jj)<Parameter.Switch)
-%         P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:),Parameter);
-%         
-%     else
-%         P = Parameter.Switch_Scaled.*Kernel_Displacement(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:),Parameter);
-%         
-%     end
-%     % Cumulative probability
-%     PC_W(:,2:Parameter.day_W)=PC_W(:,1:(Parameter.day_W-1));    
-%     PC_W(:,1)=P;
-%     PC(:,jj)=1-prod(1-PC_W(:,[1:min(jj,Parameter.day_W)]),2);
-% end
-% 
-% 
-% BC=readtable('ukr_border_crossings_140422.xlsx','Sheet','Border Crossings');
-% 
-% bc_lat=BC.Lat;
-% bc_lon=BC.Long;
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% % % Plot map of conflict
-% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% 
-% 
-% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-% 
-% xp=linspace(22.15,40.22,length(conflict_map(:,1))+1);
-%      yp=[44 44.3];    
-%      
+
+x=x0(fval==min(fval),:);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% % Load data and determine the dispacement per day
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+[Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix,AIC_model_num);
+load('Conflict_Colourmap.mat','conflict_map');
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% % Determine the disease burden
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+
+c=5;
+d_lon=fminbnd(@(z)(integral(@(x)deg2km(distance('gc',x,32,x,32+z)),44,53)./(53-44)-c).^2,0,1);
+d_lat=fminbnd(@(z)(integral(@(x)deg2km(distance('gc',48,x,48+z,x)),22,42)./(42-22)-c).^2,0,1);
+
+latitude=44:d_lat:53;
+longitude=22:d_lon:42;
+[longitude_v,latitude_v]=meshgrid(longitude,latitude);
+
+S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
+
+for ii=1:length(S1)
+   [tp_in,tp_on]=inpolygon(longitude_v(:),latitude_v(:),S1(ii).Lon,S1(ii).Lat);
+   if(ii==1)
+      tp_UKR=tp_in|tp_on;
+   else
+      tp_UKR=tp_UKR|tp_in|tp_on; 
+   end
+end
+nDays=length(Time_Sim);
+PC=zeros(length(latitude_v(:)),nDays);
+
+PC_W=zeros(length(latitude_v(:)),Parameter.day_W);
+for jj=1:nDays
+    if(Time_Sim(jj)<Parameter.Switch)
+        P = Kernel_Displacement(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:),Parameter);
+        
+    else
+        P = Parameter.Switch_Scaled.*Kernel_Displacement(vLat_C{jj},vLon_C{jj},latitude_v(:),longitude_v(:),Parameter);
+        
+    end
+    % Cumulative probability
+    PC_W(:,2:Parameter.day_W)=PC_W(:,1:(Parameter.day_W-1));    
+    PC_W(:,1)=P;
+    PC(:,jj)=1-prod(1-PC_W(:,[1:min(jj,Parameter.day_W)]),2);
+end
+
+
+BC=readtable('ukr_border_crossings_140422.xlsx','Sheet','Border Crossings');
+
+bc_lat=BC.Lat;
+bc_lon=BC.Long;
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% % Plot map of conflict
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+
+S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
+
+xp=linspace(22.15,40.22,length(conflict_map(:,1))+1);
+     yp=[44 44.3];    
+     
+    
+        figure('units','normalized','outerposition',[0 0 1.*0.775 1]);
+         subplot('Position',[0.0082,0.1681,1,0.815]);
+        
+        Ps=reshape(1-geomean(1-PC,2),length(latitude),length(longitude));
+        Ps(~tp_UKR)=0;
+        testP=log10(Ps(Ps>0));
+        CCL=prctile(testP(:),[5 10 25 50 75 90 95 97.5]);
+%         CCL=prctile(testP(:),[2.5 5 10 25 50 75 90 95 97.5]);
+        contourf(longitude,latitude,log10(Ps),CCL,'LineStyle','none');
+        hold on
+        geoshow(S2,'FaceColor','none','LineWidth',1.5,'EdgeColor',[0.4 0.4 0.4]);
+        colormap(conflict_map);
+        
+        
+    
+    box off;
+    for jj=1:length(conflict_map(:,1))
+        patch([xp(jj) xp(jj) xp(jj+1) xp(jj+1)],[yp(1) yp(2) yp(2) yp(1)],conflict_map(jj,:),'LineStyle','none');
+        if(jj==1)
+            text(xp(jj+1),yp(1)-0.01,['Low'],'Fontsize',28,'rotation',90,'Horizontalalignment','right')
+        elseif(jj==length(conflict_map(:,1)))
+            text(xp(jj+1),yp(1)-0.01,{'High'},'Fontsize',28,'rotation',90,'Horizontalalignment','right')
+        end
+    end
+    patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0);
+    text(22,52.74,'A','Fontsize',40,'FontWeight','bold');
+    text(31.252835977086363,43.412321118918925,['Probability of forcible displacement'],'Fontsize',30,'Horizontalalignment','center');
+    text(32,52.83,'Forcible displacement','Fontsize',30,'Horizontalalignment','center');   
+    
+    ss=scatter(bc_lon,bc_lat,200,'x','MarkerEdgeColor','k','MarkerFaceColor','k','LineWidth',4.5);
+legend(ss,'Border crossing','Fontsize',28,'Position',[0.681612324145068,0.868625465789303,0.212635864260728,0.051671731103638]);
+
+    set(gca, 'visible', 'off');
+    
+    print(gcf,['UKR_Prob_Disease_Burden_Figure_1_Conflict.png'],'-dpng','-r300');
 %     
-%         figure('units','normalized','outerposition',[0 0 1.*0.775 1]);
-%          subplot('Position',[0.0082,0.1681,1,0.815]);
-%         
-%         Ps=reshape(1-geomean(1-PC,2),length(latitude),length(longitude));
-%         Ps(~tp_UKR)=0;
-%         contourf(longitude,latitude,log10(Ps),'LineStyle','none');
-%         hold on
-%         geoshow(S2,'FaceColor','none','LineWidth',1.5,'EdgeColor',[0.4 0.4 0.4]);
-%         colormap(conflict_map);
-%         
-%         
-%     
-%     box off;
-%     for jj=1:length(conflict_map(:,1))
-%         patch([xp(jj) xp(jj) xp(jj+1) xp(jj+1)],[yp(1) yp(2) yp(2) yp(1)],conflict_map(jj,:),'LineStyle','none');
-%         if(jj==1)
-%             text(xp(jj+1),yp(1)-0.01,['None'],'Fontsize',28,'rotation',90,'Horizontalalignment','right')
-%         elseif(jj==length(conflict_map(:,1)))
-%             text(xp(jj+1),yp(1)-0.01,{'High'},'Fontsize',28,'rotation',90,'Horizontalalignment','right')
-%         end
-%     end
-%     patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0);
-%     text(22,52.74,'A','Fontsize',40,'FontWeight','bold');
-%     text(31.252835977086363,43.412321118918925,['Probability of forcible displacement'],'Fontsize',30,'Horizontalalignment','center');
-%     text(32,52.83,'Forcible displacement','Fontsize',30,'Horizontalalignment','center');   
-%     
-%     ss=scatter(bc_lon,bc_lat,200,'x','MarkerEdgeColor','k','MarkerFaceColor','k','LineWidth',4.5);
-% legend(ss,'Border crossing','Fontsize',28,'Position',[0.681612324145068,0.868625465789303,0.212635864260728,0.051671731103638]);
-% 
-%     set(gca, 'visible', 'off');
-%     
-%     print(gcf,['UKR_Prob_Disease_Burden_Figure_1_Conflict.png'],'-dpng','-r300');
-% %     
-% clear; 
+clear; 
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
 clear Ukraine_Pop
@@ -139,10 +158,9 @@ for ii=1:length(Raion_S)
 end
 
 Prob_DB=zeros(length(S2),length(Disease_Short));
-beta_T=10.^[3.05241835779787;2.69599664807722;0.595801670461706;1.55183259987430;0.878500094803445];
     PopT=sum(Pop,[1 3]);
 for dd=1:length(Disease_Short)
-    [dpc,~,~]=Disease_Distribution_beta(beta_T(dd),Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Pop,Pop,PopR,false);
+    [dpc,~,~]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,repmat(Pop,1,1,1,2),Pop,Pop,PopR,false);
     dpc=sum(dpc,[1 3]);
     testd=Prev_Disease(Disease_Short{dd},false);
     [sum(dpc(:)) testd]

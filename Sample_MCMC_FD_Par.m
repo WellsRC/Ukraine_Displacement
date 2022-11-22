@@ -1,7 +1,7 @@
 clear;
 
 rng shuffle;
-load('MCMC_out-k=60.mat','L_V','Parameter_V')
+load('MCMC_out-k=160.mat','L_V','Parameter_V')
 
 Parameter_V=Parameter_V(L_V<0,:);
 L_V=L_V(L_V<0);
