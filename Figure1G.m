@@ -8,7 +8,8 @@ close all;
 % % Plot Disease Country
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
-[~,~,vLat_C,vLon_C,~,~,~,~,~,~,~,Time_Sim,~,~,~]=LoadData;
+
+load('Calibration_Conflict_Kernel.mat','vLat_C','vLon_C','Time_Sim');
 
 S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
 Oblast_S={S1.NAME_1};

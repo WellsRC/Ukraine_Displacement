@@ -11,15 +11,36 @@ H=H(tfh);
 HLon=[H.Lon];
 HLat=[H.Lat];
 
-[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-day_W_fix=7;
+
+L=zeros(8,1);
+k=zeros(8,1);
+for jj=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(jj) '.mat']);
+    L(jj)=-min(fval);
+    k(jj)=length(x0(1,:));
+end
+aics=aicbic(L,k);
+
+daics=aics-min(aics);
+
+AIC_model_num=find(daics==0);
+
+load('Load_Data_Mapping.mat');
+
+load('Calibration_Conflict_Kernel.mat');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
+day_W_fix=day_W_fix(fval==min(fval));
+RC=RC(fval==min(fval));
+
 load('Merge_Parameter_MLE.mat')
 
-x=MLE_KD;
+x=MLE_FD;
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-[Parameter,STDEV_Displace]=Parameter_Return(x,RC,Time_Switch,day_W_fix);
+
+[Parameter,~]=Parameter_Return(x,RC,Time_Switch,day_W_fix,AIC_model_num);
+
 
 
 nDays=length(Time_Sim);
@@ -150,7 +171,8 @@ text(22.000000000000004,52.47793894762959,'B','Fontsize',40,'FontWeight','bold')
 
 print(gcf,['Hospital_Destroy.png'],'-dpng','-r300');
 
-load('Load_Data_MCMC_Mapping.mat');
+
+load('Load_Data_Mapping.mat');
 load('Macro_Oblast_Map.mat','Macro_Map');
 
 
@@ -168,15 +190,33 @@ for ii=1:length(MNR)
    Hosp_Macro(ii,:)=sum(Hosp_Raion(t_o,1:2),1); 
 end
 
-[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
+
+L=zeros(8,1);
+k=zeros(8,1);
+for jj=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(jj) '.mat']);
+    L(jj)=-min(fval);
+    k(jj)=length(x0(1,:));
+end
+aics=aicbic(L,k);
+
+daics=aics-min(aics);
+
+AIC_model_num=find(daics==0);
+
+load('Load_Data_Mapping.mat');
+
+load('Calibration_Conflict_Kernel.mat');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
+day_W_fix=day_W_fix(fval==min(fval));
+RC=RC(fval==min(fval));
 
 load('Merge_Parameter_MLE.mat')
-day_W_fix=7;
 
 
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
     
-[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
 Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to examine the new idp only
 

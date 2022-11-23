@@ -137,7 +137,7 @@ for ii=1:NS
     w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
     
     % the parameter return for forcible displacement
-    [Parameter,~]=Parameter_Return(Par_FD(ii,:),RC,Time_Switch,day_W_fix);
+    [Parameter,~]=Parameter_Return(Par_FD(ii,:),RC,Time_Switch,day_W_fix,Model_Num);
     
     % Estimate of the displaced population
     [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);

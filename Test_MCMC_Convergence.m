@@ -1,6 +1,7 @@
 clear;
 close all;
-load('MCMC_out-k=185.mat')
+
+load('Kernel_Paremeter-Window_Conflict=12_days_MCMC.mat')
 % Close all;
 
 testp=Parameter_V(L_V<0,:);

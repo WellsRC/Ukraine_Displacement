@@ -4,25 +4,46 @@ close all;
 clear;
 clc;
 close all;
+L=zeros(8,1);
+k=zeros(8,1);
+for ii=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
+    L(ii)=-min(fval);
+    k(ii)=length(x0(1,:));
+end
+aics=aicbic(L,k);
 
-load('Load_Data_MCMC_Mapping.mat');
+daics=aics-min(aics);
+
+AIC_model_num=find(daics==0);
+
+
+load('Calibration_Conflict_Kernel.mat');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
+day_W_fix=day_W_fix(fval==min(fval));
+RC=RC(fval==min(fval));
+
+load('Merge_Parameter_MLE.mat','MLE_FD','MLE_Map_Ref','MLE_Map_IDP','Model_IDP','Model_Refugee')
+
 load('Macro_Oblast_Map.mat','Macro_Map');
 
-load('Merge_Parameter_MLE.mat')
-day_W_fix=7;
+load('Load_Data_Mapping.mat');
 
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,AIC_model_num);
     
-[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
 Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to examine the new idp only
 
 Daily_IDP_Origin_Age=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1]));
 
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
 
-w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
-w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data);
+[Parameter_Map_Refugee,Refugee_Mv]=Parameter_Return_Mapping_Refugee(MLE_Map_Ref,Model_Refugee);
+w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data,Refugee_Mv);
+
+
+[Parameter_Map_IDP,IDP_Mv]=Parameter_Return_Mapping_IDP(MLE_Map_IDP,Model_IDP);
+w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
 
 
 [Est_Daily_Refugee]=Country_Refuge_Displaced(w_tot_ref,Daily_Refugee);
@@ -86,7 +107,7 @@ for dd=1:length(Disease_Short)+1
             non_IDP_Disease(dd,ii,:,1)=Est_Pop_PW.macro;
         end
     else
-        [test_non_idp,test_idp,test_pop_pw]=Disease_Distribution(Disease_Short{dd-1},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Daily_IDP_Origin,Pop,Pop,PopR,false);
+        [test_non_idp,test_idp,test_pop_pw]=Disease_Distribution_beta(Disease_Short{dd-1},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Daily_IDP_Origin,Pop,Pop,PopR,false);
         test_idp=squeeze(sum(test_idp,1));
         test_non_idp=squeeze(sum(test_non_idp,1));
         test_pop_pw=squeeze(sum(test_pop_pw,1));

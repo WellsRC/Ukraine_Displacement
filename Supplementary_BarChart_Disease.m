@@ -8,8 +8,28 @@ clc;
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
 clear Ukraine_Pop
-[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
 
+
+L=zeros(8,1);
+k=zeros(8,1);
+for ii=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
+    L(ii)=-min(fval);
+    k(ii)=length(x0(1,:));
+end
+aics=aicbic(L,k);
+
+daics=aics-min(aics);
+
+AIC_model_num=find(daics==0);
+
+
+load('Load_Data_Mapping.mat');
+
+load('Calibration_Conflict_Kernel.mat');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
+day_W_fix=day_W_fix(fval==min(fval));
+RC=RC(fval==min(fval));
 
 age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
 gender_v={'f','m'};
@@ -35,7 +55,6 @@ end
 Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 
 load('Merge_Parameter_MLE.mat')
-day_W_fix=7;
 
 
 [Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
@@ -45,10 +64,9 @@ w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
 
 Refugee_Disease=zeros(length(Disease_Short)+1,9);
 
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,AIC_model_num);
 
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_KD,RC,Time_Switch,day_W_fix);
-
-[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+[Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 
 Num_Refugee=squeeze(sum(Pop_Refugee,[4]));
 Num_Non_Displaced=Pop-Pop_IDP(:,:,:,end)-Num_Refugee;
@@ -56,8 +74,8 @@ Num_Non_Displaced=Pop-Pop_IDP(:,:,:,end)-Num_Refugee;
 Refugee_Disease(1,1)=sum(Pop_IDP(:,:,:,end),[1 2 3]);
 Refugee_Disease(1,2:9)=squeeze(sum(Num_Refugee,[1 3]))*w_tot_ref;
 
-for dd=1:length(Disease_Short)
-    [test_non_idp,test_idp,dpc]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,false);
+for dd=1:length(Disease_Short)  
+    [test_non_idp,test_idp,dpc]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,false); 
     dpc=sum(dpc,[1 3]);
     Refugee_Disease(dd+1,1)=sum(test_idp(:,:,:,end),[1 2 3]);
     Refugee_Disease(dd+1,2:9)=dpc*w_tot_ref;

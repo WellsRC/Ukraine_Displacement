@@ -1,18 +1,28 @@
 clear;
-% close all;
 
-% [Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-% load('Merge_Parameter_Uncertainty.mat')
+% Find the AIC selected forcible displacement model
+L=zeros(8,1);
+k=zeros(8,1);
+for ii=1:8
+    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
+    L(ii)=-min(fval);
+    k(ii)=length(x0(1,:));
+end
+aics=aicbic(L,k);
+
+daics=aics-min(aics);
+
+Model_Num=find(daics==0);
+
+% load the data used to calibrate the models
 load('Calibration_Conflict_Kernel.mat');
-load('Calibration_Kernel_Conflict_Window-Conflcit_Radius.mat')
-day_W_fix=14;
-RC=25.510672656163372;
-Parameter_V=x0(fval==min(fval),:);
-% Parameter_V=Parameter_V(10000:20:end,:);
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(Model_Num) '.mat']);
+[LB,UB]=ParameterBounds(Model_Num);
+RC=RC(fval==min(fval));
+day_W_fix=day_W_fix(fval==min(fval));
 
-testL=ObjectiveFunction(Parameter_V(1,:),vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Number_Displacement,Date_Displacement,RC,Time_Switch,Time_Sim,ML_Indx,day_W_fix);
-NS=length(Parameter_V(:,1));
 
+load('Merge_Parameter_Uncertainty.mat','Par_FD');
 
 Daily_Refugee=zeros(NS,length(Time_Sim));
 Daily_IDP=zeros(NS,length(Time_Sim));
@@ -28,8 +38,12 @@ Daily_IDP_Age_40_49=zeros(NS,length(Time_Sim));
 Daily_IDP_Age_Over_50=zeros(NS,length(Time_Sim));
 Daily_IDP_Female=zeros(NS,length(Time_Sim));
 parfor jj=1:NS
-    [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(jj,:),RC,Time_Switch,day_W_fix);
-    [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+    
+    % the parameter return for forcible displacement
+    [Parameter,~]=Parameter_Return(Par_FD(jj,:),RC,Time_Switch,day_W_fix,Model_Num);
+    
+    [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
+    
     Daily_Refugee(jj,:)=squeeze(sum(Pop_Refugee,[1:3]));
     Daily_IDP_Origin_Macro_Full=Calc_Macro_Displacement(squeeze(sum(Pop_IDP,[1 3])),Pop_MACRO);
 
