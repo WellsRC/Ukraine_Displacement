@@ -1,28 +1,11 @@
 clear;
 
-% Find the AIC selected forcible displacement model
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-    L(ii)=-min(fval);
-    k(ii)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-Model_Num=find(daics==0);
-
-% load the data used to calibrate the models
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(Model_Num) '.mat']);
-[LB,UB]=ParameterBounds(Model_Num);
-RC=RC(fval==min(fval));
-day_W_fix=day_W_fix(fval==min(fval));
+load('Load_Data_Mapping.mat');
+load('Macro_Oblast_Map.mat','Macro_Map');
 
+[day_W_fix,RC,Par_FD,Par_Map_Ref,Par_Map_IDP,Model_FD,Model_IDP,Model_Refugee] = Selected_Model_Parameters_Uncertainty;
 
-load('Merge_Parameter_Uncertainty.mat','Par_FD');
 
 Daily_Refugee=zeros(NS,length(Time_Sim));
 Daily_IDP=zeros(NS,length(Time_Sim));
@@ -40,7 +23,7 @@ Daily_IDP_Female=zeros(NS,length(Time_Sim));
 parfor jj=1:NS
     
     % the parameter return for forcible displacement
-    [Parameter,~]=Parameter_Return(Par_FD(jj,:),RC,Time_Switch,day_W_fix,Model_Num);
+    [Parameter,~]=Parameter_Return(Par_FD(jj,:),RC,Time_Switch,day_W_fix,Model_FD);
     
     [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
     

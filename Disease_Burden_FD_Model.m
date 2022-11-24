@@ -1,77 +1,19 @@
 clear;
-% close all;
-
-
+close all;
+clc;
 
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
-
-t1=Ukraine_Pop.oblast;
-t2=Ukraine_Pop.raion;
-t_name=cell(6125,1);
-
-for ii=1:6125
-    t_name{ii}=[t1{ii} ' ' t2{ii}];
-end
-
-Oblast_NAME=unique(t1);
-Raion_NAME=unique(t2);
-
 clear Ukraine_Pop
-
-CCC=[hex2rgb('#7fc97f');
-hex2rgb('#beaed4');
-hex2rgb('#fdc086');
-hex2rgb('#ffff99');
-hex2rgb('#386cb0');
-hex2rgb('#666666');
-hex2rgb('#bf5b17');
-hex2rgb('#f0027f');];
-
-
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-L(ii)=-min(fval);
-k(ii)=length(x0(1,:));
-end
-
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
 
 load('Calibration_Conflict_Kernel.mat');
 NS=8;
 
 
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
-gender_v={'f','m'};
+[Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
 
-
-Pop=zeros(length(gender_v),length(Pop_raion),length(age_class_v));
-Pop(1,:,:)=Pop_F_Age;
-Pop(2,:,:)=Pop_M_Age;
-
-Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
-
-
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-Raion_S={S2.NAME_2};
-Oblast_S={S2.NAME_1};
-
-PopR=zeros(size(Pop));
-for ii=1:length(Raion_S)
-   tf=strcmp(Pop_raion,Raion_S{ii}) &  strcmp(Pop_oblast,Oblast_S{ii});
-   for aa=1:length(Pop_F_Age(1,:))
-       for gg=1:2
-            PopR(gg,tf,aa)=sum(Pop(gg,tf,aa));
-       end
-   end
-end
-
-
-
+Pop=Population_Join_Gender(Pop_F_Age,Pop_M_Age);
+PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion);
 
 Proxy_Disease_Age_Gender=zeros(8,5);
 Proxy_Disease_Gender=zeros(8,5);
@@ -161,9 +103,8 @@ Rel_Diff_Age=Rel_Diff_Age(:);
 Rel_Diff_Gender=Rel_Diff_Gender(:);
 Rel_Diff_Age_Gender=Rel_Diff_Age_Gender(:);
 Prev_Model=Prev_Model(:);
-T=table(Disease_List,Model_List,Prev_Model,Rel_Diff_Nat,Rel_Diff_Age,Rel_Diff_Gender,Rel_Diff_Age_Gender);
+T=table(Disease_List,Model_List,Prev_Model,Rel_Diff_Nat,Rel_Diff_Age,Rel_Diff_Gender,Rel_Diff_Age_Gender,'VariableNames',{'Disease','Model','Model Estimated Prevalence','National Prevalence','Age-based Prevalence','Gender-based Prevalence','Age-Gender-base Prevalence'});
 
-
-writetable(T,'Disease_Burden_Displacement_Models.csv');
+writetable(T,'Supplementary_Data.xlsx','Sheet','Disease_Burden_FD');
     
     

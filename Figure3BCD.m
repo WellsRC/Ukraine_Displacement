@@ -11,35 +11,12 @@ H=H(tfh);
 HLon=[H.Lon];
 HLat=[H.Lat];
 
-
-L=zeros(8,1);
-k=zeros(8,1);
-for jj=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(jj) '.mat']);
-    L(jj)=-min(fval);
-    k(jj)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
-
-load('Load_Data_Mapping.mat');
-
-load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
-
-load('Merge_Parameter_MLE.mat')
-
-x=MLE_FD;
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
-[Parameter,~]=Parameter_Return(x,RC,Time_Switch,day_W_fix,AIC_model_num);
+[Parameter,~]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
 
 
 
@@ -169,7 +146,7 @@ axis off;
 
 text(22.000000000000004,52.47793894762959,'B','Fontsize',40,'FontWeight','bold');
 
-print(gcf,['Hospital_Destroy.png'],'-dpng','-r300');
+print(gcf,['Figure_3B.png'],'-dpng','-r300');
 
 
 load('Load_Data_Mapping.mat');
@@ -191,30 +168,13 @@ for ii=1:length(MNR)
 end
 
 
-L=zeros(8,1);
-k=zeros(8,1);
-for jj=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(jj) '.mat']);
-    L(jj)=-min(fval);
-    k(jj)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 
 load('Load_Data_Mapping.mat');
 
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
 
-load('Merge_Parameter_MLE.mat')
-
-
-[Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
     
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
@@ -227,43 +187,20 @@ Mapped_Raion_Name=Ukraine_Pop.map_raion;
 Oblast_Pixel=Ukraine_Pop.oblast;
 Raion_Pixel=Ukraine_Pop.raion;
 
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
-gender_v={'f','m'};
-
 clear Ukraine_Pop
 
-
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-Raion_S={S2.NAME_2};
-Oblast_S={S2.NAME_1};
-
-
-Pop=zeros(length(gender_v),length(Pop_raion),length(age_class_v));
-Pop(1,:,:)=Pop_F_Age;
-Pop(2,:,:)=Pop_M_Age;
-
-PopR=zeros(size(Pop));
-for ii=1:length(Raion_S)
-   tf=strcmp(Pop_raion,Raion_S{ii}) &  strcmp(Pop_oblast,Oblast_S{ii});
-   for aa=1:length(Pop_F_Age(1,:))
-       for gg=1:2
-            PopR(gg,tf,aa)=sum(Pop(gg,tf,aa));
-       end
-   end
-end
+[Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
+Pop=Population_Join_Gender(Pop_F_Age,Pop_M_Age);
+PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion);
 
 Num_Refugee=squeeze(sum(Pop_Refugee,[4]));
 Num_Non_Displaced=Pop-Pop_IDP(:,:,:,end)-Num_Refugee;
 
-Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
-
-
 IDP_Disease=zeros(length(Disease_Short)+1,7);
 
-[Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(MLE_Map);
 
-% w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
-w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data);
+[Parameter_Map_IDP,IDP_Mv]=Parameter_Return_Mapping_IDP(MLE_Map_IDP,Model_IDP);
+w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
 
 [Est_Daily_IDP]=IDP_Refuge_Displaced(w_tot_idp,Daily_IDP_Origin,Time_Sim,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Parameter,Macro_Map);
 
@@ -289,6 +226,11 @@ YY=Est_Pop_PW.macro;
 Pre_War(1,:)=YY;
 
 Pop_Pre_Inv=Est_Pop_PW.raion;
+
+
+T_HS=table(Shapefile_Raion_Oblast_Name,Shapefile_Raion_Name,Pop_Pre_Inv,Hosp_Raion(:,1),Est_Pop_NIDP.raion,Est_Daily_IDP.raion(:,end),Hosp_Raion(:,2));
+writetable(T_HS,'Supplementary_Data.xlsx','Sheet','Hospital_Raions');
+
 
 Daily_IDP_Origin=Parameter.w_IDP.*Pop_Displace;
 
@@ -500,46 +442,25 @@ print(gcf,['PPH_Increase_Raion.png'],'-dpng','-r300');
 clear;
 clc;
 close all; 
-load('Load_Data_MCMC_Mapping.mat');
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-
-load('Macro_Oblast_Map.mat','Macro_Map');
-[Number_Displacement,Date_Displacement,vLat_C,vLon_C,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_MACRO,Pop_raion,Pop_oblast,Time_Sim,ML_Indx,RC,Time_Switch]=LoadData;
-
-
-
-
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
 Oblast_Pixel=Ukraine_Pop.oblast;
 Raion_Pixel=Ukraine_Pop.raion;
-
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
-gender_v={'f','m'};
-
 clear Ukraine_Pop
 
-Raion_S={S2.NAME_2};
-Oblast_S={S2.NAME_1};
+load('Calibration_Conflict_Kernel.mat');
 
+load('Macro_Oblast_Map.mat','Macro_Map');
 
-Pop=zeros(length(gender_v),length(Pop_raion),length(age_class_v));
-Pop(1,:,:)=Pop_F_Age;
-Pop(2,:,:)=Pop_M_Age;
+load('Load_Data_Mapping.mat');
 
-PopR=zeros(size(Pop));
-for ii=1:length(Raion_S)
-   tf=strcmp(Pop_raion,Raion_S{ii}) &  strcmp(Pop_oblast,Oblast_S{ii});
-   for aa=1:length(Pop_F_Age(1,:))
-       for gg=1:2
-            PopR(gg,tf,aa)=sum(Pop(gg,tf,aa));
-       end
-   end
-end
+[Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
+Pop=Population_Join_Gender(Pop_F_Age,Pop_M_Age);
+PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion);
 
-load('Merge_Parameter_Uncertainty.mat')
+[day_W_fix,RC,Par_FD,Par_Map_Ref,Par_Map_IDP,Model_FD,Model_IDP,Model_Refugee] = Selected_Model_Parameters_Uncertainty;
 
-NS=length(Par_KD(:,1));
+NS=length(Par_FD(:,1));
 
 Pop_C=sum(Pop,[1 3])';
 Est_Pop_PW=Macro_Return(Pop_C,Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
@@ -552,7 +473,6 @@ Pop_Remain_Inv_Raion=zeros(NS,length(S2));
 
 Pop_Remain_Inv_Macro=zeros(NS,7);
 
-day_W_fix=7;
 H=shaperead('Health/hotosm_ukr_health_facilities_points.shp','UseGeoCoords',true);
 
 N={H.amenity};
@@ -563,13 +483,15 @@ HLon=[H.Lon];
 HLat=[H.Lat];
 
 
+S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
+
 Hosp_Macro=zeros(NS,7,2);
 Hosp_Raion=zeros(NS,length(S2),3);
 for ss=1:NS
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
     % % Load data and determine the dispacement per day
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-    [Parameter,STDEV_Displace]=Parameter_Return(Par_KD(ss,:),RC,Time_Switch,day_W_fix);
+    [Parameter,~]=Parameter_Return(Par_FD(ss,:),RC,Time_Switch,day_W_fix,Model_FD);
 
 
     nDays=length(Time_Sim);
@@ -634,7 +556,7 @@ for ss=1:NS
     end
     
     
-    [Parameter,STDEV_Displace]=Parameter_Return(Par_KD(ss,:),RC,Time_Switch,day_W_fix);
+    [Parameter,~]=Parameter_Return(Par_FD(ss,:),RC,Time_Switch,day_W_fix,Model_FD);
         
     [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
@@ -644,10 +566,8 @@ for ss=1:NS
     Num_Refugee=squeeze(sum(Pop_Refugee,[4]));
     Num_Non_Displaced=Pop-Pop_IDP(:,:,:,end)-Num_Refugee;
        
-    [Parameter_Map_Refugee,Parameter_Map_IDP]=Parameter_Return_Mapping(Par_Map(ss,:));
-    
-    % w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data);
-    w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data);
+    [Parameter_Map_IDP,IDP_Mv]=Parameter_Return_Mapping_IDP(Par_Map_IDP(ss,:),Model_IDP);
+    w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
     
     [Est_Daily_IDP]=IDP_Refuge_Displaced(w_tot_idp,Daily_IDP_Origin,Time_Sim,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Parameter,Macro_Map);
     

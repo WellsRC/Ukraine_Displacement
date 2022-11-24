@@ -15,3 +15,10 @@ for mm=1:8
 end
 
 [aicm]=aicbic(L,k);
+
+daic=aicm-min(aicm);
+
+
+Model_Type={'Location','Location and Age','Location and Gender','Location and Socio-economic status','Location, Age, and Gender','Location, Age, and Socio-economic status','Location, Gender, and Socio-economic status','Location, Age, Gender, and Socio-economic status'}';
+
+T=table(Model_Type,L,k,daic);

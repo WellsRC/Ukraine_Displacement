@@ -2,40 +2,16 @@ clear;
 clc;
 close all;
 
-load('Merge_Parameter_MLE.mat')
-
-
-L=zeros(8,1);
-k=zeros(8,1);
-for jj=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(jj) '.mat']);
-    L(jj)=-min(fval);
-    k(jj)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
-
-load('Load_Data_Mapping.mat');
-% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-% Shapefile_Raion_Name={S2.NAME_2};
-% Shapefile_Raion_Oblast_Name={S2.NAME_1};
-% S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
-% Shapefile_Oblast_Name={S1.NAME_1};
-% save('Load_Data_MCMC_Mapping.mat');
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
-Parameter_V=x0(fval==min(fval),:);
+
 load('Macro_Oblast_Map.mat','Macro_Map');
 
+load('Load_Data_Mapping.mat');
 
 
-[Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
 
 
 [Parameter_Map_Refugee,Refugee_Mv]=Parameter_Return_Mapping_Refugee(MLE_Map_Ref,Model_Refugee);
@@ -128,6 +104,6 @@ patch([xp(1) xp(1) xp(end) xp(end)],[yp(1) yp(2) yp(2) yp(1)],'k','Facealpha',0)
 
 text(31.252835977086363,43.412321118918925,['Proportion of IDPs'],'Fontsize',30,'Horizontalalignment','center');
 
-print(gcf,['IDP_Macro_Regions_Map.png'],'-dpng','-r300');
+print(gcf,['Figure_3A.png'],'-dpng','-r300');
 
 

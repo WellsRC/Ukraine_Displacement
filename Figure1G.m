@@ -8,12 +8,13 @@ close all;
 % % Plot Disease Country
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
-
+% Load data used to calibrate the models
 load('Calibration_Conflict_Kernel.mat','vLat_C','vLon_C','Time_Sim');
-
+% load the shape file of the oblasts
 S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
 Oblast_S={S1.NAME_1};
 
+% Tha macro-region mappings
 load('Macro_Oblast_Map.mat','Macro_Map');
 MNR=unique(Macro_Map(:,3));
 Conflict_MR=zeros(length(MNR),length(Time_Sim));
@@ -40,13 +41,6 @@ for jj=1:7
    MNR{jj}=[temp(1) lower(temp(2:end))];
 end
 
-% CC=[hex2rgb('#c51b7d');
-% hex2rgb('#e9a3c9');
-% hex2rgb('#fde0ef');
-% hex2rgb('#4d9221');
-% hex2rgb('#a1d76a');
-% hex2rgb('#e6f5d0');
-% hex2rgb('#BCBABE')];
 
 CC=[hex2rgb('#2F3131');
 hex2rgb('#8D230F');

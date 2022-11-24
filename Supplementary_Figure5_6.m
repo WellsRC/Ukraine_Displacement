@@ -1,26 +1,11 @@
 clear;
 close all;
 
-
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-    L(ii)=-min(fval);
-    k(ii)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
-
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
+load('Load_Data_Mapping.mat');
+load('Macro_Oblast_Map.mat','Macro_Map');
 
-load('Merge_Parameter_Uncertainty.mat','Par_FD','Par_Map_IDP','Par_Map_Ref','L_T','Model_IDP','Model_Refugee')
+[day_W_fix,RC,Par_FD,Par_Map_Ref,Par_Map_IDP,Model_FD,Model_IDP,Model_Refugee] = Selected_Model_Parameters_Uncertainty;
 
 Parameter_V=Par_FD;
 Parameter_Ref_V=Par_Map_Ref;
@@ -46,22 +31,20 @@ Model_Est_South=zeros(NS,1);
 Model_Est_Center=zeros(NS,1);
 Model_Est_Kyiv=zeros(NS,1);
 
-load('Macro_Oblast_Map.mat','Macro_Map');
-load('Load_Data_MCMC_Mapping.mat');
 
 for jj=1:NS
-    [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(jj,:),RC,Time_Switch,day_W_fix,AIC_model_num);
+    [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V(jj,:),RC,Time_Switch,day_W_fix,Model_FD);
     
     [~,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
     Daily_IDP=squeeze(sum(Pop_IDP,[1 3]));
     
     
-    [Parameter_Map_Refugee,Refugee_Mv]=Parameter_Return_Mapping_Refugee(MLE_Map_Ref,Model_Refugee);
+    [Parameter_Map_Refugee,Refugee_Mv]=Parameter_Return_Mapping_Refugee(Parameter_Ref_V(jj,:),Model_Refugee);
     w_tot_ref=Determine_Weights_Refugee(Parameter_Map_Refugee,Mapping_Data,Refugee_Mv);
 
 
-    [Parameter_Map_IDP,IDP_Mv]=Parameter_Return_Mapping_IDP(MLE_Map_IDP,Model_IDP);
+    [Parameter_Map_IDP,IDP_Mv]=Parameter_Return_Mapping_IDP(Parameter_IDP_V(jj,:),Model_IDP);
     w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
 
     

@@ -4,31 +4,14 @@
 clear;
 close all;
 clc;
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-    L(ii)=-min(fval);
-    k(ii)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
-
-
-load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
-
-load('Merge_Parameter_MLE.mat','MLE_FD','MLE_Map_Ref','MLE_Map_IDP','Model_IDP','Model_Refugee')
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,AIC_model_num);
+
+load('Calibration_Conflict_Kernel.mat');
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,Model_FD);
 load('Conflict_Colourmap.mat','conflict_map');
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5

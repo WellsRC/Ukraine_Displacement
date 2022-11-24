@@ -3,27 +3,10 @@ clear;
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
 clear Ukraine_Pop
-
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-    L(ii)=-min(fval);
-    k(ii)=length(x0(1,:));
-end
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 
 load('Load_Data_Mapping.mat');
-
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
-Parameter_V=x0(fval==min(fval),:);
 load('Macro_Oblast_Map.mat','Macro_Map');
 
 

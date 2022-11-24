@@ -1,35 +1,17 @@
-clear;
-close all;
 
 clear;
 clc;
 close all;
-L=zeros(8,1);
-k=zeros(8,1);
-for ii=1:8
-    load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(ii) '.mat']);
-    L(ii)=-min(fval);
-    k(ii)=length(x0(1,:));
-end
-aics=aicbic(L,k);
 
-daics=aics-min(aics);
-
-AIC_model_num=find(daics==0);
-
+[day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 
 load('Calibration_Conflict_Kernel.mat');
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
-day_W_fix=day_W_fix(fval==min(fval));
-RC=RC(fval==min(fval));
-
-load('Merge_Parameter_MLE.mat','MLE_FD','MLE_Map_Ref','MLE_Map_IDP','Model_IDP','Model_Refugee')
 
 load('Macro_Oblast_Map.mat','Macro_Map');
 
 load('Load_Data_Mapping.mat');
 
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,AIC_model_num);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
     
 [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
@@ -57,36 +39,16 @@ Mapped_Raion_Name=Ukraine_Pop.map_raion;
 Oblast_Pixel=Ukraine_Pop.oblast;
 Raion_Pixel=Ukraine_Pop.raion;
 
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
-gender_v={'f','m'};
-
 clear Ukraine_Pop
 
-
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-Raion_S={S2.NAME_2};
-Oblast_S={S2.NAME_1};
-
-
-Pop=zeros(length(gender_v),length(Pop_raion),length(age_class_v));
-Pop(1,:,:)=Pop_F_Age;
-Pop(2,:,:)=Pop_M_Age;
-
-PopR=zeros(size(Pop));
-for ii=1:length(Raion_S)
-   tf=strcmp(Pop_raion,Raion_S{ii}) &  strcmp(Pop_oblast,Oblast_S{ii});
-   for aa=1:length(Pop_F_Age(1,:))
-       for gg=1:2
-            PopR(gg,tf,aa)=sum(Pop(gg,tf,aa));
-       end
-   end
-end
+[Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
+Pop=Population_Join_Gender(Pop_F_Age,Pop_M_Age);
+PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion);
 
 Num_Refugee=cumsum(Pop_Refugee,4);
 Num_Non_Displaced=repmat(Pop,1,1,1,length(Time_Sim))-Pop_IDP-Num_Refugee;
 
 Num_Non_Displaced_T=squeeze(sum(Num_Non_Displaced,1));
-Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 
 IDP_Disease=zeros(length(Disease_Short)+1,17,7,length(Time_Sim)+1);
 non_IDP_Disease=zeros(length(Disease_Short)+1,17,7,length(Time_Sim)+1);
@@ -130,8 +92,6 @@ for ii=1:length(N_Macro)
         N_Macro{ii}='Other';
     end
 end
-
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
 
 age_class_text={'0-9','10-19','20-29','30-39','40-49','50-59','60-69','70+'};
 age_c_V={[1:2],[3:4],[5:6],[7:8],[9:10],[11:12],[13:14],[15:17]};

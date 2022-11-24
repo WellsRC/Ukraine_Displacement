@@ -1,20 +1,7 @@
 clear;
 
-
-
 load('Ukraine_Population_Reduced.mat','Ukraine_Pop')
 Mapped_Raion_Name=Ukraine_Pop.map_raion;
-
-t1=Ukraine_Pop.oblast;
-t2=Ukraine_Pop.raion;
-t_name=cell(6125,1);
-
-for ii=1:6125
-    t_name{ii}=[t1{ii} ' ' t2{ii}];
-end
-
-Oblast_NAME=unique(t1);
-Raion_NAME=unique(t2);
 
 clear Ukraine_Pop
 
@@ -32,12 +19,6 @@ daics=aics-min(aics);
 AIC_model_num=find(daics==0);
 
 load('Load_Data_Mapping.mat');
-% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-% Shapefile_Raion_Name={S2.NAME_2};
-% Shapefile_Raion_Oblast_Name={S2.NAME_1};
-% S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
-% Shapefile_Oblast_Name={S1.NAME_1};
-% save('Load_Data_MCMC_Mapping.mat');
 
 load('Calibration_Conflict_Kernel.mat');
 load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
@@ -47,34 +28,9 @@ Parameter_V=x0(fval==min(fval),:);
 load('Macro_Oblast_Map.mat','Macro_Map');
 
 
-
-age_class_v={'0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'};
-gender_v={'f','m'};
-
-
-Pop=zeros(length(gender_v),length(Pop_raion),length(age_class_v));
-Pop(1,:,:)=Pop_F_Age;
-Pop(2,:,:)=Pop_M_Age;
-
-Disease_Short={'CVD';'Diabetes';'Cancer';'HIV';'TB'};
-
-
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-Raion_S={S2.NAME_2};
-Oblast_S={S2.NAME_1};
-
-PopR=zeros(size(Pop));
-for ii=1:length(Raion_S)
-   tf=strcmp(Pop_raion,Raion_S{ii}) &  strcmp(Pop_oblast,Oblast_S{ii});
-   for aa=1:length(Pop_F_Age(1,:))
-       for gg=1:2
-            PopR(gg,tf,aa)=sum(Pop(gg,tf,aa));
-       end
-   end
-end
-
-
-
+[Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
+Pop=Population_Join_Gender(Pop_F_Age,Pop_M_Age);
+PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion);
 
 [Parameter,STDEV_Displace]=Parameter_Return(Parameter_V,RC,Time_Switch,day_W_fix,AIC_model_num);
 
@@ -158,11 +114,11 @@ T_Cancer=table(Model_BN,Cancer);
 T_HIV=table(Model_BN,HIV);
 T_TB=table(Model_BN,TB);
 
-writetable(T_CVD,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-CVD');
-writetable(T_Diabetes,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-Diabetes');
-writetable(T_Cancer,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-Cancer');
-writetable(T_HIV,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-HIV');
-writetable(T_TB,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-TB');
+writetable(T_CVD,'Supplementary_Data.xlsx','Sheet','Refugee-CVD');
+writetable(T_Diabetes,'Supplementary_Data.xlsx','Sheet','Refugee-Diabetes');
+writetable(T_Cancer,'Supplementary_Data.xlsx','Sheet','Refugee-Cancer');
+writetable(T_HIV,'Supplementary_Data.xlsx','Sheet','Refugee-HIV');
+writetable(T_TB,'Supplementary_Data.xlsx','Sheet','Refugee-TB');
 
 T_CVD_Prev=table(Model_BN,CVD_Prev);
 T_Diabetes_Prev=table(Model_BN,Diabetes_Prev);
@@ -170,8 +126,8 @@ T_Cancer_Prev=table(Model_BN,Cancer_Prev);
 T_HIV_Prev=table(Model_BN,HIV_Prev);
 T_TB_Prev=table(Model_BN,TB_Prev);
 
-writetable(T_CVD_Prev,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-CVD_Prev');
-writetable(T_Diabetes_Prev,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-Diabetes_Prev');
-writetable(T_Cancer_Prev,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-Cancer_Prev');
-writetable(T_HIV_Prev,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-HIV_Prev');
-writetable(T_TB_Prev,'Model_Comparison_Disease_Burden.xlsx','Sheet','Refugee-TB_Prev');
+writetable(T_CVD_Prev,'Supplementary_Data.xlsx','Sheet','Refugee-CVD_Prev');
+writetable(T_Diabetes_Prev,'Supplementary_Data.xlsx','Sheet','Refugee-Diabetes_Prev');
+writetable(T_Cancer_Prev,'Supplementary_Data.xlsx','Sheet','Refugee-Cancer_Prev');
+writetable(T_HIV_Prev,'Supplementary_Data.xlsx','Sheet','Refugee-HIV_Prev');
+writetable(T_TB_Prev,'Supplementary_Data.xlsx','Sheet','Refugee-TB_Prev');

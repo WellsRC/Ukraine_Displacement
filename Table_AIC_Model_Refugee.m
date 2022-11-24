@@ -15,12 +15,6 @@ daics=aics-min(aics);
 AIC_model_num=find(daics==0);
 
 load('Load_Data_Mapping.mat');
-% S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
-% Shapefile_Raion_Name={S2.NAME_2};
-% Shapefile_Raion_Oblast_Name={S2.NAME_1};
-% S1=shaperead('UKR_ADM_1\UKR_adm1.shp','UseGeoCoords',true);
-% Shapefile_Oblast_Name={S1.NAME_1};
-% save('Load_Data_MCMC_Mapping.mat');
 
 load('Calibration_Conflict_Kernel.mat');
 load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(AIC_model_num) '.mat']);
