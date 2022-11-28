@@ -1,10 +1,19 @@
 clear;
 
 rng shuffle;
-load('MCMC_out-k=160.mat','L_V','Parameter_V')
+load('Kernel_Paremeter-Window_Conflict=12_days_MCMC.mat')
+Parameter_Vt=Parameter_V;
+L_Vt=L_V;
+% Close all;
 
-Parameter_V=Parameter_V(L_V<0,:);
-L_V=L_V(L_V<0);
+load('MCMC_out-k=244.mat')
+
+testp=[Parameter_Vt;Parameter_V(L_V<0,:)];
+
+test_L=[L_Vt;L_V];
+
+Parameter_V=testp(test_L<0,:);
+L_V=test_L(test_L<0);
 Parameter_V=Parameter_V(end-9999:end,:);
 L_V=L_V(end-9999:end);
 

@@ -3,12 +3,14 @@ close all;
 
 load('Kernel_Paremeter-Window_Conflict=12_days_MCMC.mat')
 Parameter_Vt=Parameter_V;
+L_Vt=L_V;
 % Close all;
 
-load('MCMC_out-k=224.mat')
+load('MCMC_out-k=244.mat')
 
 testp=[Parameter_Vt;Parameter_V(L_V<0,:)];
 
+test_L=[L_Vt;L_V];
 NN=length(testp(:,1));
 
 SS=10^4;
