@@ -143,8 +143,9 @@ for mm=1:6
 end
 scatter([1:6],datas,40,Scatter_Color,'filled');
 
-set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:6],'XTickLabel',{'Kyiv','South','East','West','North','Center'})
+set(gca,'linewidth',2,'tickdir','out','fontsize',22','XTick',[1:6],'YTick',[0:10:60],'XTickLabel',{'Kyiv','South','East','West','North','Center'})
 xlim([0.5 6.5])
+ylim([0 60]);
 title(datestr(Date_Displacement.IDP_Origin(dd),'mmmm dd'))
 ytickformat('percentage')
 ylabel('Proportion','Fontsize',24)

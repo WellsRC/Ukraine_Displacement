@@ -11,10 +11,19 @@ H=H(tfh);
 HLon=[H.Lon];
 HLat=[H.Lat];
 
+load('Calibration_Conflict_Kernel.mat');
+
+load('Macro_Oblast_Map.mat','Macro_Map');
+
+load('Load_Data_Mapping.mat');
+
+
 [day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % % Load data and determine the dispacement per day
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+
 
 [Parameter,~]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
 
@@ -227,15 +236,16 @@ Pre_War(1,:)=YY;
 
 Pop_Pre_Inv=Est_Pop_PW.raion;
 
-
-T_HS=table(Shapefile_Raion_Oblast_Name,Shapefile_Raion_Name,Pop_Pre_Inv,Hosp_Raion(:,1),Est_Pop_NIDP.raion,Est_Daily_IDP.raion(:,end),Hosp_Raion(:,2));
+Shapefile_Raion_Oblast_Namet=Shapefile_Raion_Oblast_Name';
+Shapefile_Raion_Namet=Shapefile_Raion_Name';
+T_HS=table(Shapefile_Raion_Oblast_Namet,Shapefile_Raion_Namet,Pop_Pre_Inv,Hosp_Raion(:,1),Est_Pop_NIDP.raion,Est_Daily_IDP.raion(:,end),Hosp_Raion(:,2));
 writetable(T_HS,'Supplementary_Data.xlsx','Sheet','Hospital_Raions');
 
 
 Daily_IDP_Origin=Parameter.w_IDP.*Pop_Displace;
 
 for dd=1:length(Disease_Short)
-    [test_non_idp,test_idp,~]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Daily_IDP_Origin,Num_Refugee,Pop,PopR,false);
+    [test_non_idp,test_idp,~]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Daily_IDP_Origin,Num_Refugee,Pop,PopR,false);
     test_idp=squeeze(sum(test_idp,[1 3]));
     test_non_idp=squeeze(sum(test_non_idp,[1 3]))';
     [Est_Daily_IDP]=IDP_Refuge_Displaced(w_tot_idp,test_idp,Time_Sim,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Parameter,Macro_Map);
@@ -248,7 +258,7 @@ for dd=1:length(Disease_Short)
     YY=Est_Pop_NIDP.macro;
     Non_IDP_Disease(dd+1,:)=YY;
 
-    [test_pw,~,~]=Disease_Distribution(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,Daily_IDP_Origin,Pop,Pop,PopR,false);
+    [test_pw,~,~]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Pop,Daily_IDP_Origin,Pop,Pop,PopR,false);
     
     test_pw=squeeze(sum(test_pw,[1 3]))';
     Est_Pop_PW=Macro_Return(test_pw,Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
@@ -558,7 +568,7 @@ for ss=1:NS
     
     [Parameter,~]=Parameter_Return(Par_FD(ss,:),RC,Time_Switch,day_W_fix,Model_FD);
         
-    [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,ML_Indx);
+    [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
     Daily_Refugee=squeeze(sum(Pop_Refugee,[1 3]));
     Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to examine the new idp only
     

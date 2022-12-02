@@ -1,7 +1,7 @@
 function PopR=Raion_Population_Point(Pop,Pop_oblast,Pop_raion)
 
 
-S2=shaperead('UKR_ADM_2\UKR_adm2.shp','UseGeoCoords',true);
+S2=shaperead([pwd '/UKR_ADM_2/UKR_adm2.shp'],'UseGeoCoords',true);
 Raion_S={S2.NAME_2};
 Oblast_S={S2.NAME_1};
 

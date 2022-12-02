@@ -272,7 +272,7 @@ box off;
             
             legend(Model_Type,'FontSize',12,'NumColumns',2);
 %             subplot('Position',[0.06,0.60 0.43 0.35]);
-            text(0,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
+            text(-0.134326200116974,1.085282445865074,'A','Units','normalized','Fontsize',40,'FontWeight','bold');
         case 2
 %             subplot('Position',[0.55,0.60 0.43 0.35]);
             text(-0.134326200116974,1.085282445865074,'B','Units','normalized','Fontsize',40,'FontWeight','bold');

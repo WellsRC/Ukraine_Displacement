@@ -53,4 +53,4 @@ for ss=1:length(Par_FD(:,1))
         Prob_FD_U(ss,ii)=sum(Pop_Dis(tf))./sum(Pop(tf));
     end
 end
-save('Probability_Dsiplaced_Macro_Region.mat');
+save('Probability_Displaced_Macro_Region.mat');

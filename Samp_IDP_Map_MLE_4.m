@@ -44,13 +44,15 @@ Parameter_Samp_IDP=zeros(length(L_V_Samp),k(daics==0));
 L_V_Samp_IDP=zeros(size(L_V_Samp));
 
 [LB,UB]=ParameterBounds_Mapping_IDP(AIC_model_IDP);
-options = optimoptions('surrogateopt','PlotFcn',[],'UseParallel',false);
+options = optimoptions('surrogateopt','PlotFcn','surrogateoptplot','UseParallel',false);
 for ii=(3.*NS+1):4.*NS
     [Parameter,STDEV_Displace]=Parameter_Return(Parameter_Samp(ii,:),RC,Time_Switch,day_W_fix,AIC_model_num);
 
     [Pop_Displace,~,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
     Daily_IDP_Origin=Parameter.w_IDP.*squeeze(sum(Pop_Displace,[1 3])); % Need to examine the new idp only
+    tic;
     [Parameter_Samp_IDP(ii,:),fval]=surrogateopt(@(x)ObjectiveFunction_IDP(x,Daily_IDP_Origin,Mapping_Data,IDP_Displacement,Time_Sim,Parameter,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map,AIC_model_IDP),LB,UB,options);
+    toc;
     L_V_Samp_IDP(ii)=-fval;    
 end
 

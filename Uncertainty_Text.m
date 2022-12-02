@@ -25,7 +25,7 @@ Pop_Macro=Macro_Return(squeeze(sum(Pop,[1 3]))',Raion_Pixel,Oblast_Pixel,Shapefi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-NS=length(Par_KD(:,1));
+NS=length(Par_FD(:,1));
 
 
 UN_IDP_Disease=zeros(NS,length(Disease_Short));
@@ -91,7 +91,7 @@ for ii=1:NS
     w_tot_idp=Determine_Weights_IDP(Parameter_Map_IDP,Mapping_Data,IDP_Mv);
     
     % the parameter return for forcible displacement
-    [Parameter,~]=Parameter_Return(Par_FD(ii,:),RC,Time_Switch,day_W_fix,Model_Num);
+    [Parameter,~]=Parameter_Return(Par_FD(ii,:),RC,Time_Switch,day_W_fix,Model_FD);
     
     % Estimate of the displaced population
     [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
@@ -164,9 +164,10 @@ for ii=1:NS
         end
     end
     
-    parfor dd=1:length(Disease_Short)
+    for dd=1:length(Disease_Short)
         % determine the disease burden among non-idp, idp and refugee
-        [test_non_idp,test_idp,test_refugee,prev_samp(ii,dd),pop_base]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,true);
+        [test_non_idp,test_idp,test_refugee,pop_base]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,true);
+        prev_samp(ii,dd)=sum(pop_base(:))./sum(Pop(:));
         % aggegrate gender and age to do the transofromation for the
         % mapping
         test_refugee=sum(test_refugee,[1 3]);
@@ -216,8 +217,8 @@ for ii=1:NS
         % The proxy using the disease burden by computing the product of
         % the prevalence and number of displaced
             UN_Proxy_Displaced_Disease_Age_Gender(ii,dd)=sum(squeeze(Prev_Dis_Gender_Age_UN(ii,dd,:,:)).*squeeze(Displaced_UKR_Gender_Age_UN(ii,:,:)),[1 2]);
-            UN_Proxy_Displaced_Disease_Age(ii,dd)=sum(squeeze(Prev_Dis_Age_UN(ii,dd,:)).*squeeze(Displaced_UKR_Age_UN(ii,:)));
-            UN_Proxy_Displaced_Disease_Gender(ii,dd)=sum(squeeze(Prev_Dis_Gender_UN(ii,dd,:)).*squeeze(Displaced_UKR_Gender_UN(ii,:)));
+            UN_Proxy_Displaced_Disease_Age(ii,dd)=sum(squeeze(Prev_Dis_Age_UN(ii,dd,:)).*squeeze(Displaced_UKR_Age_UN(ii,:)'));
+            UN_Proxy_Displaced_Disease_Gender(ii,dd)=sum(squeeze(Prev_Dis_Gender_UN(ii,dd,:)).*squeeze(Displaced_UKR_Gender_UN(ii,:)'));
             UN_Proxy_Displaced_Disease_Nat(ii,dd)=sum(squeeze(Prev_Dis_Nat_UN(ii,dd)).*squeeze(Displaced_UKR_Nat_UN(ii)));
             
             
@@ -265,13 +266,13 @@ load('Uncertainty_text.mat');
 
 
 MLE_IDP_Disease=zeros(1,length(Disease_Short));
-MLE_Refugee_Disease=zeros(1,length(Disease_Short),8);
-MLE_Macro_Disease=zeros(1,length(Disease_Short),7);
+MLE_Refugee_Disease=zeros(length(Disease_Short),8);
+MLE_Macro_Disease=zeros(length(Disease_Short),7);
 MLE_Displaced_Disease=zeros(1,length(Disease_Short));
-MLE_Refugee_Num_Country=zeros(1,8);
+% MLE_Refugee_Num_Country=zeros(1,8);
 prev_samp=zeros(1,length(Disease_Short));
-MLE_Rel_Change_Pop=zeros(1,7);
-MLE_Macro_Pop=zeros(1,7,2);
+% MLE_Rel_Change_Pop=zeros(1,7);
+% MLE_Macro_Pop=zeros(1,7,2);
 MLE_Macro_Disease_PreWar=zeros(length(Disease_Short),7);
 MLE_Macro_Disease_PostWar=zeros(length(Disease_Short),7);
 
@@ -301,7 +302,7 @@ Prev_Dis_Nat_MLE=zeros(length(Disease_Short));
 Refugee_Dis_Gender_Age_MLE=zeros(8,length(gender_v),length(age_class_v));
 Refugee_Dis_Age_MLE=zeros(8,length(age_class_v));
 Refugee_Dis_Gender_MLE=zeros(8,length(gender_v));
-Refugee_Dis_Nat_MLE=zeros(1,8);
+% Refugee_Dis_Nat_MLE=zeros(1,8);
 
 Displaced_UKR_Gender_Age_MLE=zeros(length(gender_v),length(age_class_v));
 Displaced_UKR_Age_MLE=zeros(1,length(age_class_v));
@@ -310,7 +311,7 @@ Displaced_UKR_Gender_MLE=zeros(1,length(gender_v));
 Displaced_Macro_Gender_Age_MLE=zeros(7,length(gender_v),length(age_class_v));
 Displaced_Macro_Age_MLE=zeros(7,length(age_class_v));
 Displaced_Macro_Gender_MLE=zeros(7,length(gender_v));
-Displaced_Macro_Nat_MLE=zeros(1,7);
+% Displaced_Macro_Nat_MLE=zeros(1,7);
 
 % Parameter return for the refugee model
 [Parameter_Map_Refugee,Refugee_Mv]=Parameter_Return_Mapping_Refugee(MLE_Map_Ref,Model_Refugee);
@@ -342,10 +343,10 @@ Num_Displaced=squeeze(sum(Pop_Displace,[4]));
 % Determine the non-displaced population in the macro regions
 Est_Pop_NIDP=Macro_Return(squeeze(sum(Num_Non_Displaced,[1 3]))',Raion_Pixel,Oblast_Pixel,Shapefile_Raion_Name,Shapefile_Raion_Oblast_Name,Shapefile_Oblast_Name,Macro_Map);
 % Compute the relative population change in the macro regions
-MLE_Rel_Change_Pop(:)= (Est_Daily_IDP.macro(:,end)+Est_Pop_NIDP.macro)./Pop_Macro.macro-1;
+MLE_Rel_Change_Pop= (Est_Daily_IDP.macro(:,end)+Est_Pop_NIDP.macro)./Pop_Macro.macro-1;
 
 % The population the macro region pre-invasion and during the invasion
-MLE_Macro_Pop(:,:)=[Pop_Macro.macro Est_Daily_IDP.macro(:,end)+Est_Pop_NIDP.macro];
+MLE_Macro_Pop=[Pop_Macro.macro Est_Daily_IDP.macro(:,end)+Est_Pop_NIDP.macro];
 
 % The total number of IDPs (take end as it is the observed)
 MLE_Num_IDP=sum(Pop_IDP(:,:,:,end),[1 2 3]);
@@ -392,9 +393,10 @@ for gg=1:2
 end
 
 % Disease burden
-parfor dd=1:length(Disease_Short)
+for dd=1:length(Disease_Short)
     % disease burden among non-dispelace, non-ido, and refugees
-    [test_non_idp,test_idp,test_refugee,prev_samp(dd),pop_base]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,false);
+    [test_non_idp,test_idp,test_refugee,pop_base]=Disease_Distribution_beta(Disease_Short{dd},Mapped_Raion_Name,age_class_v,gender_v,Num_Non_Displaced,Pop_IDP,Num_Refugee,Pop,PopR,false);
+    prev_samp(dd)=sum(pop_base(:))./sum(Pop(:));
     % aggregate among age nad gender to do mapping
     test_refugee=sum(test_refugee,[1 3]);
     % the number of idps with disease
@@ -437,9 +439,9 @@ for dd=1:length(Disease_Short)
     end
     % Disease burden for the displaced
     MLE_Proxy_Displaced_Disease_Age_Gender(dd)=sum(squeeze(Prev_Dis_Gender_Age_MLE(dd,:,:)).*squeeze(Displaced_UKR_Gender_Age_MLE(:,:)),[1 2]);
-    MLE_Proxy_Displaced_Disease_Age(dd)=sum(squeeze(Prev_Dis_Age_MLE(dd,:)).*squeeze(Displaced_UKR_Age_MLE(:)));
-    MLE_Proxy_Displaced_Disease_Gender(dd)=sum(squeeze(Prev_Dis_Gender_MLE(dd,:)).*squeeze(Displaced_UKR_Gender_MLE(:)));
-    MLE_Proxy_Displaced_Disease_Nat(dd)=sum(squeeze(Prev_Dis_Nat_MLE(dd)).*squeeze(Displaced_UKR_Nat_MLE));
+    MLE_Proxy_Displaced_Disease_Age(dd)=sum(squeeze(Prev_Dis_Age_MLE(dd,:)).*Displaced_UKR_Age_MLE);
+    MLE_Proxy_Displaced_Disease_Gender(dd)=sum(squeeze(Prev_Dis_Gender_MLE(dd,:)).*Displaced_UKR_Gender_MLE);
+    MLE_Proxy_Displaced_Disease_Nat(dd)=sum(squeeze(Prev_Dis_Nat_MLE(dd)).*Displaced_UKR_Nat_MLE);
     
     % Disease burden for the displaced based on the macro regions
     for cc=1:7
@@ -464,8 +466,8 @@ MLE_Rel_Diff_Age_Displaced=MLE_Proxy_Displaced_Disease_Age./MLE_Displaced_Diseas
 MLE_Rel_Diff_Age_Gender_Displaced=MLE_Proxy_Displaced_Disease_Age_Gender./MLE_Displaced_Disease-1;
 
 
-MLE_Rel_Diff_Nat_Displaced_Macro=MLE_Proxy_Macro_Displaced_Disease_Nat./MLE_Macro_Disease-1;
-MLE_Rel_Diff_Gender_Displaced_Macro=MLE_Proxy_Macro_Displaced_Disease_Gender./MLE_Macro_Disease-1;
+MLE_Rel_Diff_Nat_Displaced_Macro=MLE_Proxy_Displaced_Macro_Disease_Nat./MLE_Macro_Disease-1;
+MLE_Rel_Diff_Gender_Displaced_Macro=MLE_Proxy_Displaced_Macro_Disease_Gender./MLE_Macro_Disease-1;
 MLE_Rel_Diff_Age_Displaced_Macro=MLE_Proxy_Displaced_Macro_Disease_Age./MLE_Macro_Disease-1;
 MLE_Rel_Diff_Age_Gender_Displaced_Macro=MLE_Proxy_Displaced_Macro_Disease_Age_Gender./MLE_Macro_Disease-1;
 save('Uncertainty_text.mat');

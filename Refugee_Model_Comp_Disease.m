@@ -101,11 +101,11 @@ for ii=0:31
     Model_BN(ii+1,1:length(temp))=temp;
 end
 
-CVD_Prev=10000.*CVD./Ref_Pop_Model;
-Diabetes_Prev=10000.*Diabetes./Ref_Pop_Model;
-Cancer_Prev=10000.*Cancer./Ref_Pop_Model;
-HIV_Prev=10000.*HIV./Ref_Pop_Model;
-TB_Prev=10000.*TB./Ref_Pop_Model;
+CVD_Prev=100000.*CVD./Ref_Pop_Model;
+Diabetes_Prev=100000.*Diabetes./Ref_Pop_Model;
+Cancer_Prev=100000.*Cancer./Ref_Pop_Model;
+HIV_Prev=100000.*HIV./Ref_Pop_Model;
+TB_Prev=100000.*TB./Ref_Pop_Model;
 
 
 T_CVD=table(Model_BN,CVD);

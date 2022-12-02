@@ -108,11 +108,11 @@ for ii=0:15
 end
 
 
-CVD_Prev=10000.*CVD./IDP_Pop_Model;
-Diabetes_Prev=10000.*Diabetes./IDP_Pop_Model;
-Cancer_Prev=10000.*Cancer./IDP_Pop_Model;
-HIV_Prev=10000.*HIV./IDP_Pop_Model;
-TB_Prev=10000.*TB./IDP_Pop_Model;
+CVD_Prev=100000.*CVD./IDP_Pop_Model;
+Diabetes_Prev=100000.*Diabetes./IDP_Pop_Model;
+Cancer_Prev=100000.*Cancer./IDP_Pop_Model;
+HIV_Prev=100000.*HIV./IDP_Pop_Model;
+TB_Prev=100000.*TB./IDP_Pop_Model;
 
 
 
