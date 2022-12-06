@@ -129,6 +129,7 @@ CC=CC(flip([2 5 6 3 7 1 4]),:);
 Pop_M=Pop_M(:,:,flip([2 5 6 3 7 1 4]),:);
 
 N_Macro=N_Macro(flip([2 5 6 3 7 1 4]));
+xbl=[0.3 0.5 0.45 0.5 0.3 0.3];
 close all;
 for dd=1:6
     RR=squeeze(sum(Pop_M(dd,:,:,:),[1 2]));
@@ -152,7 +153,7 @@ for dd=1:6
     ylim([10^(min(log10(RR(:)))-0.1) 10^(max(log10(RR(:)))+0.1)]);
     xtickangle(90);
     if(dd==1)
-        legend(flip(pl),flip(N_Macro),'Fontsize',20,'Numcolumns',3,'Position',[0.155014131176101,0.696386358950115,0.393008467693955,0.105369804508176]);
+        legend(flip(pl),flip(N_Macro),'Fontsize',20,'Numcolumns',2,'Position',[0.270844368012339,0.463019250253293,0.268008469809162,0.139226285922558]);
     end
     text(-0.253313884114664,1.03068878316403,char(64+dd),'Units','normalized','Fontsize',40,'FontWeight','bold')
     subplot('Position',[0.7,0.090172239108409,0.270338983050848,0.904761904761907])
@@ -170,6 +171,7 @@ for dd=1:6
     end
     
     ylim([0.5 7.5]);
+    xlim([0 xbl(dd)]);
     set(gca,'tickdir','out','LineWidth',2,'Fontsize',14,'YTick',YT,'YTickLabel',age_class_text,'Xminortick','on');  
     hAxes=gca;
     hAxes.XAxis.FontSize = 24;

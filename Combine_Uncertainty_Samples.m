@@ -40,15 +40,15 @@ Par_Map_Ref=[];
 Par_Map_IDP=[];
 L_T=L_V_Samp;
 
-for ii=1:2
-    load(['MCMC_Sample_Refugee_Mapping_Parameters_' num2str(ii+1) '.mat'],'Parameter_Samp_Ref','L_V_Samp_Ref');
+for ii=1:4
+    load(['MCMC_Sample_Refugee_Mapping_Parameters_' num2str(ii) '.mat'],'Parameter_Samp_Ref','L_V_Samp_Ref');
     if(ii==1)
         Par_Map_Ref=Parameter_Samp_Ref;
     else
         Par_Map_Ref(L_V_Samp_Ref~=0,:)=Parameter_Samp_Ref(L_V_Samp_Ref~=0,:);
     end
     
-    load(['MCMC_Sample_IDP_Mapping_Parameters_' num2str(ii+1) '.mat'],'Parameter_Samp_IDP','L_V_Samp_IDP');
+    load(['MCMC_Sample_IDP_Mapping_Parameters_' num2str(ii) '.mat'],'Parameter_Samp_IDP','L_V_Samp_IDP');
     if(ii==1)
         Par_Map_IDP=Parameter_Samp_IDP;
     else
@@ -58,10 +58,6 @@ for ii=1:2
     L_T=L_T+L_V_Samp_Ref+L_V_Samp_IDP;
 end
 
-L_T=L_T(251:750);
-Par_FD=Par_FD(251:750,:);
-Par_Map_Ref=Par_Map_Ref(251:750,:);
-Par_Map_IDP=Par_Map_IDP(251:750,:);
 save('Merge_Parameter_Uncertainty.mat','Par_FD','Par_Map_Ref','Par_Map_IDP','L_T','Model_IDP','Model_Refugee');
 
 MLE_FD=Par_FD(sum(L_T,2)==max(sum(L_T,2)),:);

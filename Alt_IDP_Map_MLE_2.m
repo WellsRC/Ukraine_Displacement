@@ -21,31 +21,18 @@ day_W_fix=day_W_fix(fval==min(fval));
 RC=RC(fval==min(fval));
 load('Macro_Oblast_Map.mat','Macro_Map');
 
-
-L=zeros(16,1);
-k=zeros(16,1);
-for model_num=1:16
-    load(['Mapping_IDP_MLE_Model=' num2str(model_num-1) '.mat'],'par_V','L_V_Mapping');
-    L(model_num)=L_V_Mapping;
-    k(model_num)=length(par_V);
-end
-
-
-aics=aicbic(L,k);
-
-daics=aics-min(aics);
-
-AIC_model_IDP=find(daics==0)-1;
-
+% Choose the most complex model
+AIC_model_IDP=16-1;
 load('MCMC_Sample_Forcible_Displacement_Parameters.mat','Parameter_Samp','L_V_Samp');
 
 NS=length(L_V_Samp)/4;
-Parameter_Samp_IDP=zeros(length(L_V_Samp),k(daics==0));
 L_V_Samp_IDP=zeros(size(L_V_Samp));
 
 [LB,UB]=ParameterBounds_Mapping_IDP(AIC_model_IDP);
+
+Parameter_Samp_IDP=zeros(length(L_V_Samp),length(LB));
 options = optimoptions('surrogateopt','PlotFcn',[],'UseParallel',false);
-for ii=(3.*NS+1):4.*NS
+for ii=(NS+1):2.*NS
     [Parameter,STDEV_Displace]=Parameter_Return(Parameter_Samp(ii,:),RC,Time_Switch,day_W_fix,AIC_model_num);
 
     [Pop_Displace,~,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
@@ -54,4 +41,4 @@ for ii=(3.*NS+1):4.*NS
     L_V_Samp_IDP(ii)=-fval;    
 end
 
-save('MCMC_Sample_IDP_Mapping_Parameters_4.mat','Parameter_Samp_IDP','L_V_Samp_IDP');
+save('ALTERNATE_COMPLEX_MCMC_Sample_IDP_Mapping_Parameters_2.mat','Parameter_Samp_IDP','L_V_Samp_IDP');

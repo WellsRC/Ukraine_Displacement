@@ -12,7 +12,7 @@ clear Ukraine_Pop
 
 load('Calibration_Conflict_Kernel.mat');
 [day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
-[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,Model_FD);
+[Parameter,STDEV_Displace]=Parameter_Return(MLE_FD,RC,Time_Switch,day_W_fix,FD_Model);
 
 
 [Disease_Short,age_class_v,gender_v]=Disease_Stratificaion_Text;
@@ -35,11 +35,11 @@ for ii=1:length(MNR)
 end
 
 
-[day_W_fix,RC,Par_FD,Par_Map_Ref,Par_Map_IDP,Model_FD,Model_IDP,Model_Refugee] = Selected_Model_Parameters_Uncertainty;
+[day_W_fix,RC,Par_FD,Par_Map_Ref,Par_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_Uncertainty;
 
 Prob_FD_U=zeros(length(Par_FD(:,1)),length(MNR));
 for ss=1:length(Par_FD(:,1))
-    [Parameter,STDEV_Displace]=Parameter_Return(Par_FD(ss,:),RC,Time_Switch,day_W_fix,Model_FD);
+    [Parameter,STDEV_Displace]=Parameter_Return(Par_FD(ss,:),RC,Time_Switch,day_W_fix,FD_Model);
 
     [Pop_Displace,Pop_IDP,Pop_Refugee]=Estimate_Displacement(Parameter,vLat_C,vLon_C,Time_Sim,Lat_P,Lon_P,Pop_F_Age,Pop_M_Age,Pop_SES);
 

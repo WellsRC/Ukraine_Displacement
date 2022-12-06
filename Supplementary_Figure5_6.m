@@ -2,7 +2,7 @@ clear;
 close all;
 
 load('FigS5_S6.mat');
-Model_Ref=[Model_Est_Poland Model_Est_Slovakia Model_Est_Hungary Model_Est_Romania Model_Est_Belarus Model_Est_Moldova Model_Est_Russia];
+Model_Ref=[Model_Est_Poland Model_Est_Slovakia Model_Est_Hungary Model_Est_Romania Model_Est_Belarus Model_Est_Moldova Model_Est_Russia Model_Est_Europe];
 Model_IDPs=[Model_Est_Kyiv Model_Est_East Model_Est_West Model_Est_South Model_Est_North Model_Est_Center];
 
 Data_point=[Refugee_Displacement.Cumulative_Poland(end-1) Refugee_Displacement.Cumulative_Slovakia(end-1)  Refugee_Displacement.Cumulative_Hungary(end-1) Refugee_Displacement.Cumulative_Romania(end-1) Refugee_Displacement.Cumulative_Belarus(end) Refugee_Displacement.Cumulative_Moldova(end-1) Refugee_Displacement.Cumulative_Russia(end)];

@@ -312,15 +312,15 @@ bb=barh([1:7],100.*RR,'LineStyle','none');
 for ii=1:length(bb)
    bb(ii).FaceColor=CC(ii,:); 
 end
-set(gca,'LineWidth',2,'tickdir','out','YTick',1:7,'YTickLabel',NMR,'Fontsize',24,'XTick',[-5 0:10:50]);
-xlim([-5 50]);
+set(gca,'LineWidth',2,'tickdir','out','YTick',1:7,'YTickLabel',NMR,'Fontsize',24,'XTick',[-90:10:50],'Xminortick','on');
+xlim([-85 30]);
 box off;
 xlabel('Percent increase in people per hospital','Fontsize',30);
 ylabel('Macro region','Fontsize',30);
 xtickformat('percentage');
 Disease={'Population';'CVD';'Diabetes';'Cancer';'HIV';'TB'};
 legend(flip(bb),Disease,'Fontsize',22,'Location','SouthEast')
-text(-11.819607843137254,7.575635984963931,'D','Fontsize',40,'FontWeight','bold');
+text(-0.122864450127877,1.006598611607689,'D','Fontsize',40,'FontWeight','bold','Units','Normalized');
 print(gcf,['Percent_increase_people_per_hospital.png'],'-dpng','-r300');
 
 
@@ -342,7 +342,7 @@ for ii=1:length(bb)
    bb(ii).FaceColor=CC(ii,:); 
 end
 set(gca,'LineWidth',2,'tickdir','out','YTick',1:7,'YTickLabel',NMR,'Fontsize',24,'XTick',[-5 0:10:60]);
-xlim([-1 65]);
+xlim([-55 70]);
 box off;
 xlabel('Number of additional hospitals needed','Fontsize',30);
 ylabel('Macro region','Fontsize',30);
@@ -367,7 +367,9 @@ RC_PPH_t=RC_PPH;
 RC_PPH_t(RC_PPH>1)=1.01;
 load('colormap_PPH.mat','PPH_map');
 
-XC=[-0.4:0.05:1.05];
+XC=[-0.85:0.1:1.15];
+XC_plot=[-0.85:0.1:1.15];
+XC(end-1)=1;
 XCt=XC(2:end);
 open('UKR_0_Map.fig')
 
@@ -428,17 +430,19 @@ text(22.000000000000004,52.47793894762959,'C','Fontsize',40,'FontWeight','bold')
 axes('Position',[0.02241847826087,0.138804457953394,0.302989130434782,0.364032421479237])
 [NC,Cedges] = histcounts(RC_PPH_t,XC);
 
-b=bar((XC(2:end)+XC(1:end-1))./2,NC);
+b=bar((XC_plot(2:end)+XC_plot(1:end-1))./2,NC);
 b.FaceColor = 'flat';
 for ii=1:length(PPH_map(:,1))
     b.CData(ii,:)=PPH_map(ii,:);
 end
 hold on
-plot(ones(101,1),linspace(0,max(NC)+5,101),'k-.','LineWidth',2);
-text(1.05,max(NC)./2,'Over 100%','Fontsize',18,'Rotation',90,'HorizontalAlignment','center')
-set(gca,'LineWidth',2,'tickdir','out','fontsize',18,'XTick',[-0.4 -0.2 0 0.2 0.4 0.6 0.8 1],'XTicklabel',{'-40%','-20%','0%','20%','40%','60%','80%','100%'},'Yticklabel','','YTick',[]);
+plot(1.05.*ones(101,1),linspace(0,max(NC)+5,101),'k-.','LineWidth',2);
+
+text(1.1,max(NC)./2,'Over 100%','Fontsize',18,'Rotation',90,'HorizontalAlignment','center')
+set(gca,'LineWidth',2,'tickdir','out','fontsize',18,'XTick',[-0.8:0.1:1.1],'XTicklabel',{'-80%','','-60%','','-40%','','-20%','','0%','','20%','','40%','','60%','','80%','','100%','100+%'},'Yticklabel','','YTick',[]);
 xlabel('Percent change in people per hospital','fontsize',22)
 ylim([0 max(NC)+5]);
+xtickangle(90)
 box off
 print(gcf,['PPH_Increase_Raion.png'],'-dpng','-r300');
 

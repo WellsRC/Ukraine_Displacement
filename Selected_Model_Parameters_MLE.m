@@ -13,7 +13,7 @@ daics=aics-min(aics);
 
 FD_Model=find(daics==0);
 
-load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(FD_Model) '.mat'],'day_W_fix','RC');
+load(['Calibration_Kernel_Conflict_Window-Conflcit_Radius_Model=' num2str(FD_Model) '.mat'],'day_W_fix','RC','fval');
 day_W_fix=day_W_fix(fval==min(fval));
 RC=RC(fval==min(fval));
 
