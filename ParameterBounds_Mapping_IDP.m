@@ -15,8 +15,8 @@ IDP_Mv=[1 IDP_Mv];
 % Parameter_Map_IDP.Capital=10.^x(5);
 
 
- LB=[4 log10(0.1) 0 0 -1];
- UB=[6 4          1 1  4];
+ LB=[  4 log10(0.1)  0.5       0.1 -1];
+ UB=[ 6 log10(50)   1          1  1.5];
 
  LB=LB(IDP_Mv==1);
  UB=UB(IDP_Mv==1);

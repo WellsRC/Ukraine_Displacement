@@ -253,12 +253,15 @@ UN_Rel_Diff_Gender_Displaced_Macro=UN_Proxy_Displaced_Macro_Disease_Gender./UN_M
 UN_Rel_Diff_Age_Displaced_Macro=UN_Proxy_Displaced_Macro_Disease_Age./UN_Macro_Disease-1;
 UN_Rel_Diff_Age_Gender_Displaced_Macro=UN_Proxy_Displaced_Macro_Disease_Age_Gender./UN_Macro_Disease-1;
 
+% Save the output in case there is an error in the mle code and do not have
+% to re-run
+save('Uncertainty_text.mat');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MLE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+load('Uncertainty_text.mat');
 [day_W_fix,RC,MLE_FD,MLE_Map_Ref,MLE_Map_IDP,FD_Model,Model_IDP,Model_Refugee] = Selected_Model_Parameters_MLE;
 
 

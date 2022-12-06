@@ -8,21 +8,234 @@
 To get started, type doc.
 For product information, visit www.mathworks.com.
  
-Starting parallel pool (parpool) using the 'local' profile ...
-Connected to the parallel pool (number of workers: 16).
-
-ans = 
-
- Pool with properties: 
-
-            Connected: true
-           NumWorkers: 16
-              Cluster: local
-        AttachedFiles: {}
-    AutoAddClientPath: true
-          IdleTimeout: 30 minutes (30 minutes remaining)
-          SpmdEnabled: true
-
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
+Surrogateopt stopped because it exceeded the function evaluation limit set by 
+'options.MaxFunctionEvaluations'.
 Surrogateopt stopped because it exceeded the function evaluation limit set by 
 'options.MaxFunctionEvaluations'.
 Surrogateopt stopped because it exceeded the function evaluation limit set by 
