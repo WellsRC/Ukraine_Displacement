@@ -139,7 +139,11 @@ MC=(w')*Model_BN;
 
 RelErr=IDPc./Data_O-1;
 
+RelErr=RelErr(:,~strcmp('N/A',N));
 T=table(Model_BN,RelErr,daics);
 
 
-writetable(T,'AIC_IDP_Map.csv');
+writetable(T,'Supplementary_Data.xlsx','Sheet','AIC_IDP_Map','Range','A3','WriteVariableNames',false);
+
+T=table(MC);
+writetable(T,'Supplementary_Data.xlsx','Sheet','AIC_IDP_Map','Range','A19','WriteVariableNames',false);

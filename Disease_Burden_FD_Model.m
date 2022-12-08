@@ -28,6 +28,10 @@ Prev_Dis_Nat=zeros(length(Disease_Short));
 
 Model_Type={'Location','Location and Age','Location and Gender','Location and Socio-economic status','Location, Age, and Gender','Location, Age, and Socio-economic status','Location, Gender, and Socio-economic status','Location, Age, Gender, and Socio-economic status'}';
 
+Model_M=[0 0 0; 1 0 0; 0 1 0; 0 0 1; 1 1 0; 1 0 1; 0 1 1; 1 1 1];
+
+Model_M=repmat(Model_M,5,1);
+
 Prev_Model=zeros(8,5);
 Disease_Model=zeros(8,5);
 
@@ -103,8 +107,8 @@ Rel_Diff_Age=Rel_Diff_Age(:);
 Rel_Diff_Gender=Rel_Diff_Gender(:);
 Rel_Diff_Age_Gender=Rel_Diff_Age_Gender(:);
 Prev_Model=Prev_Model(:);
-T=table(Disease_List,Model_List,Prev_Model,Rel_Diff_Nat,Rel_Diff_Age,Rel_Diff_Gender,Rel_Diff_Age_Gender,'VariableNames',{'Disease','Model','Model Estimated Prevalence','National Prevalence','Age-based Prevalence','Gender-based Prevalence','Age-Gender-base Prevalence'});
+T=table(Disease_List,Model_M,Prev_Model,Rel_Diff_Nat,Rel_Diff_Age,Rel_Diff_Gender,Rel_Diff_Age_Gender,'VariableNames',{'Disease','Model','Model Estimated Prevalence','National Prevalence','Age-based Prevalence','Gender-based Prevalence','Age-Gender-base Prevalence'});
 
-writetable(T,'Supplementary_Data.xlsx','Sheet','Disease_Burden_FD');
+writetable(T,'Supplementary_Data.xlsx','Sheet','Disease_Burden_FD','Range','A3','WriteVariableNames',false);
     
     

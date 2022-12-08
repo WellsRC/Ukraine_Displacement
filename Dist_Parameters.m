@@ -9,9 +9,18 @@ Par_Name_Refugee={'Weight Europe (w_E)','Hyper-parameter Refugee (log_{10}(\Delt
 Par_Name_IDP={'Hyper-parameter IDP UKR (log_{10}(\Delta_I))','Scaled conflict (\alpha_C)'};
 
 
-Par_FD(:,[1 3])=10.^Par_FD(:,[1 3]);
+load('Calibration_Conflict_Kernel.mat','Time_Switch');
 Par_Map_Ref(:,3)=10.^Par_Map_Ref(:,3);
+Test=zeros(NS,1);
+[day_W_fix,RC,Par_FD,~,~,Model_FD,~,~] = Selected_Model_Parameters_Uncertainty;
+for jj=1:NS    
+    [Parameter,STDEV_Displace]=Parameter_Return(Par_FD(jj,:),RC,Time_Switch,day_W_fix,Model_FD);
+    Test(jj)=Parameter.Scale./normpdf(0,0,Parameter.Breadth);
+end
 
+
+Par_FD(:,[3])=10.^Par_FD(:,[3]);
+Par_FD(:,[1])=Test;
 
 wd=0.16;
 ht=0.12;
@@ -21,7 +30,7 @@ ys=flip(linspace(0.05,0.97-ht,5));
 [yv,xv]=meshgrid(ys,xs);
 xv=xv(:);
 yv=yv(:);
-for ii=1:13
+for ii=1:12
     subplot('Position',[xv(ii) yv(ii) wd ht]);
     histogram(Par_FD(:,ii),'FaceColor','k','LineStyle','none');
     box off;
@@ -32,21 +41,21 @@ for ii=1:13
 end
 
 for ii=1:7    
-    subplot('Position',[xv(ii+13) yv(ii+13) wd ht]);
+    subplot('Position',[xv(ii+12) yv(ii+12) wd ht]);
     histogram(Par_Map_Ref(:,ii),'FaceColor','k','LineStyle','none')
     box off;
     set(gca,'LineWidth',2,'tickdir','out','Fontsize',16);
     title(Par_Name_Refugee{ii},'Fontsize',13.5);
-    text(-0.185314712237191,1.172,char(64+ii+13),'Fontsize',20,'FontWeight','bold','units','normalized');
+    text(-0.185314712237191,1.172,char(64+ii+12),'Fontsize',20,'FontWeight','bold','units','normalized');
 end
 
 for ii=8:9    
-    subplot('Position',[xv(ii+13) yv(ii+13) wd ht]);
+    subplot('Position',[xv(ii+12) yv(ii+12) wd ht]);
     histogram(Par_Map_IDP(:,ii-7),'FaceColor','k','LineStyle','none')
     box off;
     set(gca,'LineWidth',2,'tickdir','out','Fontsize',16);
     title(Par_Name_IDP{ii-7},'Fontsize',13.5);
-    text(-0.185314712237191,1.172,char(64+ii+13),'Fontsize',20,'FontWeight','bold','units','normalized');
+    text(-0.185314712237191,1.172,char(64+ii+12),'Fontsize',20,'FontWeight','bold','units','normalized');
 end
 
 print(gcf,['Distribution_Parameters.png'],'-dpng','-r300');

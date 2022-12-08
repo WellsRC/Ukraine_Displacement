@@ -80,7 +80,7 @@ end
 
 aics=aicbic(L,k);
 
-daics=round(aics-min(aics),2);
+daics=aics-min(aics);
 
 w=exp(-daics./2)./sum(exp(-daics./2));
 
@@ -88,5 +88,11 @@ MC=(w')*Model_BN;
 
 T=table(Model_BN,Poland,Slovakia,Hungary,Romania,Belarus,Moldova,Russia,Europe,daics);
 
-writetable(T,'AIC_Refugee_Map.csv');
+
+
+writetable(T,'Supplementary_Data.xlsx','Sheet','AIC_Refugee_Map','Range','A3','WriteVariableNames',false);
+
+
+T=table(MC);
+writetable(T,'Supplementary_Data.xlsx','Sheet','AIC_Refugee_Map','Range','A35','WriteVariableNames',false);
 
