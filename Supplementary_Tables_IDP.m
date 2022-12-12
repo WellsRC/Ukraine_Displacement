@@ -1,4 +1,5 @@
-load('Uncertainty_text.mat','test_Idp','Disease_Short','MLE_Macro_Pop','MLE_Macro_Disease_PostWar','UN_Macro_Pop','UN_Macro_Disease_PostWar','MLE_Rel_Diff_Nat_Displaced_Macro','MLE_Rel_Diff_Age_Displaced_Macro','MLE_Rel_Diff_Gender_Displaced_Macro','MLE_Rel_Diff_Age_Gender_Displaced_Macro','UN_Rel_Diff_Nat_Displaced_Macro','UN_Rel_Diff_Age_Displaced_Macro','UN_Rel_Diff_Gender_Displaced_Macro','UN_Rel_Diff_Age_Gender_Displaced_Macro');
+clear;
+load('Uncertainty_text.mat','test_Idp','Disease_Short','IDP_Macro_Nat_MLE','MLE_Macro_Disease','IDP_Macro_Nat_UN','UN_Macro_Disease','MLE_Rel_Diff_Nat_IDP_Macro','MLE_Rel_Diff_Age_IDP_Macro','MLE_Rel_Diff_Gender_IDP_Macro','MLE_Rel_Diff_Age_Gender_IDP_Macro','UN_Rel_Diff_Nat_IDP_Macro','UN_Rel_Diff_Age_IDP_Macro','UN_Rel_Diff_Gender_IDP_Macro','UN_Rel_Diff_Age_Gender_IDP_Macro');
 
 
 
@@ -16,7 +17,7 @@ Table_Err=cell(length(Macro_Region).*length(Disease_Short),4);
 for ii=1:length(Macro_Region)
     Table_Model{ii,1}='Population';
     Table_Model{ii,2}=Macro_Region{ii};
-    Table_Model{ii,3}=[ num2str(round(MLE_Macro_Pop(ii,2))) ' (' num2str(round(prctile(UN_Macro_Pop(:,ii,2),2.5))) char(8211) num2str(round(prctile(UN_Macro_Pop(:,ii,2),97.5))) ')'];
+    Table_Model{ii,3}=[ num2str(round(IDP_Macro_Nat_MLE(ii))) ' (' num2str(round(prctile(IDP_Macro_Nat_UN(:,ii),2.5))) char(8211) num2str(round(prctile(IDP_Macro_Nat_UN(:,ii),97.5))) ')'];
     
     Table_Err{ii,1}='N/A';
     Table_Err{ii,2}='N/A';
@@ -28,13 +29,13 @@ for dd=1:5
 
         Table_Model{ii+length(Macro_Region).*(dd),1}=Disease_Short{dd};
         Table_Model{ii+length(Macro_Region).*(dd),2}=Macro_Region{ii};
-        Table_Model{ii+length(Macro_Region).*(dd),3}=[ num2str(round(MLE_Macro_Disease_PostWar(dd,ii))) ' (' num2str(round(prctile(UN_Macro_Disease_PostWar(:,dd,ii),2.5))) char(8211) num2str(round(prctile(UN_Macro_Disease_PostWar(:,dd,ii),97.5))) ')'];
+        Table_Model{ii+length(Macro_Region).*(dd),3}=[ num2str(round(MLE_Macro_Disease(dd,ii))) ' (' num2str(round(prctile(UN_Macro_Disease(:,dd,ii),2.5))) char(8211) num2str(round(prctile(UN_Macro_Disease(:,dd,ii),97.5))) ')'];
         
         
-    Table_Err{ii+length(Macro_Region).*(dd),1}=[ num2str(round(100.*MLE_Rel_Diff_Nat_Displaced_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Nat_Displaced_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Nat_Displaced_Macro(:,dd,ii),97.5),2)) '%)'];
-    Table_Err{ii+length(Macro_Region).*(dd),2}=[ num2str(round(100.*MLE_Rel_Diff_Age_Displaced_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Age_Displaced_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Age_Displaced_Macro(:,dd,ii),97.5),2)) '%)'];
-    Table_Err{ii+length(Macro_Region).*(dd),3}=[ num2str(round(100.*MLE_Rel_Diff_Gender_Displaced_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Gender_Displaced_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Gender_Displaced_Macro(:,dd,ii),97.5),2)) '%)'];
-    Table_Err{ii+length(Macro_Region).*(dd),4}=[ num2str(round(100.*MLE_Rel_Diff_Age_Gender_Displaced_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Age_Gender_Displaced_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Age_Gender_Displaced_Macro(:,dd,ii),97.5),2)) '%)'];
+    Table_Err{ii+length(Macro_Region).*(dd),1}=[ num2str(round(100.*MLE_Rel_Diff_Nat_IDP_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Nat_IDP_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Nat_IDP_Macro(:,dd,ii),97.5),2)) '%)'];
+    Table_Err{ii+length(Macro_Region).*(dd),2}=[ num2str(round(100.*MLE_Rel_Diff_Age_IDP_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Age_IDP_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Age_IDP_Macro(:,dd,ii),97.5),2)) '%)'];
+    Table_Err{ii+length(Macro_Region).*(dd),3}=[ num2str(round(100.*MLE_Rel_Diff_Gender_IDP_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Gender_IDP_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Gender_IDP_Macro(:,dd,ii),97.5),2)) '%)'];
+    Table_Err{ii+length(Macro_Region).*(dd),4}=[ num2str(round(100.*MLE_Rel_Diff_Age_Gender_IDP_Macro(dd,ii),2)) '% (' num2str(round(prctile(100.*UN_Rel_Diff_Age_Gender_IDP_Macro(:,dd,ii),2.5),2)) '%' char(8211) num2str(round(prctile(100.*UN_Rel_Diff_Age_Gender_IDP_Macro(:,dd,ii),97.5),2)) '%)'];
     end
 end
 
