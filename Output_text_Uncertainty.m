@@ -8,6 +8,12 @@ clc;
 MLE_Pop=Displaced_UKR_Nat_MLE;
 UN_Pop=Displaced_UKR_Nat_UN;
 
+for jj=1:length(Disease_Short)
+
+    fprintf(['Number of ' Disease_Short{jj}  ' among displaced: ' num2str(round(MLE_Displaced_Disease(jj))) ' \n'])
+    
+end
+
 Prev_Disease_MLE=round(10000.*MLE_Displaced_Disease./MLE_Pop,1);
 
 Prev_Disease_UN=10000.*UN_Displaced_Disease./repmat(Displaced_UKR_Nat_UN,1,5);

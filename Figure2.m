@@ -93,7 +93,8 @@ for ii=1:length(N_Macro)
     end
 end
 
-age_class_text={'0-9','10-19','20-29','30-39','40-49','50-59','60-69','70+'};
+% age_class_text={'0-9','10-19','20-29','30-39','40-49','50-59','60-69','70+'};
+age_class_text={'0-9','','','','','','','70+'};
 age_c_V={[1:2],[3:4],[5:6],[7:8],[9:10],[11:12],[13:14],[15:17]};
 % age_c_text={'0-19','20-59','60+'};
 Pop_M=zeros(6, length(age_c_V),7,80);
@@ -172,13 +173,13 @@ for dd=1:6
     
     ylim([0.5 7.5]);
     xlim([0 xbl(dd)]);
-    set(gca,'tickdir','out','LineWidth',2,'Fontsize',14,'YTick',YT,'YTickLabel',age_class_text,'Xminortick','on');  
+    set(gca,'tickdir','out','LineWidth',2,'Fontsize',18,'YTick',YT,'YTickLabel',age_class_text,'Xminortick','on');  
     hAxes=gca;
     hAxes.XAxis.FontSize = 24;
     ylabel('Macro-region age distribution','Fontsize',28,'Position',[-0.38.*max(xlim),4,-0.999999999999986]);
     xlabel('Proportion','Fontsize',28,'Position',[mean(xlim),0.155,-0.999999999999986]);
     for ii=1:7
-       text(-0.33.*max(xlim),ii, N_Macro{ii},'Fontsize',24,'Rotation',90,'HorizontalAlignment','center');
+       text(-0.33.*max(xlim),ii, N_Macro{ii},'Fontsize',22,'Rotation',90,'HorizontalAlignment','center');
     end
     
     print(gcf,['Temporal_' Disease_Short{dd} '_Age_Dist.png'],'-dpng','-r300');
